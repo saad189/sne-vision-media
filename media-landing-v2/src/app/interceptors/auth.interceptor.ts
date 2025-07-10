@@ -11,7 +11,8 @@ import { catchError, filter, take, switchMap } from 'rxjs/operators';
 import { AUTH_TOKEN, REFRESH_TOKEN } from '../constants';
 import { UtilityService } from '../services/utility.service';
 import { AuthTokens } from '../models';
-import { environment } from '../../environments/environment';
+import { environment } from '../environments/environment';
+
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -19,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
   private refreshTokenSubject: BehaviorSubject<string | null> =
     new BehaviorSubject<string | null>(null);
 
-  constructor(private utilityService: UtilityService) {}
+  constructor(private utilityService: UtilityService) { }
 
   intercept(
     request: HttpRequest<any>,
