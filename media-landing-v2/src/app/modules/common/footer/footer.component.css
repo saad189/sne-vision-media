@@ -1,0 +1,23 @@
+/* app.component.css */
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+footer {
+  background-color: #bcbcbc;
+  margin-top: auto;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: #ececec;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}

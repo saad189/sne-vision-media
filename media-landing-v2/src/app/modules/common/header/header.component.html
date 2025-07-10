@@ -1,1 +1,62 @@
-<p>header works!</p>
+<div class="relative bg-[#4D4D4D] text-white py-2">
+  <div class="container mx-auto flex justify-between items-center">
+    <div class="flex items-center space-x-5 ml-[15%]">
+      <a href="#" class="hover:text-gray-400" aria-label="Facebook">
+        <img src="/assets/images/facebook.png" alt="Facebook" class="w-5 h-5" />
+      </a>
+      <a href="#" class="hover:text-gray-400" aria-label="Instagram">
+        <img
+          src="/assets/images/instagram.png"
+          alt="Instagram"
+          class="w-5 h-5"
+        />
+      </a>
+      <a href="#" class="hover:text-gray-400" aria-label="Twitter">
+        <img src="/assets/images/twitter.png" alt="Twitter" class="w-5 h-5" />
+      </a>
+    </div>
+    <div
+      class="absolute inset-0 flex justify-center items-center italic text-sm text-center"
+    >
+      “What one man Nation can do, another can do”
+    </div>
+  </div>
+</div>
+
+<!-- Main navigation bar -->
+<nav>
+  <div class="container mx-auto flex justify-between items-center">
+    <!-- Logo -->
+    <div class="flex items-center space-x-2">
+      <img
+        src="/assets/images/sne_logo_title.png"
+        alt="Vision Media"
+        class="object-contain max-w-[200px] max-h-[200px]"
+      />
+    </div>
+
+    <!-- Nav links -->
+    <ul class="flex space-x-8 text-gray-800">
+      <li>
+        <a routerLink="/use-cases" class="hover:text-blue-600">Use Cases</a>
+      </li>
+      <li>
+        <a routerLink="/projects" class="hover:text-blue-600">Projects</a>
+      </li>
+      <li>
+        <a routerLink="/community" class="hover:text-blue-600">Community</a>
+      </li>
+      <li>
+        <a routerLink="/policy" class="hover:text-blue-600">Our Policy</a>
+      </li>
+      <li><a routerLink="/about" class="hover:text-blue-600">About Us</a></li>
+    </ul>
+
+    <!-- Call to Action Button -->
+    <button
+      class="px-6 py-2 bg-[#4D4D4D] text-white rounded-full hover:bg-gray-700"
+    >
+      Join our Ecosystem
+    </button>
+  </div>
+</nav>

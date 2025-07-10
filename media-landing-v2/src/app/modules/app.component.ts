@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
 import { LoadingService } from '../services/loading.service';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { AUTH, MODULES } from '../constants';
+import { MODULES } from '../constants';
 import { Module } from '../models';
+import { HeaderComponent } from "./common/header/header.component";
+import { FooterComponent } from "./common/footer/footer.component";
 
 
 @Component({
@@ -13,7 +14,9 @@ import { Module } from '../models';
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    HeaderComponent,
+    FooterComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

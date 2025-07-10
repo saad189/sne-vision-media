@@ -1,2 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+/* Setting Montserrat as the default font for the entire application */
+html,
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #dedede;
+}
+
+/* Apply Montserrat to all elements */
+* {
+  font-family: "Montserrat", sans-serif;
+}

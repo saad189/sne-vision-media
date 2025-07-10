@@ -1,11 +1,29 @@
-import { Component } from '@angular/core';
+// header.component.ts
+import { CommonModule } from '@angular/common';
+import { Component, HostListener, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [
+    CommonModule,
+    RouterModule,
+  ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  /**
+   * 'simple' for basic quote header, 'transparent' for main header
+   */
+  @Input() variant: 'simple' | 'transparent' = 'simple';
+  isScrolled = false;
 
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.isScrolled = window.pageYOffset > 50;
+  }
 }
+
+
+
