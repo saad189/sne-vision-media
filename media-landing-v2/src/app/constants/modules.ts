@@ -33,7 +33,14 @@ export const ANALYTICS: Module = {
   icon: 'analytics',
 };
 
+export const LANDING: Module = {
+  path: '',
+  name: 'Home',
+  icon: 'home',
+};
+
 export const MODULES = [
+  LANDING,
   DASHBOARD,
   USERS_MANAGEMENT,
   ANALYTICS,
