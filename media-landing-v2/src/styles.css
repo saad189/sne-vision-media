@@ -12,3 +12,8 @@ body {
 * {
   font-family: "Montserrat", sans-serif;
 }
+
+button,
+a {
+  cursor: pointer;
+}
