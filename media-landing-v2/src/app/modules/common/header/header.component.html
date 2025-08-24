@@ -1,65 +1,90 @@
-<div class="relative bg-[#4D4D4D] text-white py-2">
-  <div class="container mx-auto relative">
-    <!-- Social Media Icons -->
-    <div class="flex items-center space-x-5 ml-[15%] relative z-20">
-      <a href="#" class="hover:text-gray-400 block" aria-label="Facebook">
+<!-- Optional quote / social bar (hidden in current design) -->
+<div *ngIf="variant === 'simple'" class="relative bg-[#4D4D4D] text-white py-2">
+  <div class="container mx-auto relative flex items-center">
+    <div class="flex items-center space-x-5 relative z-20">
+      <a href="#" aria-label="Facebook">
         <img src="/assets/images/facebook.png" alt="Facebook" class="w-5 h-5" />
       </a>
-      <a href="#" class="hover:text-gray-400 block" aria-label="Instagram">
+      <a href="#" aria-label="Instagram">
         <img
           src="/assets/images/instagram.png"
           alt="Instagram"
           class="w-5 h-5"
         />
       </a>
-      <a href="#" class="hover:text-gray-400 block" aria-label="Twitter">
+      <a href="#" aria-label="Twitter">
         <img src="/assets/images/twitter.png" alt="Twitter" class="w-5 h-5" />
       </a>
     </div>
-    <div
-      class="absolute inset-0 flex justify-center items-center text-sm text-center z-10 pointer-events-none"
-    >
+    <div class="flex-1 text-center text-xs sm:text-sm tracking-wide font-light">
       "What one man Nation can do, another can do"
     </div>
   </div>
 </div>
 
-<!-- Main navigation bar -->
-<nav>
-  <div class="container mx-auto flex justify-between items-center">
+<!-- Main navigation bar aligned with design -->
+<nav
+  class="sticky top-0 z-40 bg-[#f2f2f2]/95 backdrop-blur supports-[backdrop-filter]:bg-[#f2f2f2]/80 border-b border-gray-300"
+>
+  <div class="max-w-7xl mx-auto px-4 lg:px-8 h-20 flex items-center gap-8">
     <!-- Logo -->
-    <div class="flex items-center space-x-2">
-      <a routerLink="">
-        <img
-          src="/assets/images/sne_logo_title.png"
-          alt="Vision Media"
-          class="object-contain max-w-[200px] max-h-[200px]"
-        />
-      </a>
-    </div>
-
-    <!-- Nav links -->
-    <ul class="flex space-x-8 text-gray-800">
-      <li>
-        <a routerLink="/use-cases" class="hover:text-blue-600">Use Cases</a>
-      </li>
-      <li>
-        <a routerLink="/projects" class="hover:text-blue-600">Projects</a>
-      </li>
-      <li>
-        <a routerLink="/community" class="hover:text-blue-600">Community</a>
-      </li>
-      <li>
-        <a routerLink="/policy" class="hover:text-blue-600">Our Policy</a>
-      </li>
-      <li><a routerLink="/about" class="hover:text-blue-600">About Us</a></li>
-    </ul>
-
-    <!-- Call to Action Button -->
-    <button
-      class="px-6 py-2 bg-[#4D4D4D] text-white rounded-full hover:bg-gray-700 font-semibold"
+    <a
+      routerLink=""
+      class="shrink-0 flex items-center"
+      aria-label="Vision Media Home"
     >
-      Join our Ecosystem
-    </button>
+      <img
+        src="/assets/images/sne_logo_title.png"
+        alt="Vision Media"
+        class="h-12 w-auto object-contain"
+      />
+    </a>
+    <!-- Nav links centered -->
+    <ul
+      class="flex-1 flex items-center justify-center gap-10 text-sm font-medium tracking-wide text-gray-800"
+    >
+      <li>
+        <a
+          routerLink="/use-cases"
+          routerLinkActive="active-link"
+          class="nav-link"
+          >Use Cases</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/projects"
+          routerLinkActive="active-link"
+          class="nav-link"
+          >Projects</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/community"
+          routerLinkActive="active-link"
+          class="nav-link"
+          >Community</a
+        >
+      </li>
+      <li>
+        <a routerLink="/policy" routerLinkActive="active-link" class="nav-link"
+          >Our Policy</a
+        >
+      </li>
+      <li>
+        <a routerLink="/about" routerLinkActive="active-link" class="nav-link"
+          >About Us</a
+        >
+      </li>
+    </ul>
+    <!-- CTA -->
+    <div class="flex items-center">
+      <button
+        class="join-btn px-6 py-2 rounded-full text-sm font-semibold bg-[#1f1f1f] text-white hover:bg-black transition-colors"
+      >
+        Join our Ecosystem
+      </button>
+    </div>
   </div>
 </nav>

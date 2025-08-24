@@ -1,304 +1,174 @@
-<!-- Hero Section with Carousel -->
-<section class="hero-section bg-gray-100">
-  <div class="container mx-auto py-16">
-    <!-- Basic Carousel -->
-    <div
-      class="carousel-container relative overflow-hidden rounded-lg shadow-xl h-96"
-    >
-      <!-- Carousel items -->
-      <div
-        class="carousel-item flex flex-col items-center justify-center h-full bg-gradient-to-r from-blue-900 to-gray-900 text-white p-8"
-      >
-        <h1 class="text-4xl md:text-5xl font-bold mb-6 text-center">
-          Welcome to SNE Vision Media
-        </h1>
-        <p class="text-xl md:text-2xl mb-8 text-center">
-          Your gateway to immersive media experiences
-        </p>
-        <button
-          class="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300"
-        >
-          Explore Now
-        </button>
+<!-- Hero Section (Design: centered headline + mission paragraph + composite image cards) -->
+<section class="hero-wrapper">
+  <div class="hero-inner">
+    <h1 class="hero-title">Welcome to a New Era</h1>
+    <p class="hero-mission">
+      Our mission is to sow the seeds of education, innovation, and intelligence
+      among the masses, beginning with individuals, districts and villages over
+      the next decade. Our goal is to impact the transformation of knowledge,
+      values, and growth, while empowering youth to shape the direction of a
+      country's technological, educational and research ventures with advanced
+      resources. We envision a generation of highly skilled, self-driven
+      individuals who embrace sophisticated thinking, fostering a future defined
+      by progress and intellectual vigor.
+    </p>
+    <div class="hero-composite" aria-hidden="true">
+      <div class="side-card left"></div>
+      <div class="main-card">
+        <div
+          class="image-icon"
+          role="img"
+          aria-label="Hero visual placeholder"
+        ></div>
       </div>
-      <!-- Carousel navigation (placeholder) -->
-      <div
-        class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2"
-      >
-        <span class="h-3 w-3 rounded-full bg-white"></span>
-        <span class="h-3 w-3 rounded-full bg-gray-400"></span>
-        <span class="h-3 w-3 rounded-full bg-gray-400"></span>
-      </div>
+      <div class="side-card right"></div>
     </div>
   </div>
 </section>
 
 <!-- Use Cases Section -->
-<section class="use-cases-section py-16 bg-white">
-  <div class="container mx-auto">
-    <h2 class="text-3xl font-bold text-center mb-12">Our Use Cases</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Use Case Card 1 -->
-      <div
-        class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300"
-      >
-        <div
-          class="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6"
+<section id="use-cases" class="use-cases-section section-pad">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">Use Cases</span>
+      <h2 class="section-title">Explore how we envision the Future</h2>
+      <p class="section-sub">
+        Learn how the Best Minds collaborate, research, simulate and develop
+        solutions to real-world tasks. Explore the solution and cost of
+        decisions.
+      </p>
+      <div class="tag-pills" role="tablist" aria-label="Use case categories">
+        <button
+          *ngFor="let c of categories"
+          class="pill"
+          [class.active]="c === selectedCategory"
+          (click)="selectCategory(c)"
+          role="tab"
+          [attr.aria-selected]="c === selectedCategory"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8 text-blue-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold mb-3">Media Production</h3>
-        <p class="text-gray-600">
-          Professional media production services for businesses and individuals.
-        </p>
-        <a
-          routerLink="/use-cases"
-          class="mt-4 inline-block text-blue-600 hover:underline"
-          >Learn more →</a
-        >
-      </div>
-
-      <!-- Use Case Card 2 -->
-      <div
-        class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300"
-      >
-        <div
-          class="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8 text-blue-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold mb-3">Content Strategy</h3>
-        <p class="text-gray-600">
-          Strategic content development and marketing for maximum audience
-          engagement.
-        </p>
-        <a
-          routerLink="/use-cases"
-          class="mt-4 inline-block text-blue-600 hover:underline"
-          >Learn more →</a
-        >
-      </div>
-
-      <!-- Use Case Card 3 -->
-      <div
-        class="bg-gray-50 rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300"
-      >
-        <div
-          class="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8 text-blue-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold mb-3">Secure Distribution</h3>
-        <p class="text-gray-600">
-          End-to-end secure media distribution for sensitive or premium content.
-        </p>
-        <a
-          routerLink="/use-cases"
-          class="mt-4 inline-block text-blue-600 hover:underline"
-          >Learn more →</a
-        >
+          {{ c }}
+        </button>
       </div>
     </div>
-    <div class="text-center mt-10">
-      <a
-        routerLink="/use-cases"
-        class="px-6 py-3 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition duration-300"
-        >View All Use Cases</a
+    <div class="use-case-grid">
+      <article
+        *ngFor="let uc of filteredUseCases; trackBy: trackUseCase"
+        class="use-case-card"
       >
+        <div class="uc-bg-img"></div>
+        <div class="uc-content">
+          <h3 class="uc-title">{{ uc.title }}</h3>
+          <p class="uc-summary">{{ uc.summary }}</p>
+          <div class="uc-footer">
+            <span class="uc-status" *ngIf="uc.status">{{ uc.status }}</span>
+            <a routerLink="/use-cases" class="uc-cta">Details</a>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="more-row">
+      <button class="more-btn">Explore More Use Cases</button>
     </div>
   </div>
 </section>
 
-<!-- Projects Section -->
-<section class="projects-section py-16 bg-gray-100">
-  <div class="container mx-auto">
-    <h2 class="text-3xl font-bold text-center mb-12">Featured Projects</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Project Card 1 -->
-      <div
-        class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
-      >
-        <div class="h-48 bg-gray-300"></div>
-        <div class="p-6">
-          <h3 class="text-xl font-semibold mb-3">National Media Campaign</h3>
-          <p class="text-gray-600 mb-4">
-            A nationwide media campaign that reached over 10 million viewers
-            across multiple platforms.
-          </p>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-500">Completed: June 2025</span>
-            <a routerLink="/projects" class="text-blue-600 hover:underline"
-              >View details →</a
-            >
-          </div>
-        </div>
-      </div>
-
-      <!-- Project Card 2 -->
-      <div
-        class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
-      >
-        <div class="h-48 bg-gray-300"></div>
-        <div class="p-6">
-          <h3 class="text-xl font-semibold mb-3">Educational Series</h3>
-          <p class="text-gray-600 mb-4">
-            An educational video series that transformed complex topics into
-            engaging visual content.
-          </p>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-500">Completed: April 2025</span>
-            <a routerLink="/projects" class="text-blue-600 hover:underline"
-              >View details →</a
-            >
-          </div>
-        </div>
+<!-- Projects Section (data-driven) -->
+<section id="projects" class="projects-section section-pad">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">Projects</span>
+      <h2 class="section-title">Explore the Research Work We Do</h2>
+      <p class="section-sub">
+        We have the Teams of Scientists & Engineers conducting Research &
+        Development on improving Infrastructure, Systems, Platforms, etc.
+      </p>
+      <div class="tag-pills" role="tablist" aria-label="Project categories">
+        <button
+          *ngFor="let c of projectCategories"
+          class="pill"
+          [class.active]="c === selectedProjectCategory"
+          (click)="selectProjectCategory(c)"
+          role="tab"
+          [attr.aria-selected]="c === selectedProjectCategory"
+        >
+          {{ c }}
+        </button>
       </div>
     </div>
-    <div class="text-center mt-10">
-      <a
-        routerLink="/projects"
-        class="px-6 py-3 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition duration-300"
-        >Explore All Projects</a
+    <div class="project-grid">
+      <article
+        *ngFor="let p of filteredProjects; trackBy: trackProject"
+        class="project-card"
       >
+        <div class="proj-thumb"></div>
+        <div class="proj-body">
+          <h3 class="proj-title">{{ p.title }}</h3>
+          <p class="proj-blurb">{{ p.blurb }}</p>
+          <div class="proj-meta">
+            <div class="badge-row">
+              <span
+                *ngFor="let b of p.badges"
+                class="media-badge"
+                [class.youtube]="b === 'YouTube'"
+                [class.github]="b === 'GitHub'"
+                >{{ b }}</span
+              >
+            </div>
+            <span *ngIf="p.status" class="proj-status">{{ p.status }}</span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="more-row">
+      <button class="more-btn">Explore More Projects</button>
     </div>
   </div>
 </section>
 
-<!-- Community Section -->
-<section class="community-section py-16 bg-white">
-  <div class="container mx-auto">
-    <h2 class="text-3xl font-bold text-center mb-12">Our Community</h2>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <div>
-        <h3 class="text-2xl font-semibold mb-6">Join Our Growing Network</h3>
-        <p class="text-gray-600 mb-6">
-          Connect with like-minded professionals, creators, and enthusiasts in
-          the media industry. Share insights, collaborate on projects, and grow
-          together in our vibrant community.
-        </p>
-        <ul class="space-y-4">
-          <li class="flex items-start">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-green-500 mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            <span>Access to exclusive networking events</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-green-500 mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            <span>Participate in skill-sharing workshops</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-green-500 mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            <span>Collaborate on community-driven projects</span>
-          </li>
-        </ul>
-        <a
-          routerLink="/community"
-          class="mt-6 inline-block px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300"
-          >Join the Community</a
-        >
-      </div>
-      <div class="bg-gray-100 rounded-lg p-8">
-        <h3 class="text-xl font-semibold mb-4">Community Spotlight</h3>
-        <div class="space-y-6">
-          <!-- Community Member -->
-          <div class="flex items-start">
-            <div class="bg-gray-300 rounded-full h-12 w-12 mr-4"></div>
-            <div>
-              <h4 class="font-semibold">Jane Cooper</h4>
-              <p class="text-gray-600 text-sm mt-1">
-                "Being part of this community has opened so many doors for my
-                career in media production."
-              </p>
-            </div>
-          </div>
-          <!-- Community Member -->
-          <div class="flex items-start">
-            <div class="bg-gray-300 rounded-full h-12 w-12 mr-4"></div>
-            <div>
-              <h4 class="font-semibold">Marcus Rodriguez</h4>
-              <p class="text-gray-600 text-sm mt-1">
-                "The collaborations I've found through this network have been
-                invaluable to my growth as a creator."
-              </p>
-            </div>
-          </div>
+<!-- Testimonials / Community Minds Section -->
+<section id="community" class="testimonials-section section-pad">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">Community</span>
+      <h2 class="section-title">Top Minds across Industries</h2>
+      <p class="section-sub">
+        We love working on problems with the best people, we are building an
+        Open-Source Platform for our community, comprising of top minds to solve
+        the citizen challenges and solve them with Science, Engineering &
+        Technology.
+      </p>
+    </div>
+    <div class="testimonial-row" role="list">
+      <article
+        *ngFor="let t of testimonials; trackBy: trackTestimonial"
+        class="testimonial-card"
+        role="listitem"
+      >
+        <p class="t-quote">{{ t.quote }}</p>
+        <div class="t-author">{{ t.author }}</div>
+        <div *ngIf="t.date" class="t-date">{{ t.date }}</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Events / Seminars Unified Section -->
+<section id="events" class="seminars-section section-pad">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">Events</span>
+      <h2 class="section-title">Seminars & Get-Togethers</h2>
+      <p class="section-sub">
+        Join our events held in universities across Pakistan and abroad. Meet
+        brilliant minds of tomorrow and experts of today to tackle real
+        challenges.
+      </p>
+    </div>
+    <div class="seminar-tiles" role="list">
+      <div *ngFor="let ev of events" class="seminar-tile" role="listitem">
+        <div class="tile-img" aria-hidden="true"></div>
+        <div class="tile-caption">
+          {{ ev.title }}<br /><span class="tile-date">{{ ev.date }}</span>
         </div>
       </div>
     </div>
@@ -464,137 +334,86 @@
   </div>
 </section>
 
-<!-- Ecosystem Section -->
-<section
-  class="ecosystem-section py-16 bg-gradient-to-r from-blue-900 to-gray-900 text-white"
->
-  <div class="container mx-auto">
-    <h2 class="text-3xl font-bold text-center mb-4">Join Our Ecosystem</h2>
-    <p class="text-xl text-center mb-12 max-w-2xl mx-auto">
-      Be part of a thriving network of creators, innovators, and media
-      professionals
-    </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Ecosystem Feature -->
-      <div
-        class="bg-white bg-opacity-10 rounded-lg p-6 backdrop-filter backdrop-blur-sm hover:bg-opacity-20 transition duration-300"
-      >
-        <div
-          class="bg-blue-500 bg-opacity-20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-5"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold mb-3">Networking</h3>
-        <p class="text-gray-300">
-          Connect with media professionals, creators, and industry leaders.
-        </p>
-      </div>
-
-      <!-- Ecosystem Feature -->
-      <div
-        class="bg-white bg-opacity-10 rounded-lg p-6 backdrop-filter backdrop-blur-sm hover:bg-opacity-20 transition duration-300"
-      >
-        <div
-          class="bg-blue-500 bg-opacity-20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-5"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold mb-3">Resources</h3>
-        <p class="text-gray-300">
-          Access professional tools, templates, and educational materials.
-        </p>
-      </div>
-
-      <!-- Ecosystem Feature -->
-      <div
-        class="bg-white bg-opacity-10 rounded-lg p-6 backdrop-filter backdrop-blur-sm hover:bg-opacity-20 transition duration-300"
-      >
-        <div
-          class="bg-blue-500 bg-opacity-20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-5"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold mb-3">Opportunities</h3>
-        <p class="text-gray-300">
-          Discover projects, collaborations, and career opportunities.
-        </p>
-      </div>
-
-      <!-- Ecosystem Feature -->
-      <div
-        class="bg-white bg-opacity-10 rounded-lg p-6 backdrop-filter backdrop-blur-sm hover:bg-opacity-20 transition duration-300"
-      >
-        <div
-          class="bg-blue-500 bg-opacity-20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-5"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 10V3L4 14h7v7l9-11h-7z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold mb-3">Growth</h3>
-        <p class="text-gray-300">
-          Develop your skills and grow your media presence with expert guidance.
-        </p>
-      </div>
+<!-- Join Ecosystem Form Section -->
+<section id="ecosystem" class="ecosystem-form-section section-pad">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">Ecosystem</span>
+      <h2 class="section-title">Join our Ecosystem</h2>
     </div>
-
-    <div class="mt-12 text-center">
-      <button
-        class="px-8 py-3 bg-white text-blue-900 rounded-full hover:bg-gray-100 transition duration-300 font-semibold"
+    <div class="eco-form-wrapper">
+      <div class="eco-logo" aria-hidden="true"></div>
+      <form
+        [formGroup]="ecosystemForm"
+        (ngSubmit)="submitEcosystem()"
+        novalidate
       >
-        Join our Ecosystem Today
-      </button>
+        <div class="eco-grid">
+          <div class="field">
+            <label for="eco-name" class="sr-only">Name</label>
+            <input
+              id="eco-name"
+              type="text"
+              formControlName="name"
+              placeholder="Name"
+              [class.invalid]="
+                formSubmitted && ecosystemForm.get('name')?.invalid
+              "
+            />
+          </div>
+          <div class="field">
+            <label for="eco-email" class="sr-only">Email</label>
+            <input
+              id="eco-email"
+              type="email"
+              formControlName="email"
+              placeholder="Email"
+              [class.invalid]="
+                formSubmitted && ecosystemForm.get('email')?.invalid
+              "
+            />
+          </div>
+          <div class="field">
+            <label for="eco-phone" class="sr-only">Phone</label>
+            <input
+              id="eco-phone"
+              type="text"
+              formControlName="phone"
+              placeholder="Phone"
+            />
+          </div>
+          <div class="field">
+            <label for="eco-designation" class="sr-only">Designation</label>
+            <input
+              id="eco-designation"
+              type="text"
+              formControlName="designation"
+              placeholder="Designation"
+            />
+          </div>
+          <div class="field textarea-field">
+            <label for="eco-message" class="sr-only">Message</label>
+            <textarea
+              id="eco-message"
+              rows="3"
+              formControlName="message"
+              placeholder="Would You Like to Solve a Problem Or Support a Solution, Send Us a Message"
+              [class.invalid]="
+                formSubmitted && ecosystemForm.get('message')?.invalid
+              "
+            ></textarea>
+          </div>
+        </div>
+        <div class="submit-row">
+          <button
+            type="submit"
+            class="submit-btn"
+            [attr.aria-disabled]="ecosystemForm.invalid && formSubmitted"
+          >
+            Send Message
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </section>
