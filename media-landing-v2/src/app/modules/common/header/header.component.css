@@ -1,0 +1,8 @@
+/**
+ * All styles handled via Tailwind utility classes.
+ * Host styles below ensure proper stacking and display.
+ */
+:host {
+  display: block;
+  z-index: 50;
+}
