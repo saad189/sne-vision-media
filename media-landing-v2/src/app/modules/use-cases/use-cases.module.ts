@@ -3,15 +3,9 @@ import { CommonModule } from '@angular/common';
 import { UseCasesComponent } from './use-cases.component';
 import { UseCasesRoutingModule } from './use-cases-routing.module';
 
-
-
 @NgModule({
-    declarations: [
-        UseCasesComponent
-    ],
-    imports: [
-        CommonModule,
-        UseCasesRoutingModule
-    ]
+  declarations: [UseCasesComponent],
+  imports: [CommonModule, UseCasesRoutingModule],
+  exports: [UseCasesComponent],
 })
-export class UseCasesModule { }
+export class UseCasesModule {}

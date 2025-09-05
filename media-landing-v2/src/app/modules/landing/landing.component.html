@@ -26,51 +26,7 @@
   </div>
 </section>
 
-<!-- Use Cases Section -->
-<section id="use-cases" class="use-cases-section section-pad">
-  <div class="section-inner">
-    <div class="section-header">
-      <span class="section-eyebrow">Use Cases</span>
-      <h2 class="section-title">Explore how we envision the Future</h2>
-      <p class="section-sub">
-        Learn how the Best Minds collaborate, research, simulate and develop
-        solutions to real-world tasks. Explore the solution and cost of
-        decisions.
-      </p>
-      <div class="tag-pills" role="tablist" aria-label="Use case categories">
-        <button
-          *ngFor="let c of categories"
-          class="pill"
-          [class.active]="c === selectedCategory"
-          (click)="selectCategory(c)"
-          role="tab"
-          [attr.aria-selected]="c === selectedCategory"
-        >
-          {{ c }}
-        </button>
-      </div>
-    </div>
-    <div class="use-case-grid">
-      <article
-        *ngFor="let uc of filteredUseCases; trackBy: trackUseCase"
-        class="use-case-card"
-      >
-        <div class="uc-bg-img"></div>
-        <div class="uc-content">
-          <h3 class="uc-title">{{ uc.title }}</h3>
-          <p class="uc-summary">{{ uc.summary }}</p>
-          <div class="uc-footer">
-            <span class="uc-status" *ngIf="uc.status">{{ uc.status }}</span>
-            <a routerLink="/use-cases" class="uc-cta">Details</a>
-          </div>
-        </div>
-      </article>
-    </div>
-    <div class="more-row">
-      <button class="more-btn">Explore More Use Cases</button>
-    </div>
-  </div>
-</section>
+<app-use-cases></app-use-cases>
 
 <!-- Projects Section (data-driven) -->
 <section id="projects" class="projects-section section-pad">
