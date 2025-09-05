@@ -4,6 +4,10 @@ import { LandingComponent } from './landing.component';
 import { LandingRoutingModule } from './landing-routing.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { UseCasesModule } from '../use-cases/use-cases.module';
+import { ProjectsModule } from '../projects/projects.module';
+import { CommunityModule } from '../community/community.module';
+import { EventsComponent } from '../events/events.component';
+import { EventsModule } from '../events/events.module';
 
 @NgModule({
   declarations: [LandingComponent],
@@ -13,6 +17,9 @@ import { UseCasesModule } from '../use-cases/use-cases.module';
     UseCasesModule,
     ReactiveFormsModule,
     FormsModule,
+    ProjectsModule,
+    CommunityModule,
+    EventsModule,
   ],
 })
 export class LandingModule {}

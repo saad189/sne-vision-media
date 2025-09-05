@@ -1,1 +1,26 @@
-<p>community works!</p>
+<!-- Testimonials / Community Minds Section -->
+<section id="community" class="testimonials-section section-pad">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">Community</span>
+      <h2 class="section-title">Top Minds across Industries</h2>
+      <p class="section-sub">
+        We love working on problems with the best people, we are building an
+        Open-Source Platform for our community, comprising of top minds to solve
+        the citizen challenges and solve them with Science, Engineering &
+        Technology.
+      </p>
+    </div>
+    <div class="testimonial-row" role="list">
+      <article
+        *ngFor="let t of testimonials; trackBy: trackTestimonial"
+        class="testimonial-card"
+        role="listitem"
+      >
+        <p class="t-quote">{{ t.quote }}</p>
+        <div class="t-author">{{ t.author }}</div>
+        <div *ngIf="t.date" class="t-date">{{ t.date }}</div>
+      </article>
+    </div>
+  </div>
+</section>

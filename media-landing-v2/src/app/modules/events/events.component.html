@@ -1,0 +1,181 @@
+<!-- Events / Seminars Unified Section -->
+<section id="events" class="seminars-section section-pad">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">Events</span>
+      <h2 class="section-title">Seminars & Get-Togethers</h2>
+      <p class="section-sub">
+        Join our events held in universities across Pakistan and abroad. Meet
+        brilliant minds of tomorrow and experts of today to tackle real
+        challenges.
+      </p>
+    </div>
+    <div class="seminar-tiles" role="list">
+      <div *ngFor="let ev of events" class="seminar-tile" role="listitem">
+        <div class="tile-img" aria-hidden="true"></div>
+        <div class="tile-caption">
+          {{ ev.title }}<br /><span class="tile-date">{{ ev.date }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Events Section -->
+<section class="events-section py-16 bg-gray-100">
+  <div class="container mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-12">Upcoming Events</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Event Card 1 -->
+      <div
+        class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
+      >
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span
+              class="px-4 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
+              >Workshop</span
+            >
+            <span class="text-sm text-gray-500">Aug 15, 2025</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">
+            Media Production Masterclass
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Learn advanced techniques from industry experts in this hands-on
+            workshop.
+          </p>
+          <div class="flex items-center text-sm text-gray-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            <span>Online Event</span>
+          </div>
+          <button
+            class="w-full mt-6 px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition duration-300"
+          >
+            Register Now
+          </button>
+        </div>
+      </div>
+
+      <!-- Event Card 2 -->
+      <div
+        class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
+      >
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span
+              class="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
+              >Conference</span
+            >
+            <span class="text-sm text-gray-500">Sep 22, 2025</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Future of Media Summit</h3>
+          <p class="text-gray-600 mb-4">
+            Join industry leaders for discussions on emerging trends and
+            technologies.
+          </p>
+          <div class="flex items-center text-sm text-gray-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            <span>New York, NY</span>
+          </div>
+          <button
+            class="w-full mt-6 px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition duration-300"
+          >
+            Register Now
+          </button>
+        </div>
+      </div>
+
+      <!-- Event Card 3 -->
+      <div
+        class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
+      >
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span
+              class="px-4 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium"
+              >Networking</span
+            >
+            <span class="text-sm text-gray-500">Oct 5, 2025</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Creator Connect</h3>
+          <p class="text-gray-600 mb-4">
+            A networking event designed to connect content creators with
+            industry opportunities.
+          </p>
+          <div class="flex items-center text-sm text-gray-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            <span>Chicago, IL</span>
+          </div>
+          <button
+            class="w-full mt-6 px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition duration-300"
+          >
+            Register Now
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-10">
+      <a href="#" class="text-blue-600 hover:underline font-medium"
+        >View all upcoming events →</a
+      >
+    </div>
+  </div>
+</section>
