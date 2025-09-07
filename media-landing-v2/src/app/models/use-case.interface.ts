@@ -4,5 +4,5 @@ export interface UseCaseItem {
   summary: string;
   category: string; // one of categories
   image?: string; // optional image path
-  status?: string; // e.g. Research in Progress
+  status?: string; // e.g. Research in Progress,
 }

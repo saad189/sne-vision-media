@@ -27,14 +27,21 @@
         *ngFor="let uc of filteredUseCases; trackBy: trackUseCase"
         class="use-case-card"
       >
-        <div class="uc-bg-img"></div>
         <div class="uc-content">
           <h3 class="uc-title">{{ uc.title }}</h3>
           <p class="uc-summary">{{ uc.summary }}</p>
+          <a routerLink="/use-cases" class="uc-cta">Research Manuscript</a>
           <div class="uc-footer">
-            <span class="uc-status" *ngIf="uc.status">{{ uc.status }}</span>
-            <a routerLink="/use-cases" class="uc-cta">Details</a>
+            <!-- <span class="uc-status" *ngIf="uc.status">{{ uc.status }}</span> -->
           </div>
+
+          <!-- Use-case image shown below the CTA -->
+          <img
+            class="uc-image"
+            [src]="uc.image"
+            [alt]="uc.title"
+            loading="lazy"
+          />
         </div>
       </article>
     </div>

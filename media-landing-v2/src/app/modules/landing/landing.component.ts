@@ -13,6 +13,7 @@ import { ProjectItem } from '../../models/project.interface';
 })
 export class LandingComponent {
   categories: string[] = [
+    'All',
     'Transportation',
     'Finance',
     'Development',

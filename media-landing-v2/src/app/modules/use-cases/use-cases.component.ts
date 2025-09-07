@@ -9,6 +9,7 @@ import { UseCaseItem } from '../../models/use-case.interface';
 })
 export class UseCasesComponent {
   categories: string[] = [
+    'All',
     'Transportation',
     'Finance',
     'Development',
@@ -25,25 +26,28 @@ export class UseCasesComponent {
       id: 'uc-bullet-trains',
       title: 'Bullet Trains in Pakistan',
       summary:
-        'Exploring a national high-speed rail corridor: feasibility, phased rollout, economic uplift & environmental impact.',
+        'Experts work on a Proposal to Introduce ‘The Bullet Train’ Infrastructure to Pakistan. They delve deep into the Economics, Engineering, Policy, Trade and Feasibility. Case Studies of different Countries are studied for this comprehensive Report.',
       category: 'Transportation',
       status: 'Research in Progress',
+      image: '../../../assets/images/use-cases/uc-bullet-trains.png',
     },
     {
       id: 'uc-subway-system',
       title: 'Subway System in Pakistan',
       summary:
-        'Systems architecture, projected ridership, capex / opex modelling & sustainable funding mechanisms.',
+        'Experts work on detailed case study of how a underground subway system can be introduced in Pakistan, Its impact, feasibility, costs, benefits and how it would reshape transportation for a common citizen. Subway System around the world are analysed as well.',
       category: 'Transportation',
       status: 'Research in Progress',
+      image: '../../../assets/images/use-cases/uc-subway-system.png',
     },
     {
       id: 'uc-train-infra',
       title: 'Tourism Train Infrastructure',
       summary:
-        'Designing scenic rail experiences that catalyze domestic tourism & regional economic growth.',
+        'The Potential Economic Impact of introducing a Luxury Train System , crossing the Beautiful Landscapes of North Pakistan are studied as part of this research. Tourism Economics and Financial elements are equated and determined as part of this study.',
       category: 'Transportation',
       status: 'Research in Progress',
+      image: '../../../assets/images/use-cases/uc-train-infra.png',
     },
     {
       id: 'uc-digitization-economy',
@@ -52,6 +56,7 @@ export class UseCasesComponent {
         'Framework for accelerating secure digitization of public & private sector services.',
       category: 'Development',
       status: 'Research in Progress',
+      image: '../../../assets/images/use-cases/uc-digitization-economy.png',
     },
     {
       id: 'uc-new-era-education',
@@ -60,6 +65,7 @@ export class UseCasesComponent {
         'Adaptive learning ecosystems combining AI tutors, competency maps & rural accessibility.',
       category: 'Education',
       status: 'Research in Progress',
+      image: '../../../assets/images/use-cases/uc-new-era-education.png',
     },
     {
       id: 'uc-passport-rank',
@@ -68,36 +74,32 @@ export class UseCasesComponent {
         'Policy levers & bilateral initiatives to elevate global mobility score.',
       category: 'Policy',
       status: 'Research in Progress',
+      image: '../../../assets/images/use-cases/uc-passport-rank.png',
     },
     {
-      id: 'uc-ai-traffic',
-      title: 'AI Algorithms & Systems to Enforce Traffic Rules',
+      id: 'uc-privacy-laws',
+      title: 'Introducing Privacy Laws in Pakistan - A Detailed Approach',
       summary:
-        'Computer vision enabled smart intersections reducing violations & improving safety.',
-      category: 'Technology',
+        'Comprehensive framework for data protection, user rights, and regulatory compliance.',
+      category: 'Laws',
       status: 'Research in Progress',
+      image: '../../../assets/images/use-cases/uc-privacy-laws.png',
     },
     {
-      id: 'uc-accident-response',
-      title: 'Autonomous Road Accident Detection & Emergency Assistance',
+      id: 'uc-vertical-development',
+      title: 'Why Pakistan has Evaded Vertical Development - Detailed Analysis',
       summary:
-        'Edge + cloud fusion for rapid incident detection & optimized dispatch.',
-      category: 'Technology',
+        'In-depth exploration of socio-economic, political, and infrastructural factors hindering vertical growth.',
+      category: 'Development',
       status: 'Research in Progress',
-    },
-    {
-      id: 'uc-public-transport',
-      title: 'Public Transportation Optimization & Digitization',
-      summary:
-        'Data-driven routing & unified ticketing improving efficiency & user experience.',
-      category: 'Transportation',
-      status: 'Research in Progress',
+      image: '../../../assets/images/use-cases/uc-vertical-development.png',
     },
   ];
 
   get filteredUseCases(): UseCaseItem[] {
     return this.allUseCases.filter(
-      (uc) => uc.category === this.selectedCategory
+      (uc) =>
+        uc.category === this.selectedCategory || this.selectedCategory === 'All'
     );
   }
 

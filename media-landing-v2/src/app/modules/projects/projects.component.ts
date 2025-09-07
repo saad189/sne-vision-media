@@ -8,19 +8,8 @@ import { ProjectItem } from '../../models/project.interface';
   styleUrls: ['./projects.component.scss'],
 })
 export class ProjectsComponent {
-  categories: string[] = [
-    'Transportation',
-    'Finance',
-    'Development',
-    'Education',
-    'Policy',
-    'Laws',
-    'Social Experiments',
-    'Technology',
-  ];
-
-  selectedCategory: string = this.categories[0];
   projectCategories: string[] = [
+    'All',
     'Transportation',
     'Finance',
     'Development',
@@ -30,11 +19,7 @@ export class ProjectsComponent {
     'Social Experiments',
     'Technology',
   ];
-  selectedProjectCategory: string = 'Transportation';
-
-  selectCategory(cat: string) {
-    this.selectedCategory = cat;
-  }
+  selectedProjectCategory: string = 'All';
 
   projects: ProjectItem[] = [
     {
@@ -95,7 +80,9 @@ export class ProjectsComponent {
 
   get filteredProjects(): ProjectItem[] {
     return this.projects.filter(
-      (p) => p.category === this.selectedProjectCategory
+      (p) =>
+        p.category === this.selectedProjectCategory ||
+        this.selectedProjectCategory === 'All'
     );
   }
 
