@@ -4,7 +4,6 @@ body,
 :host {
   background: #e9e9e9;
 }
-
 /* Hero */
 .hero-wrapper {
   background: #e9e9e9;
@@ -31,45 +30,17 @@ body,
   color: #2e2e2e;
 }
 
-.hero-composite {
-  position: relative;
+/* Hero Carousel */
+.hero-carousel-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 2.5rem;
 }
-.hero-composite .main-card {
-  width: clamp(260px, 50vw, 520px);
-  aspect-ratio: 16/11;
-  background: #c6c6c6;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 28px -6px rgba(0, 0, 0, 0.2),
-    0 4px 12px -2px rgba(0, 0, 0, 0.08);
-  position: relative;
-}
-.hero-composite .side-card {
-  width: clamp(110px, 16vw, 180px);
-  aspect-ratio: 1/1;
-  background: #c6c6c6;
-  border-radius: 14px;
-  opacity: 0.85;
-  box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.18),
-    0 2px 6px -2px rgba(0, 0, 0, 0.08);
-}
-.hero-composite .side-card.left {
-  transform: translateY(10%);
-}
-.hero-composite .side-card.right {
-  transform: translateY(-6%);
-}
-.hero-composite .image-icon {
-  width: 46%;
-  aspect-ratio: 1/1;
-  background: #ececec;
-  border-radius: 22%;
+
+.hero-swiper {
+  width: 100%;
+  height: var(--hero-height);
   position: relative;
 }
 

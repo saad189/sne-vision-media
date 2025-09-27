@@ -12,19 +12,22 @@
       individuals who embrace sophisticated thinking, fostering a future defined
       by progress and intellectual vigor.
     </p>
-    <div class="hero-composite" aria-hidden="true">
-      <div class="side-card left"></div>
-      <div class="main-card">
-        <div
-          class="image-icon"
-          role="img"
-          aria-label="Hero visual placeholder"
-        ></div>
-      </div>
-      <div class="side-card right"></div>
-    </div>
   </div>
 </section>
+
+<app-hero-carousel
+  [slides]="heroSlides"
+  [autoPlayDelay]="6000"
+  [pauseOnHover]="true"
+>
+  <a
+    carousel-cta
+    href="#ecosystem"
+    class="cta-btn"
+    aria-label="Join ecosystem call to action"
+    >Join Ecosystem</a
+  >
+</app-hero-carousel>
 
 <app-use-cases></app-use-cases>
 
