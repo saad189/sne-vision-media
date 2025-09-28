@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { SupabaseService } from '../../../services';
+import { SupabaseService, MediaWorkService } from '../../../services';
+import { MediaWork } from '../../../models';
 
 @Component({
   standalone: false,
@@ -11,9 +12,28 @@ import { SupabaseService } from '../../../services';
 export class AdminDashboardComponent {
   private router = inject(Router);
   private supabase = inject(SupabaseService);
+  private media = inject(MediaWorkService);
+
+  dropdownOpen = false;
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+  closeDropdown() {
+    this.dropdownOpen = false;
+  }
 
   goAdd() {
     this.router.navigate(['/admin/add-media']);
+  }
+  goAddCategory() {
+    this.router.navigate(['/admin/add-category']);
+  }
+  goMediaWorks() {
+    this.router.navigate(['/admin/media-works']);
+  }
+  goCategories() {
+    this.router.navigate(['/admin/categories']);
   }
   logout() {
     this.supabase

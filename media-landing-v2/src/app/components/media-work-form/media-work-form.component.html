@@ -50,15 +50,59 @@
     </div>
   </div>
 
+  <div class="field">
+    <label for="mw-category">Category</label>
+    <select id="mw-category" formControlName="categoryId">
+      <option value="">-- None --</option>
+      <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+    </select>
+    <div class="hint" *ngIf="loadingCategories">Loading categories...</div>
+    <div class="err" *ngIf="categoryError">{{ categoryError }}</div>
+  </div>
+
+  <div class="field">
+    <label for="mw-status">Status</label>
+    <select id="mw-status" formControlName="status">
+      <option value="not_started">Not Started</option>
+      <option value="in_progress">In Progress</option>
+      <option value="complete">Complete</option>
+    </select>
+  </div>
+
   <fieldset class="links-group">
     <legend>Links</legend>
     <div class="field">
-      <label for="mw-manuscript">Manuscript URL</label>
+      <label for="mw-manuscript-file">Manuscript (PDF)</label>
       <input
-        id="mw-manuscript"
-        formControlName="manuscriptUrl"
-        placeholder="https://..."
+        id="mw-manuscript-file"
+        type="file"
+        accept="application/pdf"
+        (change)="onManuscriptFileSelected($event)"
+        [disabled]="uploadingManuscript"
       />
+      <div class="progress" *ngIf="uploadingManuscript">
+        <div class="bar" [style.width.%]="uploadProgress"></div>
+      </div>
+      <div class="err" *ngIf="manuscriptError">{{ manuscriptError }}</div>
+      <div
+        class="hint"
+        *ngIf="!uploadingManuscript && form.get('manuscriptUrl')?.value"
+      >
+        <ng-container *ngIf="manuscriptSignedUrl; else generatingUrl">
+          PDF Ready:
+          <a [href]="manuscriptSignedUrl" target="_blank" rel="noopener"
+            >Open (signed)</a
+          >
+          <button
+            type="button"
+            class="link danger"
+            (click)="removeManuscript()"
+          >
+            Remove
+          </button>
+        </ng-container>
+        <ng-template #generatingUrl>Generating secure link...</ng-template>
+      </div>
     </div>
     <div class="field">
       <label for="mw-youtube">YouTube URL</label>

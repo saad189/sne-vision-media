@@ -2,8 +2,23 @@
   <header class="dash-header">
     <h1>Admin Dashboard</h1>
     <div class="actions">
-      <button class="secondary" (click)="goAdd()">➕ Add Media Work</button>
-      <button class="danger" (click)="logout()">Logout</button>
+      <div
+        class="action-dropdown"
+        [class.open]="dropdownOpen"
+        (keydown.escape)="dropdownOpen = false"
+      >
+        <button class="secondary" (click)="toggleDropdown()">
+          ⚙️ Actions ▾
+        </button>
+        <ul class="menu" *ngIf="dropdownOpen">
+          <li (click)="goAdd(); closeDropdown()">➕ Add Media Work</li>
+          <li (click)="goAddCategory(); closeDropdown()">➕ Add Category</li>
+          <li (click)="goMediaWorks(); closeDropdown()">📄 View Media Works</li>
+          <li (click)="goCategories(); closeDropdown()">📁 View Categories</li>
+          <li class="sep"></li>
+          <li class="danger" (click)="logout(); closeDropdown()">⏻ Logout</li>
+        </ul>
+      </div>
     </div>
   </header>
   <section class="grid">
@@ -12,15 +27,20 @@
       <p>Add a new project or use case entry to showcase.</p>
       <span class="cta">Start Now →</span>
     </div>
-    <div class="card disabled" tabindex="-1">
-      <h2>Manage Media (Coming Soon)</h2>
-      <p>List, edit and remove existing media works.</p>
-      <span class="cta">Planned</span>
+    <div class="card" (click)="goMediaWorks()" tabindex="0">
+      <h2>Media Works</h2>
+      <p>Browse, review and manage all existing media works.</p>
+      <span class="cta">View List →</span>
     </div>
-    <div class="card disabled" tabindex="-1">
-      <h2>User Roles (Planned)</h2>
-      <p>Assign roles / metadata-based permissions.</p>
-      <span class="cta">Roadmap</span>
+    <div class="card" (click)="goAddCategory()" tabindex="0">
+      <h2>Add Category</h2>
+      <p>Create a new category to classify media works.</p>
+      <span class="cta">Add One →</span>
+    </div>
+    <div class="card" (click)="goCategories()" tabindex="0">
+      <h2>Categories</h2>
+      <p>View all categories currently available.</p>
+      <span class="cta">View List →</span>
     </div>
   </section>
 </div>

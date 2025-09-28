@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MediaWorkService } from '../../../services';
+import { ToastrNotificationService } from '../../../services/toastr.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
 export class AdminAddMediaComponent {
   private mediaService = inject(MediaWorkService);
   private router = inject(Router);
+  private toast = inject(ToastrNotificationService);
 
   submitting = false;
   error: string | null = null;
@@ -19,13 +21,15 @@ export class AdminAddMediaComponent {
     this.submitting = true;
     this.error = null;
     this.mediaService.create(payload).subscribe({
-      next: () => {
+      next: (created) => {
         this.submitting = false;
-        this.router.navigate(['/admin']);
+        this.toast.showSuccess('Created', `Media Work '${created.name}' saved`);
+        this.router.navigate(['/admin/dashboard']);
       },
       error: (e) => {
         this.submitting = false;
         this.error = e.message || 'Failed';
+        this.toast.showError('Create Failed', this.error || 'Unknown error');
       },
     });
   }

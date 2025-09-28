@@ -1,0 +1,52 @@
+<div class="dashboard-shell">
+  <div class="add-shell">
+    <div class="add-card">
+      <header class="head">
+        <h1>Create Category</h1>
+        <p>Add a new category to classify media works.</p>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div
+          class="field"
+          [class.invalid]="
+            form.get('name')?.invalid && form.get('name')?.touched
+          "
+        >
+          <label for="cat-name">Name *</label>
+          <input
+            id="cat-name"
+            formControlName="name"
+            placeholder="e.g. Transportation"
+          />
+          <div
+            class="err"
+            *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+          >
+            Required (max 120 chars)
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cat-desc">Description</label>
+          <textarea
+            id="cat-desc"
+            rows="3"
+            formControlName="description"
+            placeholder="Short description (optional)"
+          ></textarea>
+        </div>
+
+        <button
+          class="primary"
+          type="submit"
+          [disabled]="submitting || form.invalid"
+        >
+          <span *ngIf="!submitting">Create</span>
+          <span *ngIf="submitting" class="spinner"></span>
+        </button>
+        <div class="err global" *ngIf="error">{{ error }}</div>
+      </form>
+    </div>
+  </div>
+</div>

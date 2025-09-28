@@ -39,4 +39,32 @@ export class CategoryService {
       })
     );
   }
+
+  create(payload: { name: string; description?: string | null }) {
+    return from(
+      this.supabase.client
+        .from(TABLE)
+        .insert({
+          name: payload.name,
+          description: payload.description ?? null,
+        })
+        .select('*')
+        .single()
+    ).pipe(
+      map((r) => {
+        if (r.error) throw r.error;
+        return this.mapRow(r.data);
+      })
+    );
+  }
+
+  // Placeholder remove (decide on cascade or nullify strategy before enabling in UI)
+  remove(id: string) {
+    return from(this.supabase.client.from(TABLE).delete().eq('id', id)).pipe(
+      map((r) => {
+        if (r.error) throw r.error;
+        return true;
+      })
+    );
+  }
 }

@@ -1,0 +1,72 @@
+.table-shell {
+  padding: 1.25rem;
+}
+.dashboard-shell {
+  padding: 2rem 1.1rem 2.5rem;
+  min-height: 72vh;
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+button {
+  margin-left: 0.5rem;
+}
+.data-table th,
+.data-table td {
+  padding: 0.55rem 0.6rem;
+  border-bottom: 1px solid #222;
+  text-align: left;
+}
+.data-table th {
+  background: #141414;
+  font-weight: 600;
+  color: white;
+}
+.data-table tbody tr {
+  transition: background-color 140ms ease, color 140ms ease;
+}
+.data-table tbody tr:hover {
+  background: yellow; /* brighter contrast */
+}
+.err {
+  color: #e74c3c;
+  margin-top: 0.75rem;
+}
+.empty {
+  opacity: 0.7;
+  padding: 1rem 0;
+}
+button.secondary {
+  background: #333;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 0.45rem 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button.secondary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+button.danger {
+  background: #ef4444;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 0.45rem 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+}
