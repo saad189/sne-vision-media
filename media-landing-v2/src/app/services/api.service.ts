@@ -6,11 +6,12 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError, finalize } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
+
 import { LoadingService } from './loading.service';
 import { ToastrNotificationService } from './toastr.service';
 import { AUTH_TOKEN } from '../constants';
 import { UtilityService } from './utility.service';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class ApiService {
     private loadingService: LoadingService,
     private toastr: ToastrNotificationService,
     private utilityService: UtilityService
-  ) { }
+  ) {}
 
   private getHeaders(): HttpHeaders {
     const token = this.getAuthToken();
@@ -101,6 +102,5 @@ export class ApiService {
 
     this.toastr.showError('Error', errorMessage);
     return throwError(() => new Error(errorMessage));
-  }
-
+  };
 }

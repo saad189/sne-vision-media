@@ -34,4 +34,11 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./use-cases/use-cases.module').then((m) => m.UseCasesModule),
   },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./admin-panel/admin-panel.module').then(
+        (m) => m.AdminPanelModule
+      ),
+  },
 ];

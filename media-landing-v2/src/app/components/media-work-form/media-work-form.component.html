@@ -1,0 +1,93 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="media-work-form"
+  novalidate
+>
+  <div
+    class="field"
+    [class.invalid]="form.get('name')?.invalid && form.get('name')?.touched"
+  >
+    <label for="mw-name">Name *</label>
+    <input id="mw-name" formControlName="name" placeholder="Display name" />
+    <div
+      class="err"
+      *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+    >
+      Required
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="mw-title">Title</label>
+    <input id="mw-title" formControlName="title" placeholder="Optional title" />
+  </div>
+
+  <div class="field">
+    <label for="mw-description">Description</label>
+    <textarea
+      id="mw-description"
+      formControlName="description"
+      rows="4"
+      placeholder="Short description"
+    ></textarea>
+  </div>
+
+  <div
+    class="field"
+    [class.invalid]="form.get('type')?.invalid && form.get('type')?.touched"
+  >
+    <label for="mw-type">Type *</label>
+    <select id="mw-type" formControlName="type">
+      <option value="projects">Project</option>
+      <option value="use-cases">Use Case</option>
+    </select>
+    <div
+      class="err"
+      *ngIf="form.get('type')?.invalid && form.get('type')?.touched"
+    >
+      Required
+    </div>
+  </div>
+
+  <fieldset class="links-group">
+    <legend>Links</legend>
+    <div class="field">
+      <label for="mw-manuscript">Manuscript URL</label>
+      <input
+        id="mw-manuscript"
+        formControlName="manuscriptUrl"
+        placeholder="https://..."
+      />
+    </div>
+    <div class="field">
+      <label for="mw-youtube">YouTube URL</label>
+      <input
+        id="mw-youtube"
+        formControlName="youtubeUrl"
+        placeholder="https://youtube.com/..."
+      />
+    </div>
+    <div class="field">
+      <label for="mw-github">GitHub URL</label>
+      <input
+        id="mw-github"
+        formControlName="githubUrl"
+        placeholder="https://github.com/..."
+      />
+    </div>
+    <div class="field">
+      <label for="mw-image">Image URL</label>
+      <input
+        id="mw-image"
+        formControlName="imageUrl"
+        placeholder="https://..."
+      />
+    </div>
+  </fieldset>
+
+  <button class="primary" type="submit" [disabled]="form.invalid || submitting">
+    <span *ngIf="!submitting">{{ submitLabel }}</span>
+    <span *ngIf="submitting" class="spinner"></span>
+  </button>
+</form>

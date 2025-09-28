@@ -1,0 +1,26 @@
+<div class="dashboard-shell">
+  <header class="dash-header">
+    <h1>Admin Dashboard</h1>
+    <div class="actions">
+      <button class="secondary" (click)="goAdd()">➕ Add Media Work</button>
+      <button class="danger" (click)="logout()">Logout</button>
+    </div>
+  </header>
+  <section class="grid">
+    <div class="card" (click)="goAdd()" tabindex="0">
+      <h2>Create New Media Work</h2>
+      <p>Add a new project or use case entry to showcase.</p>
+      <span class="cta">Start Now →</span>
+    </div>
+    <div class="card disabled" tabindex="-1">
+      <h2>Manage Media (Coming Soon)</h2>
+      <p>List, edit and remove existing media works.</p>
+      <span class="cta">Planned</span>
+    </div>
+    <div class="card disabled" tabindex="-1">
+      <h2>User Roles (Planned)</h2>
+      <p>Assign roles / metadata-based permissions.</p>
+      <span class="cta">Roadmap</span>
+    </div>
+  </section>
+</div>
