@@ -8,6 +8,8 @@ import { AdminLoginComponent } from './components/admin-login.component';
 import { AdminAddCategoryComponent } from './components/admin-add-category.component';
 import { AdminMediaWorksTableComponent } from './components/admin-media-works-table.component';
 import { AdminCategoriesTableComponent } from './components/admin-categories-table.component';
+import { AdminEditMediaComponent } from './components/admin-edit-media.component';
+import { AdminEditCategoryComponent } from './components/admin-edit-category.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -41,12 +43,12 @@ const routes: Routes = [
   // Placeholder edit routes (components to be created)
   {
     path: 'edit-media/:id',
-    component: AdminAddMediaComponent, // reuse form for now
+    component: AdminEditMediaComponent,
     canActivate: [AuthGuard],
   },
   {
     path: 'edit-category/:id',
-    component: AdminAddCategoryComponent, // would switch to dedicated edit component if needed
+    component: AdminEditCategoryComponent,
     canActivate: [AuthGuard],
   },
 ];

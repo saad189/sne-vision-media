@@ -70,7 +70,7 @@
   </div>
 
   <fieldset class="links-group">
-    <legend>Links</legend>
+    <legend>Links & Uploads</legend>
     <div class="field">
       <label for="mw-manuscript-file">Manuscript (PDF)</label>
       <input
@@ -85,11 +85,11 @@
       </div>
       <div class="err" *ngIf="manuscriptError">{{ manuscriptError }}</div>
       <div
-        class="hint"
+        class="hint existing-file"
         *ngIf="!uploadingManuscript && form.get('manuscriptUrl')?.value"
       >
-        <ng-container *ngIf="manuscriptSignedUrl; else generatingUrl">
-          PDF Ready:
+        <ng-container *ngIf="manuscriptSignedUrl; else waitingPdf">
+          <span class="label">PDF:</span>
           <a [href]="manuscriptSignedUrl" target="_blank" rel="noopener"
             >Open (signed)</a
           >
@@ -101,7 +101,45 @@
             Remove
           </button>
         </ng-container>
-        <ng-template #generatingUrl>Generating secure link...</ng-template>
+        <ng-template #waitingPdf>
+          <span class="label">PDF:</span>
+          <span class="filename">{{
+            fileNameOf(form.get("manuscriptUrl")?.value)
+          }}</span>
+          <em> (generating secure link...)</em>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="mw-image-file">Image (PNG/JPG, max 5MB)</label>
+      <input
+        id="mw-image-file"
+        type="file"
+        accept="image/*"
+        (change)="onImageFileSelected($event)"
+        [disabled]="uploadingImage"
+      />
+      <div class="progress" *ngIf="uploadingImage">
+        <div class="bar" [style.width.%]="imageUploadProgress"></div>
+      </div>
+      <div class="err" *ngIf="imageError">{{ imageError }}</div>
+      <div class="hint" *ngIf="!uploadingImage && form.get('imageUrl')?.value">
+        <ng-container *ngIf="imageSignedUrl; else waitingImg">
+          <div class="image-preview" *ngIf="imageSignedUrl">
+            <img [src]="imageSignedUrl" alt="Uploaded image preview" />
+          </div>
+          <button type="button" class="link danger" (click)="removeImage()">
+            Remove
+          </button>
+        </ng-container>
+        <ng-template #waitingImg>
+          <span class="label">Image:</span>
+          <span class="filename">{{
+            fileNameOf(form.get("imageUrl")?.value)
+          }}</span>
+          <em> (generating secure image link...)</em>
+        </ng-template>
       </div>
     </div>
     <div class="field">
@@ -118,14 +156,6 @@
         id="mw-github"
         formControlName="githubUrl"
         placeholder="https://github.com/..."
-      />
-    </div>
-    <div class="field">
-      <label for="mw-image">Image URL</label>
-      <input
-        id="mw-image"
-        formControlName="imageUrl"
-        placeholder="https://..."
       />
     </div>
   </fieldset>

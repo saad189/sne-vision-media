@@ -29,16 +29,20 @@
       >
         <div class="uc-content">
           <h3 class="uc-title">{{ uc.title }}</h3>
-          <p class="uc-summary">{{ uc.summary }}</p>
-          <a routerLink="/use-cases" class="uc-cta">Research Manuscript</a>
+          <p class="uc-summary">{{ uc.description }}</p>
+          <a href="{{ uc.manuscriptSignedUrl }}" class="uc-cta"
+            >Research Manuscript</a
+          >
           <div class="uc-footer">
-            <!-- <span class="uc-status" *ngIf="uc.status">{{ uc.status }}</span> -->
+            <span class="uc-status" *ngIf="uc.status">{{
+              uc.status | snakeToWords
+            }}</span>
           </div>
 
           <!-- Use-case image shown below the CTA -->
           <img
             class="uc-image"
-            [src]="uc.image"
+            [src]="uc.imageUrl"
             [alt]="uc.title"
             loading="lazy"
           />

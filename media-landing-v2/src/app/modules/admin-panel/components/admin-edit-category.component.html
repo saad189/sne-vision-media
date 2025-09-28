@@ -1,0 +1,62 @@
+<div class="dashboard-shell">
+  <div class="add-shell" *ngIf="!loading && category; else loadingTpl">
+    <div class="add-card">
+      <header class="head">
+        <h1>Edit Category</h1>
+        <p>Update the details for '{{ category.name }}'.</p>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div
+          class="field"
+          [class.invalid]="
+            form.get('name')?.invalid && form.get('name')?.touched
+          "
+        >
+          <label for="cat-name">Name *</label>
+          <input
+            id="cat-name"
+            formControlName="name"
+            placeholder="Category name"
+          />
+          <div
+            class="err"
+            *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+          >
+            Required (max 120 chars)
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cat-desc">Description</label>
+          <textarea
+            id="cat-desc"
+            rows="3"
+            formControlName="description"
+            placeholder="Short description (optional)"
+          ></textarea>
+        </div>
+
+        <button
+          class="primary"
+          type="submit"
+          [disabled]="submitting || form.invalid"
+        >
+          <span *ngIf="!submitting">Update</span>
+          <span *ngIf="submitting" class="spinner"></span>
+        </button>
+        <div class="err global" *ngIf="error">{{ error }}</div>
+      </form>
+    </div>
+  </div>
+  <ng-template #loadingTpl>
+    <div class="add-shell" *ngIf="loading && !error">
+      <div class="add-card"><div class="loading">Loading...</div></div>
+    </div>
+    <div class="add-shell" *ngIf="!loading && error">
+      <div class="add-card">
+        <div class="err global">{{ error }}</div>
+      </div>
+    </div>
+  </ng-template>
+</div>

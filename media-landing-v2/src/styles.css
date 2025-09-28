@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+/* Toast styles (required for ngx-toastr to display & position) */
+@import "ngx-toastr/toastr";
 
 /* Setting Montserrat as the default font for the entire application */
 html,

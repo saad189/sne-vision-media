@@ -1,0 +1,82 @@
+@mixin card-surface {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+}
+
+.add-shell {
+  min-height: calc(100vh - 0px);
+  padding: 2.4rem clamp(1rem, 4vw, 3rem) 3.2rem;
+  background: linear-gradient(135deg, #0f172a, #1e293b 55%, #0f172a);
+  color: #f1f5f9;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.add-card {
+  width: 100%;
+  max-width: 860px;
+  @include card-surface;
+  padding: 2.25rem 2.2rem 2.4rem;
+  box-shadow: 0 6px 26px -8px rgba(0, 0, 0, 0.55);
+  animation: fadeIn 400ms ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.head h1 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  font-weight: 600;
+}
+.head p {
+  margin: 0 0 1.4rem;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+.media-form {
+  margin-top: 0.25rem;
+}
+
+.err.global {
+  margin-top: 1rem;
+  color: #f87171;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.loading-shell .add-card.skeleton {
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 720px) {
+  .add-shell {
+    padding: 2rem 1.1rem 2.6rem;
+  }
+  .add-card {
+    padding: 2rem 1.3rem 2.2rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

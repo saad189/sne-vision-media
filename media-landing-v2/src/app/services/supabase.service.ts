@@ -73,7 +73,6 @@ export class SupabaseService {
   private async initSession(retry = 0) {
     try {
       const { data, error } = await this._client.auth.getSession();
-      console.log('SupabaseService initSession', { data, error, retry });
       if (error) throw error;
       this._session$.next(data.session);
     } catch (e: any) {
@@ -90,7 +89,6 @@ export class SupabaseService {
         const key = Object.keys(localStorage).find(
           (k) => k.includes('auth-token') && k.includes('sb-')
         );
-        console.log({ key });
         if (key) {
           const raw = localStorage.getItem(key!);
           if (raw) {

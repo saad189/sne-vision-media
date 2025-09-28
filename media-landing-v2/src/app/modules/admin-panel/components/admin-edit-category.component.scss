@@ -1,0 +1,13 @@
+// Reuse the same look and feel as the add category component
+@import "./admin-add-category.component.scss";
+
+// Minor overrides for edit state (if needed)
+.head h1 {
+  color: white;
+}
+.loading {
+  padding: 1.25rem 0;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}

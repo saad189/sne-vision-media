@@ -40,6 +40,17 @@ export class CategoryService {
     );
   }
 
+  getById(id: string) {
+    return from(
+      this.supabase.client.from(TABLE).select('*').eq('id', id).single()
+    ).pipe(
+      map((r) => {
+        if (r.error) throw r.error;
+        return this.mapRow(r.data);
+      })
+    );
+  }
+
   create(payload: { name: string; description?: string | null }) {
     return from(
       this.supabase.client
@@ -48,6 +59,27 @@ export class CategoryService {
           name: payload.name,
           description: payload.description ?? null,
         })
+        .select('*')
+        .single()
+    ).pipe(
+      map((r) => {
+        if (r.error) throw r.error;
+        return this.mapRow(r.data);
+      })
+    );
+  }
+
+  update(id: string, patch: { name?: string; description?: string | null }) {
+    return from(
+      this.supabase.client
+        .from(TABLE)
+        .update({
+          ...(patch.name !== undefined ? { name: patch.name } : {}),
+          ...(patch.description !== undefined
+            ? { description: patch.description ?? null }
+            : {}),
+        })
+        .eq('id', id)
         .select('*')
         .single()
     ).pipe(

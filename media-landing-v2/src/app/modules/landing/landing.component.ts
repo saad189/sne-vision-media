@@ -82,7 +82,7 @@ export class LandingComponent {
     if (this.ecosystemForm.invalid) return;
     const payload = this.ecosystemForm.value;
     // Placeholder for API integration
-    console.log('Ecosystem form submission', payload);
+    // console.log('Ecosystem form submission', payload);
     this.ecosystemForm.reset();
     this.formSubmitted = false;
   }

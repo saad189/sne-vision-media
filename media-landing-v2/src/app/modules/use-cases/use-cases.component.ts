@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { Category } from '../../models';
-import { CategoryService } from '../../services';
-import { UseCaseItem } from '../../models/use-case.interface';
+import { Category, MediaWork } from '../../models';
+import { CategoryService, MediaWorkService } from '../../services';
 
 @Component({
   selector: 'app-use-cases',
@@ -10,87 +9,36 @@ import { UseCaseItem } from '../../models/use-case.interface';
   styleUrls: ['./use-cases.component.scss'],
 })
 export class UseCasesComponent {
+  // NOTE: MediaWork objects now include ephemeral imageSignedUrl / manuscriptSignedUrl for direct rendering
   categories: Category[] = [];
   selectedCategory: string = 'All';
   loadingCategories = false;
   categoryError: string | null = null;
-  allUseCases: UseCaseItem[] = [
-    {
-      id: 'uc-bullet-trains',
-      title: 'Bullet Trains in Pakistan',
-      summary:
-        'Experts work on a Proposal to Introduce ‘The Bullet Train’ Infrastructure to Pakistan. They delve deep into the Economics, Engineering, Policy, Trade and Feasibility. Case Studies of different Countries are studied for this comprehensive Report.',
-      category: 'Transportation',
-      status: 'Research in Progress',
-      image: '../../../assets/images/use-cases/uc-bullet-trains.png',
-    },
-    {
-      id: 'uc-subway-system',
-      title: 'Subway System in Pakistan',
-      summary:
-        'Experts work on detailed case study of how a underground subway system can be introduced in Pakistan, Its impact, feasibility, costs, benefits and how it would reshape transportation for a common citizen. Subway System around the world are analysed as well.',
-      category: 'Transportation',
-      status: 'Research in Progress',
-      image: '../../../assets/images/use-cases/uc-subway-system.png',
-    },
-    {
-      id: 'uc-train-infra',
-      title: 'Tourism Train Infrastructure',
-      summary:
-        'The Potential Economic Impact of introducing a Luxury Train System , crossing the Beautiful Landscapes of North Pakistan are studied as part of this research. Tourism Economics and Financial elements are equated and determined as part of this study.',
-      category: 'Transportation',
-      status: 'Research in Progress',
-      image: '../../../assets/images/use-cases/uc-train-infra.png',
-    },
-    {
-      id: 'uc-digitization-economy',
-      title: 'Digitization Economy',
-      summary:
-        'Framework for accelerating secure digitization of public & private sector services.',
-      category: 'Development',
-      status: 'Research in Progress',
-      image: '../../../assets/images/use-cases/uc-digitization-economy.png',
-    },
-    {
-      id: 'uc-new-era-education',
-      title: 'New Era of Education',
-      summary:
-        'Adaptive learning ecosystems combining AI tutors, competency maps & rural accessibility.',
-      category: 'Education',
-      status: 'Research in Progress',
-      image: '../../../assets/images/use-cases/uc-new-era-education.png',
-    },
-    {
-      id: 'uc-passport-rank',
-      title: 'Scaling Rank of Passport',
-      summary:
-        'Policy levers & bilateral initiatives to elevate global mobility score.',
-      category: 'Policy',
-      status: 'Research in Progress',
-      image: '../../../assets/images/use-cases/uc-passport-rank.png',
-    },
-    {
-      id: 'uc-privacy-laws',
-      title: 'Introducing Privacy Laws in Pakistan - A Detailed Approach',
-      summary:
-        'Comprehensive framework for data protection, user rights, and regulatory compliance.',
-      category: 'Laws',
-      status: 'Research in Progress',
-      image: '../../../assets/images/use-cases/uc-privacy-laws.png',
-    },
-    {
-      id: 'uc-vertical-development',
-      title: 'Why Pakistan has Evaded Vertical Development - Detailed Analysis',
-      summary:
-        'In-depth exploration of socio-economic, political, and infrastructural factors hindering vertical growth.',
-      category: 'Development',
-      status: 'Research in Progress',
-      image: '../../../assets/images/use-cases/uc-vertical-development.png',
-    },
-  ];
+  allUseCases: MediaWork[] = [];
+  loadingUseCases = false;
+  useCasesError: string | null = null;
 
-  constructor(private categoryService: CategoryService) {
+  constructor(
+    private categoryService: CategoryService,
+    private mediaWorkService: MediaWorkService
+  ) {
     this.loadCategories();
+    this.loadUseCases();
+  }
+
+  private loadUseCases() {
+    this.loadingUseCases = true;
+    this.mediaWorkService.listWithSignedUrls('use-cases').subscribe({
+      next: (items: MediaWork[]) => {
+        this.allUseCases = items;
+        this.loadingUseCases = false;
+      },
+      error: (e: any) => {
+        console.error('[UseCasesComponent] media works load error', e);
+        this.useCasesError = 'Failed to load use cases';
+        this.loadingUseCases = false;
+      },
+    });
   }
 
   private loadCategories() {
@@ -108,10 +56,10 @@ export class UseCasesComponent {
     });
   }
 
-  get filteredUseCases(): UseCaseItem[] {
+  get filteredUseCases(): MediaWork[] {
     if (this.selectedCategory === 'All') return this.allUseCases;
     return this.allUseCases.filter(
-      (uc) => uc.category === this.selectedCategory
+      (uc) => uc.categoryName === this.selectedCategory
     );
   }
 
@@ -119,5 +67,5 @@ export class UseCasesComponent {
     this.selectedCategory = cat;
   }
 
-  trackUseCase = (_: number, uc: UseCaseItem) => uc.id;
+  trackUseCase = (_: number, uc: MediaWork) => uc.id;
 }

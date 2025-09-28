@@ -26,21 +26,28 @@
         *ngFor="let p of filteredProjects; trackBy: trackProject"
         class="project-card"
       >
-        <div class="proj-thumb"></div>
+        <div class="proj-thumb">
+          <img
+            *ngIf="p.imageSignedUrl"
+            [src]="p.imageSignedUrl"
+            alt="{{ p.title }} image"
+          />
+        </div>
         <div class="proj-body">
           <h3 class="proj-title">{{ p.title }}</h3>
           <p class="proj-description">{{ p.description }}</p>
           <div class="proj-meta">
             <div class="badge-row">
-              <span
-                *ngFor="let b of p.badges"
-                class="media-badge"
-                [class.youtube]="b === 'YouTube'"
-                [class.github]="b === 'GitHub'"
-                >{{ b }}</span
-              >
+              <span *ngIf="p.youtubeUrl" class="media-badge youtube">
+                YouTube
+              </span>
+              <span *ngIf="p.githubUrl" class="media-badge github">
+                GitHub
+              </span>
             </div>
-            <span *ngIf="p.status" class="proj-status">{{ p.status }}</span>
+            <span *ngIf="p.status" class="proj-status">{{
+              p.status | snakeToWords
+            }}</span>
           </div>
         </div>
       </article>

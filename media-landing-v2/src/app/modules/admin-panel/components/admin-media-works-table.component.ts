@@ -32,11 +32,11 @@ export class AdminMediaWorksTableComponent {
   load() {
     this.loading = true;
     this.media.list().subscribe({
-      next: (list) => {
+      next: (list: MediaWork[]) => {
         this.rows = list;
         this.loading = false;
       },
-      error: (e) => {
+      error: (e: any) => {
         this.error = e.message || 'Failed to load';
         this.loading = false;
       },
@@ -55,7 +55,7 @@ export class AdminMediaWorksTableComponent {
         this.toast.showSuccess('Deleted', row.name);
         this.rows = this.rows.filter((r) => r.id !== row.id);
       },
-      error: (e) => {
+      error: (e: any) => {
         this.toast.showError('Delete Failed', e.message || 'Error');
       },
     });
