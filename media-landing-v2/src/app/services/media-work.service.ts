@@ -21,6 +21,9 @@ export class MediaWorkService {
       githubUrl: row.github_url ?? null,
       imageUrl: row.image_url ?? null,
       type: row.type,
+      status: row.status ?? undefined,
+      categoryId: row.category_id ?? null,
+      categoryName: row.categories?.name ?? null,
       created_at: row.created_at,
       updated_at: row.updated_at,
     };
@@ -37,13 +40,16 @@ export class MediaWorkService {
       github_url: payload.githubUrl,
       image_url: payload.imageUrl,
       type: payload.type,
+      status: (payload as any).status,
+      category_id: (payload as any).categoryId,
     };
   }
 
   list(type?: MediaWorkType) {
     let query = this.supabase.client
       .from(TABLE)
-      .select('*')
+      // include related category name if exists
+      .select('*, categories(name)')
       .order('created_at', { ascending: false });
     if (type) {
       query = query.eq('type', type);

@@ -12,12 +12,12 @@
         <button
           *ngFor="let c of projectCategories"
           class="pill"
-          [class.active]="c === selectedProjectCategory"
-          (click)="selectProjectCategory(c)"
+          [class.active]="c.name === selectedProjectCategory"
+          (click)="selectProjectCategory(c.name)"
           role="tab"
-          [attr.aria-selected]="c === selectedProjectCategory"
+          [attr.aria-selected]="c.name === selectedProjectCategory"
         >
-          {{ c }}
+          {{ c.name }}
         </button>
       </div>
     </div>
@@ -29,7 +29,7 @@
         <div class="proj-thumb"></div>
         <div class="proj-body">
           <h3 class="proj-title">{{ p.title }}</h3>
-          <p class="proj-blurb">{{ p.blurb }}</p>
+          <p class="proj-description">{{ p.description }}</p>
           <div class="proj-meta">
             <div class="badge-row">
               <span

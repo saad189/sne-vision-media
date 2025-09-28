@@ -1,0 +1,42 @@
+import { Injectable } from '@angular/core';
+import { from, map } from 'rxjs';
+import { SupabaseService } from './supabase.service';
+import { Category } from '../models';
+
+const TABLE = 'categories';
+
+@Injectable({ providedIn: 'root' })
+export class CategoryService {
+  constructor(private supabase: SupabaseService) {}
+
+  private mapRow(row: any): Category {
+    return {
+      id: row.id,
+      name: row.name,
+      slug: row.slug,
+      description: row.description ?? null,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+    };
+  }
+
+  list() {
+    return from(
+      this.supabase.client
+        .from(TABLE)
+        .select('*')
+        .order('name', { ascending: true })
+    ).pipe(
+      map((r) => {
+        if (r.error) throw r.error;
+        const categories = (r.data as any[]).map((d) => this.mapRow(d));
+        const allIndex = categories.findIndex((c) => c.name === 'All');
+        if (allIndex > -1) {
+          const [allCategory] = categories.splice(allIndex, 1);
+          categories.unshift(allCategory);
+        }
+        return categories;
+      })
+    );
+  }
+}

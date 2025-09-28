@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Category } from '../../models';
+import { CategoryService } from '../../services';
 import { UseCaseItem } from '../../models/use-case.interface';
 
 @Component({
@@ -8,19 +10,10 @@ import { UseCaseItem } from '../../models/use-case.interface';
   styleUrls: ['./use-cases.component.scss'],
 })
 export class UseCasesComponent {
-  categories: string[] = [
-    'All',
-    'Transportation',
-    'Finance',
-    'Development',
-    'Education',
-    'Policy',
-    'Laws',
-    'Social Experiments',
-    'Technology',
-  ];
-
-  selectedCategory: string = this.categories[0];
+  categories: Category[] = [];
+  selectedCategory: string = 'All';
+  loadingCategories = false;
+  categoryError: string | null = null;
   allUseCases: UseCaseItem[] = [
     {
       id: 'uc-bullet-trains',
@@ -96,10 +89,29 @@ export class UseCasesComponent {
     },
   ];
 
+  constructor(private categoryService: CategoryService) {
+    this.loadCategories();
+  }
+
+  private loadCategories() {
+    this.loadingCategories = true;
+    this.categoryService.list().subscribe({
+      next: (cats) => {
+        this.categories = cats;
+        this.loadingCategories = false;
+      },
+      error: (e) => {
+        console.error('[UseCasesComponent] categories load error', e);
+        this.categoryError = 'Failed to load categories';
+        this.loadingCategories = false;
+      },
+    });
+  }
+
   get filteredUseCases(): UseCaseItem[] {
+    if (this.selectedCategory === 'All') return this.allUseCases;
     return this.allUseCases.filter(
-      (uc) =>
-        uc.category === this.selectedCategory || this.selectedCategory === 'All'
+      (uc) => uc.category === this.selectedCategory
     );
   }
 

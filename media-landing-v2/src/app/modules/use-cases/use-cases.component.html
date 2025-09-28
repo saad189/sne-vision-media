@@ -13,12 +13,12 @@
         <button
           *ngFor="let c of categories"
           class="pill"
-          [class.active]="c === selectedCategory"
-          (click)="selectCategory(c)"
+          [class.active]="c.name === selectedCategory"
+          (click)="selectCategory(c.name)"
           role="tab"
-          [attr.aria-selected]="c === selectedCategory"
+          [attr.aria-selected]="c.name === selectedCategory"
         >
-          {{ c }}
+          {{ c.name }}
         </button>
       </div>
     </div>
