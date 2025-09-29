@@ -35,6 +35,9 @@ export class AdminDashboardComponent {
   goCategories() {
     this.router.navigate(['/admin/categories']);
   }
+  goEcosystemSubmissions() {
+    this.router.navigate(['/admin/ecosystem-submissions']);
+  }
   logout() {
     this.supabase
       .signOut()

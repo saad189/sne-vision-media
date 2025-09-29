@@ -15,6 +15,9 @@
           <li (click)="goAddCategory(); closeDropdown()">➕ Add Category</li>
           <li (click)="goMediaWorks(); closeDropdown()">📄 View Media Works</li>
           <li (click)="goCategories(); closeDropdown()">📁 View Categories</li>
+          <li (click)="goEcosystemSubmissions(); closeDropdown()">
+            🌱 View Ecosystem Submissions
+          </li>
           <li class="sep"></li>
           <li class="danger" (click)="logout(); closeDropdown()">⏻ Logout</li>
         </ul>
@@ -40,6 +43,11 @@
     <div class="card" (click)="goCategories()" tabindex="0">
       <h2>Categories</h2>
       <p>View all categories currently available.</p>
+      <span class="cta">View List →</span>
+    </div>
+    <div class="card" (click)="goEcosystemSubmissions()" tabindex="0">
+      <h2>Ecosystem Submissions</h2>
+      <p>Review messages submitted via ecosystem form.</p>
       <span class="cta">View List →</span>
     </div>
   </section>

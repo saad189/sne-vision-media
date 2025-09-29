@@ -1,0 +1,90 @@
+@use "sass:color";
+
+.table-shell {
+  padding: 1.25rem;
+}
+.dashboard-shell {
+  padding: 2rem 1.1rem 2.5rem;
+  min-height: 72vh;
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  table-layout: fixed;
+}
+.data-table th,
+.data-table td {
+  padding: 0.55rem 0.6rem;
+  border-bottom: 1px solid #222;
+  text-align: left;
+  vertical-align: top;
+}
+.data-table th {
+  background: #141414;
+  font-weight: 600;
+  color: #fff;
+}
+
+.data-table tbody tr {
+  transition: background-color 140ms ease, color 140ms ease;
+}
+.data-table tbody tr:hover {
+  background: yellow;
+}
+
+.ecosystem-table td a {
+  color: #4da3ff;
+  text-decoration: none;
+}
+.ecosystem-table td a:hover {
+  text-decoration: underline;
+}
+
+.msg {
+  max-width: 340px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.err {
+  color: #e74c3c;
+  margin-top: 0.75rem;
+}
+.empty {
+  opacity: 0.7;
+  padding: 1rem 0;
+}
+
+button.secondary {
+  background: #333;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 0.45rem 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button.secondary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+@media (max-width: 900px) {
+  .msg {
+    max-width: 220px;
+  }
+  .data-table th:nth-child(3),
+  .data-table td:nth-child(3),
+  .data-table th:nth-child(4),
+  .data-table td:nth-child(4) {
+    display: none;
+  }
+}

@@ -10,6 +10,7 @@ import { AdminMediaWorksTableComponent } from './components/admin-media-works-ta
 import { AdminCategoriesTableComponent } from './components/admin-categories-table.component';
 import { AdminEditMediaComponent } from './components/admin-edit-media.component';
 import { AdminEditCategoryComponent } from './components/admin-edit-category.component';
+import { AdminEcosystemSubmissionsTableComponent } from './components/admin-ecosystem-submissions-table.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -38,6 +39,11 @@ const routes: Routes = [
   {
     path: 'categories',
     component: AdminCategoriesTableComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'ecosystem-submissions',
+    component: AdminEcosystemSubmissionsTableComponent,
     canActivate: [AuthGuard],
   },
   // Placeholder edit routes (components to be created)

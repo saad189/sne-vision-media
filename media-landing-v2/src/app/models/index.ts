@@ -7,3 +7,4 @@ export * from './jwt.interface';
 export * from './hero-slide.interface';
 export * from './media-work.interface';
 export * from './category.interface';
+export * from './ecosystem-submission.interface';
