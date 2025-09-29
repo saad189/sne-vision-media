@@ -8,6 +8,7 @@ import { UseCasesModule } from '../use-cases/use-cases.module';
 import { ProjectsModule } from '../projects/projects.module';
 import { CommunityModule } from '../community/community.module';
 import { EventsModule } from '../events/events.module';
+import { EcosystemModule } from '../ecosystem/ecosystem.module';
 
 @NgModule({
   declarations: [LandingComponent, HeroCarouselComponent],
@@ -20,6 +21,7 @@ import { EventsModule } from '../events/events.module';
     ProjectsModule,
     CommunityModule,
     EventsModule,
+    EcosystemModule,
   ],
 })
-export class LandingModule {}
+export class LandingModule { }
