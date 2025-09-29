@@ -10,6 +10,10 @@ body {
   background-color: #dedede;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* Apply Montserrat to all elements */
 * {
   font-family: "Montserrat", sans-serif;
@@ -22,6 +26,8 @@ a {
 
 .section-pad {
   padding: 5rem 0 4rem;
+  /* Ensure anchored scroll positions account for sticky header */
+  scroll-margin-top: 140px;
 }
 .section-inner {
   max-width: 1220px;
@@ -45,7 +51,7 @@ a {
 }
 .section-title {
   font-size: clamp(1.4rem, 3vw, 1.75rem);
-  font-weight: 600;
+  font-weight: 700;
   color: #141414;
   margin: 0 0 0.85rem;
 }

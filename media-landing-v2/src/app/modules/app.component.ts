@@ -5,9 +5,9 @@ import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MODULES } from '../constants';
 import { Module } from '../models';
-import { HeaderComponent } from "./common/header/header.component";
-import { FooterComponent } from "./common/footer/footer.component";
-
+import { HeaderComponent } from './common/header/header.component';
+import { FooterComponent } from './common/footer/footer.component';
+import { BackToTopComponent } from './common/back-to-top/back-to-top.component';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +16,13 @@ import { FooterComponent } from "./common/footer/footer.component";
     CommonModule,
     RouterModule,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    BackToTopComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
   isLoading = false;
   modules = MODULES;
   activeModule: any = null;
@@ -30,7 +30,6 @@ export class AppComponent implements OnInit {
   sidenavOpen = false;
 
   constructor(private loadingService: LoadingService, private router: Router) {
-
     this.loadingService.isLoading$.subscribe(
       (loading) => (this.isLoading = loading)
     );
@@ -66,7 +65,7 @@ export class AppComponent implements OnInit {
     this.setActiveModuleByName(activeModule);
     this.setActiveSubmoduleByName(
       activeModule.subModules?.find((sub) => sub.path === subPath) ||
-      activeModule.subModules?.[0]
+        activeModule.subModules?.[0]
     );
   }
 
@@ -80,7 +79,6 @@ export class AppComponent implements OnInit {
   }
 
   navigateToModule(module: Module): void {
-
     if (module.subModules && module.subModules.length > 0) {
       this.activeModule = module;
       this.navigateToSubmodule(module.subModules[0]);
@@ -101,7 +99,6 @@ export class AppComponent implements OnInit {
   displayComingSoon(): void {
     alert('Coming Soon!');
   }
-
 
   toggleSidenav(): void {
     this.sidenavOpen = !this.sidenavOpen;

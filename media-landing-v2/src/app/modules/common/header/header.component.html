@@ -63,33 +63,16 @@
       class="flex-1 flex items-center justify-center gap-10 text-sm font-medium tracking-wide text-gray-800"
     >
       <li>
-        <a
-          routerLink="/use-cases"
-          routerLinkActive="active-link"
-          class="nav-link"
-          >Use Cases</a
-        >
+        <a routerLink="/" fragment="use-cases" class="nav-link">Use Cases</a>
       </li>
       <li>
-        <a
-          routerLink="/projects"
-          routerLinkActive="active-link"
-          class="nav-link"
-          >Projects</a
-        >
+        <a routerLink="/" fragment="projects" class="nav-link">Projects</a>
       </li>
       <li>
-        <a
-          routerLink="/community"
-          routerLinkActive="active-link"
-          class="nav-link"
-          >Community</a
-        >
+        <a routerLink="/" fragment="community" class="nav-link">Community</a>
       </li>
       <li>
-        <a routerLink="/policy" routerLinkActive="active-link" class="nav-link"
-          >Our Policy</a
-        >
+        <a routerLink="/" fragment="events" class="nav-link">Events</a>
       </li>
       <li>
         <a routerLink="/about" routerLinkActive="active-link" class="nav-link"
@@ -99,6 +82,8 @@
     </ul>
     <div class="flex items-center">
       <button
+        routerLink="/"
+        fragment="ecosystem"
         class="join-btn px-6 py-2 rounded-full text-sm font-semibold bg-[#4D4D4D] text-white hover:bg-black transition-colors"
       >
         Join our Ecosystem
