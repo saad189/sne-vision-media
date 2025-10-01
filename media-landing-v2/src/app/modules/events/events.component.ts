@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EventTile } from '../../models/event.interface';
+import { Event } from '../../models/event.interface';
+import { EventService } from '../../services/event.service';
 
 @Component({
   selector: 'app-events',
@@ -8,23 +9,27 @@ import { EventTile } from '../../models/event.interface';
   styleUrls: ['./events.component.scss'],
 })
 export class EventsComponent implements OnInit {
-  events: EventTile[] = [
-    {
-      id: 'e1',
-      title: 'AI & Systems in University Lab',
-      date: 'Sept, 2025',
-      type: 'Seminar',
-    },
-    {
-      id: 'e2',
-      title: 'Event Karachi, Pakistan',
-      date: 'Nov, 2025',
-      type: 'Meetup',
-    },
-    { id: 'e3', title: 'Tech Expo Lahore', date: 'Jan, 2026', type: 'Expo' },
-  ];
+  events: Event[] = [];
+  loading = false;
+  error?: string;
 
-  constructor() {}
+  constructor(private eventService: EventService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetch();
+  }
+
+  private fetch() {
+    this.loading = true;
+    this.eventService.list().subscribe({
+      next: (list: Event[]) => {
+        this.events = list;
+        this.loading = false;
+      },
+      error: (err: any) => {
+        this.error = err?.message || 'Failed to load events';
+        this.loading = false;
+      },
+    });
+  }
 }

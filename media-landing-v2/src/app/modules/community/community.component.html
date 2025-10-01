@@ -19,7 +19,9 @@
       >
         <p class="t-quote">{{ t.quote }}</p>
         <div class="t-author">{{ t.author }}</div>
-        <div *ngIf="t.date" class="t-date">{{ t.date }}</div>
+        <div *ngIf="t.date" class="t-date">
+          {{ t.date | date : "MMM, yyyy" }}
+        </div>
       </article>
     </div>
   </div>

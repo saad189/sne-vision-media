@@ -7,7 +7,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { HeroSlide } from '../../models';
+import { HeroSlideItem } from '../../models';
 
 @Component({
   selector: 'app-hero-carousel',
@@ -17,7 +17,7 @@ import { HeroSlide } from '../../models';
   standalone: false,
 })
 export class HeroCarouselComponent implements OnInit, OnDestroy, AfterViewInit {
-  @Input() slides: HeroSlide[] = [];
+  @Input() slides: HeroSlideItem[] = [];
   @Input() autoPlayDelay = 6000;
   @Input() pauseOnHover = true;
   @Input() enableKeyboard = true;

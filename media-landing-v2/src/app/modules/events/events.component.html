@@ -14,7 +14,9 @@
       <div *ngFor="let ev of events" class="seminar-tile" role="listitem">
         <div class="tile-img" aria-hidden="true"></div>
         <div class="tile-caption">
-          {{ ev.title }}<br /><span class="tile-date">{{ ev.date }}</span>
+          {{ ev.name }}<br /><span class="tile-date">{{
+            ev.starts_at | date : "mediumDate"
+          }}</span>
         </div>
       </div>
     </div>

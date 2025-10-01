@@ -4,3 +4,7 @@ export * from './user.service';
 export * from './media-work.service';
 export * from './category.service';
 export * from './ecosystem.service';
+export * from './event-type.service';
+export * from './event.service';
+export * from './hero-slide.service';
+export * from './top-minds.service';

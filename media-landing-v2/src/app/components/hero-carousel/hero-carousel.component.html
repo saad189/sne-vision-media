@@ -16,13 +16,13 @@
         *ngFor="let s of slides; let i = index"
         [class.active]="i === currentSlide"
         role="group"
-        [attr.aria-label]="s.headline"
-        [attr.data-bg]="s.image"
+        [attr.aria-label]="s.name"
+        [attr.data-bg]="s.image_signed_url"
       >
         <div class="overlay"></div>
         <div class="slide-content">
-          <h1 class="slide-title">{{ s.headline }}</h1>
-          <p class="slide-sub" *ngIf="s.sub">{{ s.sub }}</p>
+          <h1 class="slide-title">{{ s.name }}</h1>
+          <p class="slide-sub" *ngIf="s.description">{{ s.description }}</p>
           <ng-content select="[carousel-cta]"></ng-content>
         </div>
       </div>
