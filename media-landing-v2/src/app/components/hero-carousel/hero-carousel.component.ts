@@ -6,6 +6,8 @@ import {
   ElementRef,
   AfterViewInit,
   ChangeDetectionStrategy,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { HeroSlideItem } from '../../models';
 
@@ -16,7 +18,9 @@ import { HeroSlideItem } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class HeroCarouselComponent implements OnInit, OnDestroy, AfterViewInit {
+export class HeroCarouselComponent
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges
+{
   @Input() slides: HeroSlideItem[] = [];
   @Input() autoPlayDelay = 6000;
   @Input() pauseOnHover = true;
@@ -26,6 +30,7 @@ export class HeroCarouselComponent implements OnInit, OnDestroy, AfterViewInit {
   private autoTimer: any;
   private observer?: IntersectionObserver;
   private hovered = false;
+  private viewInited = false;
 
   constructor(private host: ElementRef<HTMLElement>) {}
 
@@ -38,6 +43,7 @@ export class HeroCarouselComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.enableKeyboard) {
       window.addEventListener('keydown', this.onKeyDown, { passive: true });
     }
+    this.viewInited = true;
   }
 
   ngOnDestroy() {
@@ -85,6 +91,17 @@ export class HeroCarouselComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.pauseOnHover) this.hovered = false;
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['slides']) {
+      // When slides input changes (async load), ensure newly added elements get observed
+      // Delay to next microtask so Angular renders *ngFor before querying DOM
+      queueMicrotask(() => {
+        if (!this.viewInited) return; // wait for view init
+        this.observeNewSlides();
+      });
+    }
+  }
+
   // Lazy load background images: waits until wrapper is intersecting ~150px
   private initLazyBackgrounds() {
     const slideEls: NodeListOf<HTMLElement> =
@@ -106,6 +123,19 @@ export class HeroCarouselComponent implements OnInit, OnDestroy, AfterViewInit {
       { root: null, rootMargin: '150px', threshold: 0.01 }
     );
     slideEls.forEach((el) => this.observer?.observe(el));
+  }
+
+  private observeNewSlides() {
+    // Attach observer to any hero-slide elements still having data-bg (not yet loaded)
+    if (!this.observer) {
+      // If observer not created yet (should exist after view init), initialize
+      this.initLazyBackgrounds();
+      return;
+    }
+    const pending: NodeListOf<HTMLElement> = this.host.nativeElement.querySelectorAll(
+      '.hero-slide[data-bg]'
+    );
+    pending.forEach((el) => this.observer?.observe(el));
   }
   private applyBg(el: HTMLElement) {
     const bg = el.getAttribute('data-bg');
