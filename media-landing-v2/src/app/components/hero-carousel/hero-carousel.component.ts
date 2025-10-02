@@ -132,9 +132,8 @@ export class HeroCarouselComponent
       this.initLazyBackgrounds();
       return;
     }
-    const pending: NodeListOf<HTMLElement> = this.host.nativeElement.querySelectorAll(
-      '.hero-slide[data-bg]'
-    );
+    const pending: NodeListOf<HTMLElement> =
+      this.host.nativeElement.querySelectorAll('.hero-slide[data-bg]');
     pending.forEach((el) => this.observer?.observe(el));
   }
   private applyBg(el: HTMLElement) {
