@@ -47,7 +47,6 @@ export class LandingComponent implements OnInit {
     this.heroLoading = true;
     this.heroList.listWithSigned().subscribe({
       next: (slides: HeroSlideItem[]) => {
-        console.log('Fetched Hero Slides:', slides);
         this.heroSlides = slides;
         this.heroLoading = false;
       },

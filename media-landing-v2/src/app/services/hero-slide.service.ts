@@ -40,19 +40,49 @@ export class HeroListService {
 
   private addSigned(items: HeroSlideItem[]) {
     if (!items.length) return of(items);
-    const ttl = 60 * 10; // 10 minutes
+    const ttl = 60 * 60 * 12; // 12 hours
+    const now = Date.now();
+    const cachePrefix = 'heroSlideSigned:'; // localStorage key prefix
     const tasks = items.map((it) => {
       const path = this.sanitizePath(it.image_url);
       if (!path) return of({ ...it, image_signed_url: null });
+      const storageKey = cachePrefix + path;
+      try {
+        const raw = localStorage.getItem(storageKey);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          // parsed: { url: string, exp: number }
+          if (
+            parsed?.url &&
+            typeof parsed.exp === 'number' &&
+            parsed.exp > now + 60_000
+          ) {
+            // Keep a 1 minute safety window; treat nearly-expired URLs as stale to avoid mid-session 403s
+            return of({ ...it, image_signed_url: parsed.url });
+          }
+        }
+      } catch {
+        /* ignore cache read errors */
+      }
       return from(
         this.supabase.client.storage
           .from(IMAGES_BUCKET)
           .createSignedUrl(path, ttl)
       ).pipe(
-        map((r) => ({
-          ...it,
-          image_signed_url: r.error ? null : r.data?.signedUrl || null,
-        }))
+        map((r) => {
+          const signed = r.error ? null : r.data?.signedUrl || null;
+          if (signed) {
+            try {
+              localStorage.setItem(
+                storageKey,
+                JSON.stringify({ url: signed, exp: now + ttl * 1000 })
+              );
+            } catch {
+              /* ignore write errors (quota, private mode, etc.) */
+            }
+          }
+          return { ...it, image_signed_url: signed };
+        })
       );
     });
     return forkJoin(tasks);
