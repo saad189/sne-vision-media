@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../../services';
@@ -11,7 +11,7 @@ import { ToastrNotificationService } from '../../../services/toastr.service';
   templateUrl: './admin-login.component.html',
   styleUrls: ['./admin-login.component.scss'],
 })
-export class AdminLoginComponent implements OnInit {
+export class AdminLoginComponent implements OnInit, OnDestroy {
   form;
   constructor(
     private fb: FormBuilder,
@@ -28,19 +28,33 @@ export class AdminLoginComponent implements OnInit {
   loading = false;
   initializing = true; // wait for authReady
   error: string | null = null;
+  private redirected = false;
+  private authSub?: { unsubscribe: () => void };
 
   ngOnInit() {
-    // Wait until Supabase auth initialization completes
-    combineLatest([this.supabase.authReady$, this.supabase.session$]).subscribe(
-      ([ready, session]) => {
-        if (!ready) return;
-        if (session) {
+    // Wait until Supabase auth initialization completes.
+    // Previous implementation redirected on *any* session emission (including refresh on tab focus)
+    // which caused unexpected navigations. Gate and unsubscribe after first redirect.
+    this.authSub = combineLatest([
+      this.supabase.authReady$,
+      this.supabase.session$,
+    ]).subscribe(([ready, session]) => {
+      if (!ready) return;
+      if (session) {
+        if (!this.redirected && this.router.url.startsWith('/admin/login')) {
+          this.redirected = true;
           this.router.navigate(['/admin', 'dashboard']);
-        } else {
-          this.initializing = false; // show form
+          // Prevent further redirects on token refresh / tab focus
+          this.authSub?.unsubscribe();
         }
+      } else {
+        this.initializing = false; // show form
       }
-    );
+    });
+  }
+
+  ngOnDestroy() {
+    this.authSub?.unsubscribe();
   }
 
   login() {
