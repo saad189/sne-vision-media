@@ -12,7 +12,23 @@
     </div>
     <div class="seminar-tiles" role="list">
       <div *ngFor="let ev of events" class="seminar-tile" role="listitem">
-        <div class="tile-img" aria-hidden="true"></div>
+        <ng-container *ngIf="ev.image_signed_url; else fallbackImg">
+          <div
+            class="tile-img has-image"
+            aria-hidden="true"
+            [style.backgroundImage]="'url(' + ev.image_signed_url + ')'"
+          >
+            <img
+              [src]="ev.image_signed_url"
+              [alt]="ev.name"
+              loading="lazy"
+              (error)="onImgError($event)"
+            />
+          </div>
+        </ng-container>
+        <ng-template #fallbackImg>
+          <div class="tile-img" aria-hidden="true"></div>
+        </ng-template>
         <div class="tile-caption">
           {{ ev.name }}<br /><span class="tile-date">{{
             ev.starts_at | date : "mediumDate"

@@ -11,6 +11,8 @@ import { AdminCategoriesTableComponent } from './components/admin-categories-tab
 import { AdminEditMediaComponent } from './components/admin-edit-media.component';
 import { AdminEditCategoryComponent } from './components/admin-edit-category.component';
 import { AdminEcosystemSubmissionsTableComponent } from './components/admin-ecosystem-submissions-table.component';
+import { AdminAddEventComponent } from './components/admin-add-event.component';
+import { AdminEventsTableComponent } from './components/admin-events-table.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -44,6 +46,16 @@ const routes: Routes = [
   {
     path: 'ecosystem-submissions',
     component: AdminEcosystemSubmissionsTableComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'add-event',
+    component: AdminAddEventComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'events',
+    component: AdminEventsTableComponent,
     canActivate: [AuthGuard],
   },
   // Placeholder edit routes (components to be created)

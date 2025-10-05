@@ -13,8 +13,10 @@
         <ul class="menu" *ngIf="dropdownOpen">
           <li (click)="goAdd(); closeDropdown()">➕ Add Media Work</li>
           <li (click)="goAddCategory(); closeDropdown()">➕ Add Category</li>
+          <li (click)="goAddEvent(); closeDropdown()">➕ Add Event</li>
           <li (click)="goMediaWorks(); closeDropdown()">📄 View Media Works</li>
           <li (click)="goCategories(); closeDropdown()">📁 View Categories</li>
+          <li (click)="goEvents(); closeDropdown()">📅 View Events</li>
           <li (click)="goEcosystemSubmissions(); closeDropdown()">
             🌱 View Ecosystem Submissions
           </li>
@@ -49,6 +51,16 @@
       <h2>Ecosystem Submissions</h2>
       <p>Review messages submitted via ecosystem form.</p>
       <span class="cta">View List →</span>
+    </div>
+    <div class="card" (click)="goAddEvent()" tabindex="0">
+      <h2>Create New Event</h2>
+      <p>Add a seminar, workshop or meetup.</p>
+      <span class="cta">Create Event →</span>
+    </div>
+    <div class="card" (click)="goEvents()" tabindex="0">
+      <h2>Events</h2>
+      <p>Browse and manage scheduled events.</p>
+      <span class="cta">View Events →</span>
     </div>
   </section>
 </div>

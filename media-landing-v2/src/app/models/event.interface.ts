@@ -16,6 +16,8 @@ export interface EventInput {
   name: string;
   description?: string | null;
   location?: string | null;
+  image_url?: string | null; // optional URL to an image representing the event
+  image_signed_url?: string | null; // signed URL for frontend use (not stored in DB)
   event_type_id: string; // fk to event_type.id
   starts_at?: string | null; // ISO string (timestamptz)
   ends_at?: string | null; // ISO string (timestamptz)

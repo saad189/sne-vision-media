@@ -21,7 +21,7 @@ export class EventsComponent implements OnInit {
 
   private fetch() {
     this.loading = true;
-    this.eventService.list().subscribe({
+    this.eventService.listWithSigned().subscribe({
       next: (list: Event[]) => {
         this.events = list;
         this.loading = false;
@@ -31,5 +31,12 @@ export class EventsComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  onImgError(evt: any) {
+    const el = evt?.target as HTMLImageElement | null;
+    if (el) {
+      el.style.display = 'none';
+    }
   }
 }

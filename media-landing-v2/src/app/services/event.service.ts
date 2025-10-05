@@ -4,6 +4,7 @@ import { SupabaseService } from './supabase.service';
 import { Event, EventInput, EventType } from '../models/event.interface';
 
 const TABLE = 'events';
+const IMAGES_BUCKET = 'VisionMediaBucket';
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
@@ -22,6 +23,7 @@ export class EventService {
       name: row.name,
       description: row.description ?? null,
       location: row.location ?? null,
+      image_url: row.image_url ?? null,
       event_type_id: row.event_type_id,
       starts_at: row.starts_at,
       ends_at: row.ends_at,
@@ -42,6 +44,7 @@ export class EventService {
     set('name', payload.name);
     set('description', payload.description);
     set('location', payload.location);
+    set('image_url', payload.image_url);
     set('event_type_id', payload.event_type_id);
     set('starts_at', payload.starts_at);
     set('ends_at', payload.ends_at);
@@ -63,6 +66,43 @@ export class EventService {
       );
     }
     return this.cache$;
+  }
+
+  // --- Signed Image URL support (pattern similar to HeroListService) ---
+  private sanitizePath(p?: string | null) {
+    if (!p) return p;
+    let cleaned = p.trim().replace(/^\/+/, '');
+    const bucketIdx = cleaned.indexOf(IMAGES_BUCKET + '/');
+    if (bucketIdx !== -1) {
+      cleaned = cleaned.substring(bucketIdx + IMAGES_BUCKET.length + 1);
+    }
+    return cleaned;
+  }
+
+  private addSigned(items: Event[]) {
+    if (!items.length) return of(items);
+    const ttl = 60 * 10; // 10 minutes (events images can refresh fairly often)
+    const tasks = items.map((ev) => {
+      const path = this.sanitizePath(ev.image_url as any);
+      if (!path) return of({ ...ev, image_signed_url: null });
+      return from(
+        this.supabase.client.storage
+          .from(IMAGES_BUCKET)
+          .createSignedUrl(path, ttl)
+      ).pipe(
+        map((r) => ({
+          ...ev,
+          image_signed_url: r.error ? null : r.data?.signedUrl || null,
+        }))
+      );
+    });
+    return forkJoin(tasks);
+  }
+
+  listWithSigned(force = false) {
+    return this.list(force).pipe(
+      switchMap((items: Event[]) => this.addSigned(items))
+    );
   }
 
   upcoming(nowIso = new Date().toISOString()) {

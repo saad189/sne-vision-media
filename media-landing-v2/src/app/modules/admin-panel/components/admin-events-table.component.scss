@@ -1,0 +1,39 @@
+@import "./admin-media-works-table.component.scss"; // reuse visual pattern (if relative path differs adjust)
+
+// Override / extend for events specifics
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.63rem;
+  font-weight: 600;
+  border-radius: 999px;
+  background: #3b82f6;
+  color: #fff;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.badge-default {
+  background: #64748b;
+}
+.img-indicator {
+  text-align: center;
+}
+.img-indicator .dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  display: inline-block;
+  border-radius: 50%;
+  background: #666;
+  box-shadow: 0 0 0 1px #444;
+}
+.img-indicator .dot.has {
+  background: #22c55e;
+  box-shadow: 0 0 0 1px #15803d;
+}
+
+@media (max-width: 840px) {
+  .data-table thead th:nth-child(3),
+  .data-table tbody td:nth-child(3) {
+    display: none;
+  } // hide location on narrow
+}

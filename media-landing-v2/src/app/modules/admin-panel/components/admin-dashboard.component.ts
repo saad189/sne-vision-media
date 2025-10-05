@@ -38,6 +38,12 @@ export class AdminDashboardComponent {
   goEcosystemSubmissions() {
     this.router.navigate(['/admin/ecosystem-submissions']);
   }
+  goAddEvent() {
+    this.router.navigate(['/admin/add-event']);
+  }
+  goEvents() {
+    this.router.navigate(['/admin/events']);
+  }
   logout() {
     this.supabase
       .signOut()
