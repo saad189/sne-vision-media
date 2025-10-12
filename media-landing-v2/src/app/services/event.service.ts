@@ -68,7 +68,12 @@ export class EventService {
     return this.cache$;
   }
 
-  // --- Signed Image URL support (pattern similar to HeroListService) ---
+  // --- Public Image URL support (updated: previously used signed URLs) ---
+  // Events images bucket is now PUBLIC. We keep the property name `image_signed_url`
+  // for backward compatibility with existing templates, but it now contains either:
+  //  - the original full URL if already absolute
+  //  - a constructed public URL from Supabase storage
+  //  - null if no image
   private sanitizePath(p?: string | null) {
     if (!p) return p;
     let cleaned = p.trim().replace(/^\/+/, '');
@@ -81,22 +86,26 @@ export class EventService {
 
   private addSigned(items: Event[]) {
     if (!items.length) return of(items);
-    const ttl = 60 * 10; // 10 minutes (events images can refresh fairly often)
-    const tasks = items.map((ev) => {
-      const path = this.sanitizePath(ev.image_url as any);
-      if (!path) return of({ ...ev, image_signed_url: null });
-      return from(
-        this.supabase.client.storage
-          .from(IMAGES_BUCKET)
-          .createSignedUrl(path, ttl)
-      ).pipe(
-        map((r) => ({
-          ...ev,
-          image_signed_url: r.error ? null : r.data?.signedUrl || null,
-        }))
-      );
+    const mapped = items.map((ev) => {
+      const raw = ev.image_url || '';
+      let image_signed_url: string | null = null;
+      if (raw) {
+        if (/^https?:\/\//i.test(raw)) {
+          image_signed_url = raw; // already a full URL
+        } else {
+          const path = this.sanitizePath(raw);
+          if (path) {
+            const { data } = this.supabase.client.storage
+              .from(IMAGES_BUCKET)
+              .getPublicUrl(path);
+            image_signed_url = data?.publicUrl || null;
+          }
+        }
+      }
+      return { ...ev, image_signed_url };
     });
-    return forkJoin(tasks);
+    // Wrap in of() to keep return type Observable<Event[]>
+    return of(mapped);
   }
 
   listWithSigned(force = false) {
