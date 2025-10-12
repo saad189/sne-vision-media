@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/modules/common/header/header.component.scss", "src/app/modules/common/header/header.component.scss"],
-  "sourcesContent": ["/**\n * All styles handled via Tailwind utility classes.\n * Host styles below ensure proper stacking and display.\n */\n:host {\n  display: block;\n  z-index: 50;\n}\n", "/**\n * All styles handled via Tailwind utility classes.\n * Host styles below ensure proper stacking and display.\n */\n:host {\n  display: block;\n  z-index: 50;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJmaWxlOi8vL1VzZXJzL3NhYWQvRGVza3RvcC9zbmUtdmlzaW9uLW1lZGlhL21lZGlhLWxhbmRpbmctdjIvc3JjL2FwcC9tb2R1bGVzL2NvbW1vbi9oZWFkZXIvaGVhZGVyLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0FBQUE7QUFBQTtBQUFBO0FBSUE7RUFDRTtFQUNBIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBBbGwgc3R5bGVzIGhhbmRsZWQgdmlhIFRhaWx3aW5kIHV0aWxpdHkgY2xhc3Nlcy5cbiAqIEhvc3Qgc3R5bGVzIGJlbG93IGVuc3VyZSBwcm9wZXIgc3RhY2tpbmcgYW5kIGRpc3BsYXkuXG4gKi9cbjpob3N0IHtcbiAgZGlzcGxheTogYmxvY2s7XG4gIHotaW5kZXg6IDUwO1xufVxuIl19 */"],
-  "mappings": ";AAIA;AACE,WAAA;AACA,WAAA;ACCF;",
-  "names": []
-}

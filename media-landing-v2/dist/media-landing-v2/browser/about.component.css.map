@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/modules/about/about.component.scss", "src/app/modules/about/about.component.scss"],
-  "sourcesContent": [".about-section {\n  padding: 2rem;\n  max-width: 800px;\n  margin: 0 auto;\n\n  text-align: center;\n  height: 82vh;\n}\n", ".about-section {\n  padding: 2rem;\n  max-width: 800px;\n  margin: 0 auto;\n  text-align: center;\n  height: 82vh;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJmaWxlOi8vL1VzZXJzL3NhYWQvRGVza3RvcC9zbmUtdmlzaW9uLW1lZGlhL21lZGlhLWxhbmRpbmctdjIvc3JjL2FwcC9tb2R1bGVzL2Fib3V0L2Fib3V0LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0U7RUFDQTtFQUNBO0VBRUE7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5hYm91dC1zZWN0aW9uIHtcbiAgcGFkZGluZzogMnJlbTtcbiAgbWF4LXdpZHRoOiA4MDBweDtcbiAgbWFyZ2luOiAwIGF1dG87XG5cbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBoZWlnaHQ6IDgydmg7XG59XG4iXX0= */"],
-  "mappings": ";AAAA,CAAA;AACE,WAAA;AACA,aAAA;AACA,UAAA,EAAA;AAEA,cAAA;AACA,UAAA;ACAF;",
-  "names": []
-}
