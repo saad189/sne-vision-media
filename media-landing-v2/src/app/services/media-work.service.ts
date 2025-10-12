@@ -163,7 +163,6 @@ export class MediaWorkService {
           imageSignedUrl = data?.publicUrl || null;
         }
       }
-      console.log({ rawImage, imageSignedUrl });
       // MANUSCRIPT: still private, create short-lived signed URL
       const manuscript$ = manuscriptPath
         ? from(
@@ -207,9 +206,9 @@ export class MediaWorkService {
     return from(
       this.supabase.client.from(TABLE).select('*').eq('id', id).single()
     ).pipe(
-      map((r) => {
+      map((r): MediaWork => {
         if (r.error) throw r.error;
-        return this.mapRow(r.data);
+        return this.mapRow(r.data) as MediaWork;
       })
     );
   }

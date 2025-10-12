@@ -35,6 +35,16 @@ export const routes: Routes = [
   //     import('./use-cases/use-cases.module').then((m) => m.UseCasesModule),
   // },
   {
+    path: 'projects',
+    loadChildren: () =>
+      import('./projects/projects.module').then((m) => m.ProjectsModule),
+  },
+  {
+    path: 'use-cases',
+    loadChildren: () =>
+      import('./use-cases/use-cases.module').then((m) => m.UseCasesModule),
+  },
+  {
     path: 'admin',
     loadChildren: () =>
       import('./admin-panel/admin-panel.module').then(

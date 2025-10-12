@@ -49,6 +49,11 @@
               p.status | snakeToWords
             }}</span>
           </div>
+          <div class="proj-actions">
+            <button class="see-details-btn" [routerLink]="['/projects', p.id]">
+              See details
+            </button>
+          </div>
         </div>
       </article>
     </div>
