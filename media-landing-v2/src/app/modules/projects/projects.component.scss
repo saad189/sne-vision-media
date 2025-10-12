@@ -24,6 +24,7 @@
 }
 .project-card::before {
   content: "";
+  border-radius: 20px;
   position: absolute;
   inset: 0;
   background: radial-gradient(

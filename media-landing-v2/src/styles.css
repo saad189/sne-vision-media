@@ -150,3 +150,7 @@ a {
 .more-btn:active {
   transform: translateY(0);
 }
+
+.see-details-btn {
+  text-decoration: underline;
+}

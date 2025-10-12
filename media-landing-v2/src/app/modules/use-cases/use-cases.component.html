@@ -30,22 +30,24 @@
         <div class="uc-content">
           <h3 class="uc-title">{{ uc.title }}</h3>
           <p class="uc-summary">{{ uc.summary }}</p>
-          <a href="{{ uc.manuscriptSignedUrl }}" class="uc-cta"
+          <!-- <a href="{{ uc.manuscriptSignedUrl }}" class="uc-cta"
             >Research Manuscript</a
-          >
-          <div class="uc-footer">
-            <span class="uc-status" *ngIf="uc.status">{{
-              uc.status | snakeToWords
-            }}</span>
-          </div>
+          > -->
 
-          <div class="uc-actions">
-            <button
-              class="see-details-btn"
-              [routerLink]="['/use-cases', uc.id]"
-            >
-              See details
-            </button>
+          <div class="uc-meta">
+            <div class="uc-actions">
+              <button
+                class="see-details-btn"
+                [routerLink]="['/use-cases', uc.id]"
+              >
+                See details
+              </button>
+            </div>
+            <div class="uc-footer">
+              <span class="uc-status" *ngIf="uc.status">{{
+                uc.status | snakeToWords
+              }}</span>
+            </div>
           </div>
 
           <!-- Use-case image shown below the CTA -->
