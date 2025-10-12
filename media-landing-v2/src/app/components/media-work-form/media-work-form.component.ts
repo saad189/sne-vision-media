@@ -31,6 +31,7 @@ export class MediaWorkFormComponent {
       name: v.name ?? '',
       title: v.title ?? '',
       description: v.description ?? '',
+      summary: (v as any).summary ?? '',
       manuscriptUrl: v.manuscriptUrl ?? '',
       youtubeUrl: v.youtubeUrl ?? '',
       githubUrl: v.githubUrl ?? '',
@@ -61,6 +62,7 @@ export class MediaWorkFormComponent {
     name: ['', Validators.required],
     title: [''],
     description: [''],
+    summary: [''],
     manuscriptUrl: [''], // stores storage path (private)
     youtubeUrl: [''],
     githubUrl: [''],

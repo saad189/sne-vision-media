@@ -5,8 +5,12 @@ import { MediaWork, MediaWorkType } from '../models';
 
 const TABLE = 'media_works';
 // Buckets used for storage (kept in sync with MediaWorkFormComponent)
-const MANUSCRIPTS_BUCKET = 'VisionMediaBucket';
-const IMAGES_BUCKET = MANUSCRIPTS_BUCKET; // same bucket for now
+// Private bucket for manuscripts (still require signed URLs)
+const MANUSCRIPTS_BUCKET = 'VisionMediaPrivateBucket';
+// PUBLIC bucket for images so they no longer need signed URLs.
+// Create this bucket in Supabase (or make existing bucket public) and set it here.
+// If you keep using the same bucket name for both, ensure it is public and update MANUSCRIPTS_BUCKET usage accordingly.
+const IMAGES_BUCKET = 'VisionMediaBucket';
 
 @Injectable({ providedIn: 'root' })
 export class MediaWorkService {
@@ -31,6 +35,7 @@ export class MediaWorkService {
       name: row.name,
       title: row.title ?? null,
       description: row.description ?? null,
+      summary: row.summary ?? null,
       manuscriptUrl: row.manuscript_url ?? null,
       youtubeUrl: row.youtube_url ?? null,
       githubUrl: row.github_url ?? null,
@@ -56,6 +61,7 @@ export class MediaWorkService {
     assign('name', payload.name);
     assign('title', payload.title);
     assign('description', payload.description);
+    assign('summary', (payload as any).summary);
     assign('manuscript_url', payload.manuscriptUrl);
     assign('youtube_url', payload.youtubeUrl);
     assign('github_url', payload.githubUrl);
@@ -117,8 +123,10 @@ export class MediaWorkService {
   }
 
   /**
-   * Generate signed URLs for media works' imageUrl and manuscriptUrl (if present).
-   * TTL kept short (10 min) matching form component; caller can refresh by re-subscribing.
+   * Attach access URLs for each media work:
+   *  - imageSignedUrl: now derived from PUBLIC bucket without signing (immediate public URL)
+   *  - manuscriptSignedUrl: still a short-lived signed URL from private bucket
+   * TTL for manuscripts kept short (10 min) matching form component.
    */
   private addSignedUrls(mws: MediaWork[]) {
     if (!mws?.length) return of(mws);
@@ -136,28 +144,27 @@ export class MediaWorkService {
       }
       return cleaned;
     };
-    // Build array of observables that create signed URLs (skip null paths)
+    // Build array of observables that create only manuscript signed URLs; images are public now.
     const tasks = mws.map((mw) => {
-      const imagePath = sanitize(mw.imageUrl || '');
+      const rawImage = mw.imageUrl || '';
       const manuscriptPath = sanitize(mw.manuscriptUrl || '');
-      const image$ = imagePath
-        ? from(
-            this.supabase.client.storage
-              .from(IMAGES_BUCKET)
-              .createSignedUrl(imagePath, ttlSeconds)
-          ).pipe(
-            map((r) => {
-              if (r.error) {
-                console.warn('[MediaWorkService] image signed URL error', {
-                  path: imagePath,
-                  error: r.error.message,
-                });
-                return null;
-              }
-              return r.data?.signedUrl || null;
-            })
-          )
-        : of(null);
+
+      // IMAGE: If already a full URL (starts with http), use as-is. Otherwise build public URL from path.
+      let imageSignedUrl: string | null = null;
+      if (rawImage) {
+        if (/^https?:\/\//i.test(rawImage)) {
+          imageSignedUrl = rawImage; // stored as full URL already
+        } else {
+          const imagePath = sanitize(rawImage);
+          const { data } = this.supabase.client.storage
+            .from(IMAGES_BUCKET)
+            .getPublicUrl(imagePath);
+          // getPublicUrl never throws; if image doesn't exist, data.publicUrl is still the constructed URL
+          imageSignedUrl = data?.publicUrl || null;
+        }
+      }
+      console.log({ rawImage, imageSignedUrl });
+      // MANUSCRIPT: still private, create short-lived signed URL
       const manuscript$ = manuscriptPath
         ? from(
             this.supabase.client.storage
@@ -176,11 +183,8 @@ export class MediaWorkService {
             })
           )
         : of(null);
-      return forkJoin({
-        imageSignedUrl: image$,
-        manuscriptSignedUrl: manuscript$,
-      }).pipe(
-        map(({ imageSignedUrl, manuscriptSignedUrl }) => ({
+      return manuscript$.pipe(
+        map((manuscriptSignedUrl) => ({
           ...mw,
           imageSignedUrl,
           manuscriptSignedUrl,

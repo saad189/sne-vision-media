@@ -24,6 +24,20 @@
   </div>
 
   <div class="field">
+    <label for="mw-summary">Summary</label>
+    <textarea
+      id="mw-summary"
+      formControlName="summary"
+      rows="3"
+      maxlength="280"
+      placeholder="Concise summary (<= 280 chars)"
+    ></textarea>
+    <div class="hint" *ngIf="form.get('summary')?.value as s">
+      {{ s.length || 0 }} / 280
+    </div>
+  </div>
+
+  <div class="field">
     <label for="mw-description">Description</label>
     <textarea
       id="mw-description"

@@ -6,13 +6,15 @@ export interface MediaWork {
   name: string; // not null
   title?: string | null;
   description?: string | null;
+  /** Shorter marketing-friendly blurb (separate from full description) */
+  summary?: string | null;
   manuscriptUrl?: string | null;
   /** Ephemeral signed URL (frontend convenience) generated from manuscriptUrl storage path */
   manuscriptSignedUrl?: string | null;
   youtubeUrl?: string | null;
   githubUrl?: string | null;
   imageUrl?: string | null;
-  /** Ephemeral signed URL (frontend convenience) generated from imageUrl storage path */
+  /** Public or signed URL derived from imageUrl path (now typically public, may not require signing) */
   imageSignedUrl?: string | null;
   type: MediaWorkType;
   // New categorization + workflow fields

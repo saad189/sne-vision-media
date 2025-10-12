@@ -4,13 +4,14 @@ import { MediaWorkService } from '../../../services';
 import { MediaWork } from '../../../models';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 import { Router } from '@angular/router';
+import { SnakeToWordsPipe } from '../../../pipes';
 
 @Component({
   standalone: true,
   selector: 'app-admin-media-works-table',
   templateUrl: './admin-media-works-table.component.html',
   styleUrls: ['./admin-media-works-table.component.scss'],
-  imports: [CommonModule],
+  imports: [CommonModule, SnakeToWordsPipe],
 })
 export class AdminMediaWorksTableComponent {
   private media = inject(MediaWorkService);
