@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   activeModule: any = null;
   activeSubmodule: any = null;
   sidenavOpen = false;
+  hideChrome = false; // hide header/footer on specific routes (e.g., admin login)
 
   constructor(private loadingService: LoadingService, private router: Router) {
     this.loadingService.isLoading$.subscribe(
@@ -48,6 +49,7 @@ export class AppComponent implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.checkCurrentRoute(event.url);
+        this.evaluateChromeVisibility(event.url);
       });
   }
 
@@ -102,5 +104,16 @@ export class AppComponent implements OnInit {
 
   toggleSidenav(): void {
     this.sidenavOpen = !this.sidenavOpen;
+  }
+
+  /**
+   * Determines whether to hide global chrome (header/footer) for full-screen experiences.
+   * Currently hides on admin login route.
+   */
+  evaluateChromeVisibility(url: string): void {
+    // Normalize URL (strip query/hash)
+    const clean = url.split(/[?#]/)[0];
+    // Match /admin-panel/login or /admin-panel
+    this.hideChrome = /\/admin-panel(\/login)?$/.test(clean);
   }
 }

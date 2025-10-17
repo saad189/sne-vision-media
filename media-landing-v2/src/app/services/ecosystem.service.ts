@@ -15,12 +15,14 @@ export class EcosystemService {
     ['phone', 'designation'].forEach((k) => {
       if (clean[k] === '') clean[k] = null;
     });
-    return from(
-      this.supabase.client.from(TABLE).insert(clean).select('*').single()
-    ).pipe(
+    // IMPORTANT: Avoid chaining .select() after insert unless you have a SELECT policy.
+    // A postgrest select following insert triggers a read which will fail if only an INSERT policy exists.
+    // Using returning option (default) we can still get the inserted row if RLS allows the insert.
+    return from(this.supabase.client.from(TABLE).insert(clean)).pipe(
       map((r) => {
         if (r.error) throw r.error;
-        return r.data as EcosystemSubmission;
+        const row = Array.isArray(r.data) ? r.data[0] : r.data;
+        return row as unknown as EcosystemSubmission;
       })
     );
   }
