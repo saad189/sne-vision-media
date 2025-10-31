@@ -52,8 +52,12 @@
       border-radius: 6px;
       font-weight: 600;
     }
-    .mw-status { background: #eef; }
-    .mw-category { background: #efe; }
+    .mw-status {
+      background: #eef;
+    }
+    .mw-category {
+      background: #efe;
+    }
   }
 
   .mw-body {
@@ -78,7 +82,7 @@
       object-fit: cover;
       border-radius: 16px;
       display: block;
-      box-shadow: 0 6px 28px -6px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 28px -6px rgba(0, 0, 0, 0.2);
     }
     figcaption {
       font-size: 0.75rem;
@@ -95,17 +99,21 @@
     text-align: justify;
     text-justify: inter-word;
     margin: 0 auto;
-    p { 
-      margin: 0; 
-      white-space: pre-line; 
+    p {
+      margin: 0;
+      white-space: pre-line;
     }
   }
 
   .mw-manuscript {
     max-width: 900px;
     line-height: 1.65;
-    h2 { margin: 0 0 0.75rem; }
-    a { color: #4a6cf7; }
+    h2 {
+      margin: 0 0 0.75rem;
+    }
+    a {
+      color: #4a6cf7;
+    }
   }
 
   .mw-links {
@@ -123,10 +131,17 @@
       color: #fff;
       font-size: 0.75rem;
       letter-spacing: 0.05em;
-      transition: background .2s ease, transform .2s ease;
-      &:hover { background: #222; transform: translateY(-2px); }
-      &.youtube { background: #c4302b; }
-      &.github { background: #24292e; }
+      transition: background 0.2s ease, transform 0.2s ease;
+      &:hover {
+        background: #222;
+        transform: translateY(-2px);
+      }
+      &.youtube {
+        background: #c4302b;
+      }
+      &.github {
+        background: #24292e;
+      }
     }
   }
 }
