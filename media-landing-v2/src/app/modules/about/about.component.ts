@@ -25,7 +25,7 @@ export class AboutComponent {
       image: 'assets/images/team/e1.png',
       name: 'Aroob Fatima',
       role: 'Research Analyst',
-      quote: '',
+      quote: 'Paving the way forward through research backed information.',
     },
   ];
 }
