@@ -4,10 +4,9 @@ import { SupabaseService, MediaWorkService } from '../../../services';
 import { MediaWork } from '../../../models';
 
 @Component({
-  standalone: false,
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.scss'],
+    selector: 'app-admin-dashboard',
+    templateUrl: './admin-dashboard.component.html',
+    styleUrls: ['./admin-dashboard.component.scss'],
 })
 export class AdminDashboardComponent {
   private router = inject(Router);

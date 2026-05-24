@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-about',
-  standalone: false,
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss'],
+    selector: 'app-about',
+    templateUrl: './about.component.html',
+    styleUrls: ['./about.component.scss'],
 })
 export class AboutComponent {
   // Interface for clarity; could be moved to a shared models folder if reused elsewhere

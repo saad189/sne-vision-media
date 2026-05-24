@@ -3,12 +3,25 @@ import { Event } from '../../models/event.interface';
 import { EventService } from '../../services/event.service';
 import { HeroSlideItem } from '../../models';
 import { HeroListService } from '../../services/hero-slide.service';
+import { HeroCarouselComponent } from '../../components/hero-carousel/hero-carousel.component';
+import { UseCasesComponent } from '../use-cases/use-cases.component';
+import { ProjectsComponent } from '../projects/projects.component';
+import { CommunityComponent } from '../community/community.component';
+import { EventsComponent } from '../events/events.component';
+import { EcosystemComponent } from '../ecosystem/ecosystem.component';
 
 @Component({
-  selector: 'app-landing',
-  templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.scss'],
-  standalone: false,
+    selector: 'app-landing',
+    templateUrl: './landing.component.html',
+    styleUrls: ['./landing.component.scss'],
+    imports: [
+        HeroCarouselComponent,
+        UseCasesComponent,
+        ProjectsComponent,
+        CommunityComponent,
+        EventsComponent,
+        EcosystemComponent,
+    ],
 })
 export class LandingComponent implements OnInit {
   heroSlides: HeroSlideItem[] = [];

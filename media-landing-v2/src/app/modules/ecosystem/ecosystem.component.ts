@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { EcosystemService } from '../../services/ecosystem.service';
 import { ToastrNotificationService } from '../../services/toastr.service';
 
 @Component({
-  selector: 'app-ecosystem',
-  templateUrl: './ecosystem.component.html',
-  styleUrls: ['./ecosystem.component.scss'],
-  standalone: false,
+    selector: 'app-ecosystem',
+    templateUrl: './ecosystem.component.html',
+    styleUrls: ['./ecosystem.component.scss'],
+    imports: [ReactiveFormsModule],
 })
 export class EcosystemComponent {
   ecosystemForm: FormGroup;

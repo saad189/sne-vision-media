@@ -9,18 +9,16 @@ import { AdminAddEventComponent } from './components/admin-add-event.component';
 import { AdminLoginComponent } from './components/admin-login.component';
 
 @NgModule({
-  declarations: [
-    AdminLoginComponent,
-    AdminDashboardComponent,
-    AdminAddMediaComponent,
-    AdminAddEventComponent,
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    AdminPanelRoutingModule,
-    MediaWorkFormComponent, // standalone form component
-  ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        AdminPanelRoutingModule,
+        MediaWorkFormComponent,
+        AdminLoginComponent,
+        AdminDashboardComponent,
+        AdminAddMediaComponent,
+        AdminAddEventComponent,
+    ],
 })
 export class AdminPanelModule {}

@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../../services';
 import { combineLatest } from 'rxjs';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 
 @Component({
-  standalone: false,
-  selector: 'app-admin-login',
-  templateUrl: './admin-login.component.html',
-  styleUrls: ['./admin-login.component.scss'],
+    selector: 'app-admin-login',
+    templateUrl: './admin-login.component.html',
+    styleUrls: ['./admin-login.component.scss'],
+    imports: [ReactiveFormsModule],
 })
 export class AdminLoginComponent implements OnInit, OnDestroy {
   form;

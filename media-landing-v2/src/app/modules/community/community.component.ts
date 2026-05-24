@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { TestimonialItem } from '../../models/testimonial.interface';
 import { TopMindsService } from '../../services/top-minds.service';
 import { TopMind } from '../../models';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-community',
-  standalone: false,
-  templateUrl: './community.component.html',
-  styleUrls: ['./community.component.scss'],
+    selector: 'app-community',
+    templateUrl: './community.component.html',
+    styleUrls: ['./community.component.scss'],
+    imports: [DatePipe],
 })
 export class CommunityComponent implements OnInit {
   testimonials: TestimonialItem[] = [];

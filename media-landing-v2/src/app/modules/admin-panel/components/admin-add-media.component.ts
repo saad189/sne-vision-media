@@ -2,12 +2,13 @@ import { Component, inject } from '@angular/core';
 import { MediaWorkService } from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 import { Router } from '@angular/router';
+import { MediaWorkFormComponent } from '../../../components/media-work-form/media-work-form.component';
 
 @Component({
-  standalone: false,
-  selector: 'app-admin-add-media',
-  templateUrl: './admin-add-media.component.html',
-  styleUrls: ['./admin-add-media.component.scss'],
+    selector: 'app-admin-add-media',
+    templateUrl: './admin-add-media.component.html',
+    styleUrls: ['./admin-add-media.component.scss'],
+    imports: [MediaWorkFormComponent],
 })
 export class AdminAddMediaComponent {
   private mediaService = inject(MediaWorkService);

@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { Category, MediaWork } from '../../models';
 import { CategoryService, MediaWorkService } from '../../services';
+import { RouterLink } from '@angular/router';
+import { SnakeToWordsPipe } from '../../pipes/snake-to-words.pipe';
 
 @Component({
-  selector: 'app-use-cases',
-  standalone: false,
-  templateUrl: './use-cases.component.html',
-  styleUrls: ['./use-cases.component.scss'],
+    selector: 'app-use-cases',
+    templateUrl: './use-cases.component.html',
+    styleUrls: ['./use-cases.component.scss'],
+    imports: [RouterLink, SnakeToWordsPipe],
 })
 export class UseCasesComponent {
   // NOTE: MediaWork objects now include ephemeral imageSignedUrl / manuscriptSignedUrl for direct rendering

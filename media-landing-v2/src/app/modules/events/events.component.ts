@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Event } from '../../models/event.interface';
 import { EventService } from '../../services/event.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-events',
-  standalone: false,
-  templateUrl: './events.component.html',
-  styleUrls: ['./events.component.scss'],
+    selector: 'app-events',
+    templateUrl: './events.component.html',
+    styleUrls: ['./events.component.scss'],
+    imports: [DatePipe],
 })
 export class EventsComponent implements OnInit {
   events: Event[] = [];

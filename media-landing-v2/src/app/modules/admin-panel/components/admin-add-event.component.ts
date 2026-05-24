@@ -1,14 +1,19 @@
 import { Component, inject } from '@angular/core';
 import { EventService, EventTypeService } from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EventInput, EventType } from '../../../models/event.interface';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @Component({
-  standalone: false,
-  selector: 'app-admin-add-event',
-  templateUrl: './admin-add-event.component.html',
-  styleUrls: ['./admin-add-event.component.scss'],
+    selector: 'app-admin-add-event',
+    templateUrl: './admin-add-event.component.html',
+    styleUrls: ['./admin-add-event.component.scss'],
+    imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        RouterLink,
+    ],
 })
 export class AdminAddEventComponent {
   private eventsService = inject(EventService);

@@ -12,11 +12,10 @@ import {
 import { HeroSlideItem } from '../../models';
 
 @Component({
-  selector: 'app-hero-carousel',
-  templateUrl: './hero-carousel.component.html',
-  styleUrls: ['./hero-carousel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+    selector: 'app-hero-carousel',
+    templateUrl: './hero-carousel.component.html',
+    styleUrls: ['./hero-carousel.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroCarouselComponent
   implements OnInit, OnDestroy, AfterViewInit, OnChanges

@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { Category, MediaWork } from '../../models';
 import { CategoryService, MediaWorkService } from '../../services';
+import { RouterLink } from '@angular/router';
+import { SnakeToWordsPipe } from '../../pipes/snake-to-words.pipe';
 
 @Component({
-  selector: 'app-projects',
-  standalone: false,
-  templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss'],
+    selector: 'app-projects',
+    templateUrl: './projects.component.html',
+    styleUrls: ['./projects.component.scss'],
+    imports: [RouterLink, SnakeToWordsPipe],
 })
 export class ProjectsComponent {
   // NOTE: Each MediaWork now may contain imageSignedUrl / manuscriptSignedUrl (ephemeral) for direct display

@@ -1,13 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MediaWork } from '../../models';
 import { Subscription } from 'rxjs';
+import { DatePipe } from '@angular/common';
+import { SnakeToWordsPipe } from '../../pipes/snake-to-words.pipe';
 
 @Component({
-  selector: 'app-media-works-detailed-view',
-  templateUrl: './media-works-detailed-view.component.html',
-  styleUrls: ['./media-works-detailed-view.component.scss'],
-  standalone: false,
+    selector: 'app-media-works-detailed-view',
+    templateUrl: './media-works-detailed-view.component.html',
+    styleUrls: ['./media-works-detailed-view.component.scss'],
+    imports: [
+        RouterLink,
+        DatePipe,
+        SnakeToWordsPipe,
+    ],
 })
 export class MediaWorksDetailedViewComponent implements OnInit, OnDestroy {
   mediaWork: MediaWork | null = null;

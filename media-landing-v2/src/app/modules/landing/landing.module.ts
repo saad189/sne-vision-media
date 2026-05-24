@@ -7,12 +7,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { UseCasesModule } from '../use-cases/use-cases.module';
 import { ProjectsModule } from '../projects/projects.module';
 import { CommunityModule } from '../community/community.module';
-import { EventsModule } from '../events/events.module';
-import { EcosystemModule } from '../ecosystem/ecosystem.module';
+
+
 
 @NgModule({
-  declarations: [LandingComponent, HeroCarouselComponent],
-  imports: [
+    imports: [
     CommonModule,
     LandingRoutingModule,
     UseCasesModule,
@@ -20,8 +19,7 @@ import { EcosystemModule } from '../ecosystem/ecosystem.module';
     FormsModule,
     ProjectsModule,
     CommunityModule,
-    EventsModule,
-    EcosystemModule,
-  ],
+    LandingComponent, HeroCarouselComponent,
+],
 })
 export class LandingModule { }
