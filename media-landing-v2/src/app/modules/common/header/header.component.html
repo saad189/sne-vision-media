@@ -1,73 +1,77 @@
 <!-- Optional quote / social bar (hidden in current design) -->
-<div *ngIf="variant === 'simple'" class="relative bg-[#4D4D4D] text-white py-2">
-  <div class="container mx-auto relative flex items-center">
-    <div class="flex items-center space-x-5 relative z-20">
-      <a href="#" aria-label="Facebook">
-        <img src="/assets/images/facebook.png" alt="Facebook" class="w-5 h-5" />
-      </a>
+@if (variant === 'simple') {
+  <div class="relative bg-[#4D4D4D] text-white py-2">
+    <div class="container mx-auto relative flex items-center">
+      <div class="flex items-center space-x-5 relative z-20">
+        <a href="#" aria-label="Facebook">
+          <img src="/assets/images/facebook.png" alt="Facebook" class="w-5 h-5" />
+        </a>
+        <a
+          href="https://www.instagram.com/sne_vision_media"
+          aria-label="Instagram"
+          >
+          <img
+            src="/assets/images/instagram.png"
+            alt="Instagram"
+            class="w-5 h-5"
+            />
+        </a>
+        <a href="#" aria-label="Twitter">
+          <img src="/assets/images/twitter.png" alt="Twitter" class="w-5 h-5" />
+        </a>
+      </div>
+      <div class="flex-1 text-center text-xs sm:text-sm tracking-wide font-light">
+        "What one man Nation can do, another can do"
+      </div>
+      @if (userName; as name) {
+        <p class="ml-4 text-sm font-medium mr-2">
+          Welcome, {{ name }}!
+        </p>
+      }
       <a
-        href="https://www.instagram.com/sne_vision_media"
-        aria-label="Instagram"
-      >
-        <img
-          src="/assets/images/instagram.png"
-          alt="Instagram"
+        routerLink="/admin/login"
+        aria-label="Admin Login"
+        class="admin-icon group relative inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/60 hover:bg-white text-gray-700 hover:text-black shadow-md shadow-black/10 ring-1 ring-black/10 hover:ring-black/20 transition-colors transition-shadow"
+        >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
           class="w-5 h-5"
-        />
-      </a>
-      <a href="#" aria-label="Twitter">
-        <img src="/assets/images/twitter.png" alt="Twitter" class="w-5 h-5" />
+          >
+          <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Z" />
+          <path d="M4 21a8 8 0 0 1 16 0" />
+        </svg>
       </a>
     </div>
-    <div class="flex-1 text-center text-xs sm:text-sm tracking-wide font-light">
-      "What one man Nation can do, another can do"
-    </div>
-    <p *ngIf="userName as name" class="ml-4 text-sm font-medium mr-2">
-      Welcome, {{ name }}!
-    </p>
-    <a
-      routerLink="/admin/login"
-      aria-label="Admin Login"
-      class="admin-icon group relative inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/60 hover:bg-white text-gray-700 hover:text-black shadow-md shadow-black/10 ring-1 ring-black/10 hover:ring-black/20 transition-colors transition-shadow"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="w-5 h-5"
-      >
-        <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Z" />
-        <path d="M4 21a8 8 0 0 1 16 0" />
-      </svg>
-    </a>
   </div>
-</div>
+}
 
 <!-- Main navigation bar aligned with design -->
 <nav
   class="sticky top-0 z-40 bg-[#f2f2f2]/95 backdrop-blur supports-[backdrop-filter]:bg-[#f2f2f2]/80"
->
+  >
   <div class="max-w-7xl mx-auto px-4 lg:px-8 h-40 flex items-center gap-8">
     <!-- Logo -->
     <a
       routerLink=""
       class="shrink-0 flex items-center h-20"
       aria-label="Vision Media Home"
-    >
+      >
       <img
         src="/assets/images/sne_logo_title.png"
         alt="Vision Media"
         class="object-contain w-auto h-40"
-      />
+        />
     </a>
     <!-- Nav links centered -->
     <ul
       class="flex-1 flex items-center justify-center gap-10 text-sm font-medium tracking-wide text-gray-800"
-    >
+      >
       <li>
         <a routerLink="/" fragment="use-cases" class="nav-link">Use Cases</a>
       </li>
@@ -83,17 +87,17 @@
       <li>
         <a routerLink="/about" routerLinkActive="active-link" class="nav-link"
           >About Us</a
-        >
-      </li>
-    </ul>
-    <div class="flex items-center">
-      <button
-        routerLink="/"
-        fragment="ecosystem"
-        class="join-btn px-6 py-2 rounded-full text-sm font-semibold bg-[#4D4D4D] text-white hover:bg-black transition-colors"
-      >
-        Join our Ecosystem
-      </button>
+          >
+        </li>
+      </ul>
+      <div class="flex items-center">
+        <button
+          routerLink="/"
+          fragment="ecosystem"
+          class="join-btn px-6 py-2 rounded-full text-sm font-semibold bg-[#4D4D4D] text-white hover:bg-black transition-colors"
+          >
+          Join our Ecosystem
+        </button>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>

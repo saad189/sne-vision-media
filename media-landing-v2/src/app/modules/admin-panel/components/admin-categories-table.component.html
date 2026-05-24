@@ -5,32 +5,42 @@
       Reload
     </button>
   </header>
-  <div *ngIf="loading">Loading...</div>
-  <div *ngIf="error" class="err">{{ error }}</div>
-  <table *ngIf="!loading && !error && rows.length" class="data-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Slug</th>
-        <th>Description</th>
-        <th>Created</th>
-        <th style="width: 140px">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let r of rows; trackBy: trackById">
-        <td>{{ r.name }}</td>
-        <td>{{ r.slug }}</td>
-        <td>{{ r.description || "—" }}</td>
-        <td>{{ r.created_at | date : "short" }}</td>
-        <td class="actions">
-          <button class="secondary" (click)="edit(r)">Edit</button>
-          <button class="danger" (click)="delete(r)">Del</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div *ngIf="!loading && !error && !rows.length" class="empty">
-    No categories yet.
-  </div>
+  @if (loading) {
+    <div>Loading...</div>
+  }
+  @if (error) {
+    <div class="err">{{ error }}</div>
+  }
+  @if (!loading && !error && rows.length) {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Slug</th>
+          <th>Description</th>
+          <th>Created</th>
+          <th style="width: 140px">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of rows; track trackById($index, r)) {
+          <tr>
+            <td>{{ r.name }}</td>
+            <td>{{ r.slug }}</td>
+            <td>{{ r.description || "—" }}</td>
+            <td>{{ r.created_at | date : "short" }}</td>
+            <td class="actions">
+              <button class="secondary" (click)="edit(r)">Edit</button>
+              <button class="danger" (click)="delete(r)">Del</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+  @if (!loading && !error && !rows.length) {
+    <div class="empty">
+      No categories yet.
+    </div>
+  }
 </div>

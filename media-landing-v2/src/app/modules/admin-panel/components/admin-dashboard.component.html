@@ -6,23 +6,25 @@
         class="action-dropdown"
         [class.open]="dropdownOpen"
         (keydown.escape)="dropdownOpen = false"
-      >
+        >
         <button class="secondary" (click)="toggleDropdown()">
           ⚙️ Actions ▾
         </button>
-        <ul class="menu" *ngIf="dropdownOpen">
-          <li (click)="goAdd(); closeDropdown()">➕ Add Media Work</li>
-          <li (click)="goAddCategory(); closeDropdown()">➕ Add Category</li>
-          <li (click)="goAddEvent(); closeDropdown()">➕ Add Event</li>
-          <li (click)="goMediaWorks(); closeDropdown()">📄 View Media Works</li>
-          <li (click)="goCategories(); closeDropdown()">📁 View Categories</li>
-          <li (click)="goEvents(); closeDropdown()">📅 View Events</li>
-          <li (click)="goEcosystemSubmissions(); closeDropdown()">
-            🌱 View Ecosystem Submissions
-          </li>
-          <li class="sep"></li>
-          <li class="danger" (click)="logout(); closeDropdown()">⏻ Logout</li>
-        </ul>
+        @if (dropdownOpen) {
+          <ul class="menu">
+            <li (click)="goAdd(); closeDropdown()">➕ Add Media Work</li>
+            <li (click)="goAddCategory(); closeDropdown()">➕ Add Category</li>
+            <li (click)="goAddEvent(); closeDropdown()">➕ Add Event</li>
+            <li (click)="goMediaWorks(); closeDropdown()">📄 View Media Works</li>
+            <li (click)="goCategories(); closeDropdown()">📁 View Categories</li>
+            <li (click)="goEvents(); closeDropdown()">📅 View Events</li>
+            <li (click)="goEcosystemSubmissions(); closeDropdown()">
+              🌱 View Ecosystem Submissions
+            </li>
+            <li class="sep"></li>
+            <li class="danger" (click)="logout(); closeDropdown()">⏻ Logout</li>
+          </ul>
+        }
       </div>
     </div>
   </header>

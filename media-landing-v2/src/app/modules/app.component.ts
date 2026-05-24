@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { LoadingService } from '../services/loading.service';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -13,12 +13,11 @@ import { BackToTopComponent } from './common/back-to-top/back-to-top.component';
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule,
     RouterModule,
     HeaderComponent,
     FooterComponent,
-    BackToTopComponent,
-  ],
+    BackToTopComponent
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

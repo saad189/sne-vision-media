@@ -1,38 +1,41 @@
 <section
   class="hero-carousel-wrapper"
   aria-label="Featured mission highlights carousel"
->
+  >
   <div
     class="hero-swiper"
     (mouseenter)="onMouseEnter()"
     (mouseleave)="onMouseLeave()"
-  >
+    >
     <div
       class="slides-track"
       [style.transform]="'translateX(-' + currentSlide * 100 + '%)'"
-    >
-      <div
-        class="hero-slide"
-        *ngFor="let s of slides; let i = index"
-        [class.active]="i === currentSlide"
-        role="group"
-        [attr.aria-label]="s.name"
-        [attr.data-bg]="s.image_signed_url"
       >
-        <div class="overlay"></div>
-        <div class="slide-content">
-          <h1 class="slide-title">{{ s.name }}</h1>
-          <p class="slide-sub" *ngIf="s.description">{{ s.description }}</p>
-          <ng-content select="[carousel-cta]"></ng-content>
+      @for (s of slides; track s; let i = $index) {
+        <div
+          class="hero-slide"
+          [class.active]="i === currentSlide"
+          role="group"
+          [attr.aria-label]="s.name"
+          [attr.data-bg]="s.image_signed_url"
+          >
+          <div class="overlay"></div>
+          <div class="slide-content">
+            <h1 class="slide-title">{{ s.name }}</h1>
+            @if (s.description) {
+              <p class="slide-sub">{{ s.description }}</p>
+            }
+            <ng-content select="[carousel-cta]"></ng-content>
+          </div>
         </div>
-      </div>
+      }
     </div>
     <button
       type="button"
       class="nav-btn prev"
       (click)="prevSlide()"
       aria-label="Previous slide"
-    >
+      >
       ‹
     </button>
     <button
@@ -40,20 +43,21 @@
       class="nav-btn next"
       (click)="nextSlide()"
       aria-label="Next slide"
-    >
+      >
       ›
     </button>
     <div class="dots" role="tablist" aria-label="Carousel pagination">
-      <button
-        *ngFor="let s of slides; let i = index"
-        type="button"
-        class="dot"
-        [class.active]="i === currentSlide"
-        (click)="goToSlide(i)"
-        [attr.aria-label]="'Go to slide ' + (i + 1)"
-        [attr.aria-selected]="i === currentSlide"
-        role="tab"
-      ></button>
+      @for (s of slides; track s; let i = $index) {
+        <button
+          type="button"
+          class="dot"
+          [class.active]="i === currentSlide"
+          (click)="goToSlide(i)"
+          [attr.aria-label]="'Go to slide ' + (i + 1)"
+          [attr.aria-selected]="i === currentSlide"
+          role="tab"
+        ></button>
+      }
     </div>
   </div>
 </section>

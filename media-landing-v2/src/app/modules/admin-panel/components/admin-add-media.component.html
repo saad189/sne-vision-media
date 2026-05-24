@@ -10,6 +10,8 @@
       [submitting]="submitting"
       (save)="create($event)"
     ></app-media-work-form>
-    <div *ngIf="error" class="err global">{{ error }}</div>
+    @if (error) {
+      <div class="err global">{{ error }}</div>
+    }
   </div>
 </div>

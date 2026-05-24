@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CategoryService } from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   selector: 'app-admin-add-category',
   templateUrl: './admin-add-category.component.html',
   styleUrls: ['./admin-add-category.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
 })
 export class AdminAddCategoryComponent {
   private fb = inject(FormBuilder);

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   MediaWork,
@@ -13,7 +13,7 @@ import { ToastrNotificationService } from '../../services/toastr.service';
 @Component({
   selector: 'app-media-work-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './media-work-form.component.html',
   styleUrls: ['./media-work-form.component.scss'],
 })

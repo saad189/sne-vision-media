@@ -12,19 +12,20 @@
           [class.invalid]="
             form.get('name')?.invalid && form.get('name')?.touched
           "
-        >
+          >
           <label for="cat-name">Name *</label>
           <input
             id="cat-name"
             formControlName="name"
             placeholder="e.g. Transportation"
-          />
-          <div
-            class="err"
-            *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
-          >
-            Required (max 120 chars)
-          </div>
+            />
+          @if (form.get('name')?.invalid && form.get('name')?.touched) {
+            <div
+              class="err"
+              >
+              Required (max 120 chars)
+            </div>
+          }
         </div>
 
         <div class="field">
@@ -41,11 +42,17 @@
           class="primary"
           type="submit"
           [disabled]="submitting || form.invalid"
-        >
-          <span *ngIf="!submitting">Create</span>
-          <span *ngIf="submitting" class="spinner"></span>
+          >
+          @if (!submitting) {
+            <span>Create</span>
+          }
+          @if (submitting) {
+            <span class="spinner"></span>
+          }
         </button>
-        <div class="err global" *ngIf="error">{{ error }}</div>
+        @if (error) {
+          <div class="err global">{{ error }}</div>
+        }
       </form>
     </div>
   </div>

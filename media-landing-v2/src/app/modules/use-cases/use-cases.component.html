@@ -10,58 +10,60 @@
         decisions.
       </p>
       <div class="tag-pills" role="tablist" aria-label="Use case categories">
-        <button
-          *ngFor="let c of categories"
-          class="pill"
-          [class.active]="c.name === selectedCategory"
-          (click)="selectCategory(c.name)"
-          role="tab"
-          [attr.aria-selected]="c.name === selectedCategory"
-        >
-          {{ c.name }}
-        </button>
+        @for (c of categories; track c) {
+          <button
+            class="pill"
+            [class.active]="c.name === selectedCategory"
+            (click)="selectCategory(c.name)"
+            role="tab"
+            [attr.aria-selected]="c.name === selectedCategory"
+            >
+            {{ c.name }}
+          </button>
+        }
       </div>
     </div>
     <div class="use-case-grid">
-      <article
-        *ngFor="let uc of filteredUseCases; trackBy: trackUseCase"
-        class="use-case-card"
-      >
-        <div class="uc-content">
-          <h3 class="uc-title">{{ uc.title }}</h3>
-          <p class="uc-summary">{{ uc.summary }}</p>
-          <!-- <a href="{{ uc.manuscriptSignedUrl }}" class="uc-cta"
+      @for (uc of filteredUseCases; track trackUseCase($index, uc)) {
+        <article
+          class="use-case-card"
+          >
+          <div class="uc-content">
+            <h3 class="uc-title">{{ uc.title }}</h3>
+            <p class="uc-summary">{{ uc.summary }}</p>
+            <!-- <a href="{{ uc.manuscriptSignedUrl }}" class="uc-cta"
             >Research Manuscript</a
-          > -->
-
-          <div class="uc-meta">
-            <div class="uc-actions">
-              <button
-                class="see-details-btn"
-                [routerLink]="['/use-cases', uc.id]"
-              >
-                See details
-              </button>
+            > -->
+            <div class="uc-meta">
+              <div class="uc-actions">
+                <button
+                  class="see-details-btn"
+                  [routerLink]="['/use-cases', uc.id]"
+                  >
+                  See details
+                </button>
+              </div>
+              <div class="uc-footer">
+                @if (uc.status) {
+                  <span class="uc-status">{{
+                    uc.status | snakeToWords
+                  }}</span>
+                }
+              </div>
             </div>
-            <div class="uc-footer">
-              <span class="uc-status" *ngIf="uc.status">{{
-                uc.status | snakeToWords
-              }}</span>
-            </div>
+            <!-- Use-case image shown below the CTA -->
+            <img
+              class="uc-image"
+              [src]="uc.imageSignedUrl"
+              [alt]="uc.title"
+              loading="lazy"
+              />
           </div>
-
-          <!-- Use-case image shown below the CTA -->
-          <img
-            class="uc-image"
-            [src]="uc.imageSignedUrl"
-            [alt]="uc.title"
-            loading="lazy"
-          />
-        </div>
-      </article>
+        </article>
+      }
     </div>
     <!-- <div class="more-row">
-      <button class="more-btn">Explore More Use Cases</button>
-    </div> -->
-  </div>
+    <button class="more-btn">Explore More Use Cases</button>
+  </div> -->
+</div>
 </section>

@@ -1,76 +1,96 @@
-<section
-  class="media-work-detailed section-pad"
-  *ngIf="!loading && mediaWork as mw"
->
-  <div class="section-inner">
-    <nav class="crumbs">
-      <a routerLink="/">Home</a>
-      <span>/</span>
-      <a [routerLink]="['/', mw.type]">{{ mw.type | snakeToWords }}</a>
-      <span>/</span>
-      <span>{{ mw.title || mw.name }}</span>
-    </nav>
+@if (!loading && mediaWork; as mw) {
+  <section
+    class="media-work-detailed section-pad"
+    >
+    <div class="section-inner">
+      <nav class="crumbs">
+        <a routerLink="/">Home</a>
+        <span>/</span>
+        <a [routerLink]="['/', mw.type]">{{ mw.type | snakeToWords }}</a>
+        <span>/</span>
+        <span>{{ mw.title || mw.name }}</span>
+      </nav>
+      <header class="mw-header">
+        <h1 class="mw-title">{{ mw.title || mw.name }}</h1>
+        @if (mw.summary) {
+          <p class="mw-summary">{{ mw.summary }}</p>
+        }
+        <div class="mw-meta">
+          @if (mw.categoryName) {
+            <span class="mw-category">{{
+              mw.categoryName
+            }}</span>
+          }
+          @if (mw.status) {
+            <span class="mw-status">{{
+              mw.status | snakeToWords
+            }}</span>
+          }
+          @if (mw.created_at) {
+            <span class="mw-created"
+              >Created: {{ mw.created_at | date : "mediumDate" }}</span
+              >
+            }
+            @if (mw.updated_at) {
+              <span class="mw-updated"
+                >Updated: {{ mw.updated_at | date : "mediumDate" }}</span
+                >
+              }
+            </div>
+          </header>
+          <div class="mw-body">
+            @if (mw.imageSignedUrl) {
+              <figure class="mw-image">
+                <img [src]="mw.imageSignedUrl" [alt]="mw.title || mw.name" />
+                @if (mw.title) {
+                  <figcaption>{{ mw.title }}</figcaption>
+                }
+              </figure>
+            }
+            @if (mw.description) {
+              <article class="mw-description">
+                <!-- <h2>Description</h2> -->
+                <p>{{ mw.description }}</p>
+              </article>
+            }
+            @if (mw.manuscriptSignedUrl) {
+              <article class="mw-manuscript">
+                <h2>Research Manuscript</h2>
+                <p>
+                  <a [href]="mw.manuscriptSignedUrl" target="_blank" rel="noopener"
+                    >Open manuscript (signed link)</a
+                    >
+                  </p>
+                </article>
+              }
+              <div class="mw-links">
+                @if (mw.youtubeUrl) {
+                  <a
+                    [href]="mw.youtubeUrl"
+                    target="_blank"
+                    rel="noopener"
+                    class="ext-link youtube"
+                    >YouTube</a
+                    >
+                  }
+                  @if (mw.githubUrl) {
+                    <a
+                      [href]="mw.githubUrl"
+                      target="_blank"
+                      rel="noopener"
+                      class="ext-link github"
+                      >GitHub</a
+                      >
+                    }
+                  </div>
+                </div>
+              </div>
+            </section>
+          }
 
-    <header class="mw-header">
-      <h1 class="mw-title">{{ mw.title || mw.name }}</h1>
-      <p class="mw-summary" *ngIf="mw.summary">{{ mw.summary }}</p>
-      <div class="mw-meta">
-        <span *ngIf="mw.categoryName" class="mw-category">{{
-          mw.categoryName
-        }}</span>
-        <span *ngIf="mw.status" class="mw-status">{{
-          mw.status | snakeToWords
-        }}</span>
-        <span *ngIf="mw.created_at" class="mw-created"
-          >Created: {{ mw.created_at | date : "mediumDate" }}</span
-        >
-        <span *ngIf="mw.updated_at" class="mw-updated"
-          >Updated: {{ mw.updated_at | date : "mediumDate" }}</span
-        >
-      </div>
-    </header>
-
-    <div class="mw-body">
-      <figure class="mw-image" *ngIf="mw.imageSignedUrl">
-        <img [src]="mw.imageSignedUrl" [alt]="mw.title || mw.name" />
-        <figcaption *ngIf="mw.title">{{ mw.title }}</figcaption>
-      </figure>
-
-      <article class="mw-description" *ngIf="mw.description">
-        <!-- <h2>Description</h2> -->
-        <p>{{ mw.description }}</p>
-      </article>
-
-      <article class="mw-manuscript" *ngIf="mw.manuscriptSignedUrl">
-        <h2>Research Manuscript</h2>
-        <p>
-          <a [href]="mw.manuscriptSignedUrl" target="_blank" rel="noopener"
-            >Open manuscript (signed link)</a
-          >
-        </p>
-      </article>
-
-      <div class="mw-links">
-        <a
-          *ngIf="mw.youtubeUrl"
-          [href]="mw.youtubeUrl"
-          target="_blank"
-          rel="noopener"
-          class="ext-link youtube"
-          >YouTube</a
-        >
-        <a
-          *ngIf="mw.githubUrl"
-          [href]="mw.githubUrl"
-          target="_blank"
-          rel="noopener"
-          class="ext-link github"
-          >GitHub</a
-        >
-      </div>
-    </div>
-  </div>
-</section>
-
-<div *ngIf="loading" class="mw-loading">Loading...</div>
-<div *ngIf="!loading && error" class="mw-error">{{ error }}</div>
+          @if (loading) {
+            <div class="mw-loading">Loading...</div>
+          }
+          @if (!loading && error) {
+            <div class="mw-error">{{ error }}</div>
+          }

@@ -9,56 +9,65 @@
         Development on improving Infrastructure, Systems, Platforms, etc.
       </p>
       <div class="tag-pills" role="tablist" aria-label="Project categories">
-        <button
-          *ngFor="let c of projectCategories"
-          class="pill"
-          [class.active]="c.name === selectedProjectCategory"
-          (click)="selectProjectCategory(c.name)"
-          role="tab"
-          [attr.aria-selected]="c.name === selectedProjectCategory"
-        >
-          {{ c.name }}
-        </button>
+        @for (c of projectCategories; track c) {
+          <button
+            class="pill"
+            [class.active]="c.name === selectedProjectCategory"
+            (click)="selectProjectCategory(c.name)"
+            role="tab"
+            [attr.aria-selected]="c.name === selectedProjectCategory"
+            >
+            {{ c.name }}
+          </button>
+        }
       </div>
     </div>
     <div class="project-grid">
-      <article
-        *ngFor="let p of filteredProjects; trackBy: trackProject"
-        class="project-card"
-      >
-        <div class="proj-thumb">
-          <img
-            *ngIf="p.imageSignedUrl"
-            [src]="p.imageSignedUrl"
-            alt="{{ p.title }} image"
-          />
-        </div>
-        <div class="proj-body">
-          <h3 class="proj-title">{{ p.title }}</h3>
-          <p class="proj-description">{{ p.summary }}</p>
-          <div class="proj-meta">
-            <div class="badge-row">
-              <span *ngIf="p.youtubeUrl" class="media-badge youtube">
-                YouTube
-              </span>
-              <span *ngIf="p.githubUrl" class="media-badge github">
-                GitHub
-              </span>
+      @for (p of filteredProjects; track trackProject($index, p)) {
+        <article
+          class="project-card"
+          >
+          <div class="proj-thumb">
+            @if (p.imageSignedUrl) {
+              <img
+                [src]="p.imageSignedUrl"
+                alt="{{ p.title }} image"
+                />
+            }
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">{{ p.title }}</h3>
+            <p class="proj-description">{{ p.summary }}</p>
+            <div class="proj-meta">
+              <div class="badge-row">
+                @if (p.youtubeUrl) {
+                  <span class="media-badge youtube">
+                    YouTube
+                  </span>
+                }
+                @if (p.githubUrl) {
+                  <span class="media-badge github">
+                    GitHub
+                  </span>
+                }
+              </div>
+              @if (p.status) {
+                <span class="proj-status">{{
+                  p.status | snakeToWords
+                }}</span>
+              }
             </div>
-            <span *ngIf="p.status" class="proj-status">{{
-              p.status | snakeToWords
-            }}</span>
+            <div class="proj-actions">
+              <button class="see-details-btn" [routerLink]="['/projects', p.id]">
+                See details
+              </button>
+            </div>
           </div>
-          <div class="proj-actions">
-            <button class="see-details-btn" [routerLink]="['/projects', p.id]">
-              See details
-            </button>
-          </div>
-        </div>
-      </article>
+        </article>
+      }
     </div>
     <!-- <div class="more-row">
-      <button class="more-btn">Explore More Projects</button>
-    </div> -->
-  </div>
+    <button class="more-btn">Explore More Projects</button>
+  </div> -->
+</div>
 </section>

@@ -1,5 +1,5 @@
 // header.component.ts
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   HostListener,
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })

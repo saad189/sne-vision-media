@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 import { Category } from '../../../models';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -11,7 +11,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   selector: 'app-admin-edit-category',
   templateUrl: './admin-edit-category.component.html',
   styleUrls: ['./admin-edit-category.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
 })
 export class AdminEditCategoryComponent {
   private route = inject(ActivatedRoute);

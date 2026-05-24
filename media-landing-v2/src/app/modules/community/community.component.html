@@ -12,17 +12,20 @@
       </p>
     </div>
     <div class="testimonial-row" role="list">
-      <article
-        *ngFor="let t of testimonials; trackBy: trackTestimonial"
-        class="testimonial-card"
-        role="listitem"
-      >
-        <p class="t-quote">{{ t.quote }}</p>
-        <div class="t-author">{{ t.author }}</div>
-        <div *ngIf="t.date" class="t-date">
-          {{ t.date | date : "MMM, yyyy" }}
-        </div>
-      </article>
+      @for (t of testimonials; track trackTestimonial($index, t)) {
+        <article
+          class="testimonial-card"
+          role="listitem"
+          >
+          <p class="t-quote">{{ t.quote }}</p>
+          <div class="t-author">{{ t.author }}</div>
+          @if (t.date) {
+            <div class="t-date">
+              {{ t.date | date : "MMM, yyyy" }}
+            </div>
+          }
+        </article>
+      }
     </div>
   </div>
 </section>

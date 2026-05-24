@@ -4,14 +4,14 @@ import { MediaWorkService } from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 import { MediaWork } from '../../../models';
 import { MediaWorkFormComponent } from '../../../components/media-work-form/media-work-form.component';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   standalone: true,
   selector: 'app-admin-edit-media',
   templateUrl: './admin-edit-media.component.html',
   styleUrls: ['./admin-edit-media.component.scss'],
-  imports: [CommonModule, MediaWorkFormComponent],
+  imports: [MediaWorkFormComponent],
 })
 export class AdminEditMediaComponent {
   private route = inject(ActivatedRoute);

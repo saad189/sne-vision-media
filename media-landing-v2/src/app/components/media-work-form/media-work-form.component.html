@@ -3,19 +3,20 @@
   (ngSubmit)="onSubmit()"
   class="media-work-form"
   novalidate
->
+  >
   <div
     class="field"
     [class.invalid]="form.get('name')?.invalid && form.get('name')?.touched"
-  >
+    >
     <label for="mw-name">Name *</label>
     <input id="mw-name" formControlName="name" placeholder="Display name" />
-    <div
-      class="err"
-      *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
-    >
-      Required
-    </div>
+    @if (form.get('name')?.invalid && form.get('name')?.touched) {
+      <div
+        class="err"
+        >
+        Required
+      </div>
+    }
   </div>
 
   <div class="field">
@@ -32,9 +33,11 @@
       maxlength="280"
       placeholder="Concise summary (<= 280 chars)"
     ></textarea>
-    <div class="hint" *ngIf="form.get('summary')?.value as s">
-      {{ s.length || 0 }} / 280
-    </div>
+    @if (form.get('summary')?.value; as s) {
+      <div class="hint">
+        {{ s.length || 0 }} / 280
+      </div>
+    }
   </div>
 
   <div class="field">
@@ -50,28 +53,35 @@
   <div
     class="field"
     [class.invalid]="form.get('type')?.invalid && form.get('type')?.touched"
-  >
+    >
     <label for="mw-type">Type *</label>
     <select id="mw-type" formControlName="type">
       <option value="projects">Project</option>
       <option value="use-cases">Use Case</option>
     </select>
-    <div
-      class="err"
-      *ngIf="form.get('type')?.invalid && form.get('type')?.touched"
-    >
-      Required
-    </div>
+    @if (form.get('type')?.invalid && form.get('type')?.touched) {
+      <div
+        class="err"
+        >
+        Required
+      </div>
+    }
   </div>
 
   <div class="field">
     <label for="mw-category">Category</label>
     <select id="mw-category" formControlName="categoryId">
       <option value="">-- None --</option>
-      <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+      @for (c of categories; track c) {
+        <option [value]="c.id">{{ c.name }}</option>
+      }
     </select>
-    <div class="hint" *ngIf="loadingCategories">Loading categories...</div>
-    <div class="err" *ngIf="categoryError">{{ categoryError }}</div>
+    @if (loadingCategories) {
+      <div class="hint">Loading categories...</div>
+    }
+    @if (categoryError) {
+      <div class="err">{{ categoryError }}</div>
+    }
   </div>
 
   <div class="field">
@@ -93,89 +103,104 @@
         accept="application/pdf"
         (change)="onManuscriptFileSelected($event)"
         [disabled]="uploadingManuscript"
-      />
-      <div class="progress" *ngIf="uploadingManuscript">
-        <div class="bar" [style.width.%]="uploadProgress"></div>
-      </div>
-      <div class="err" *ngIf="manuscriptError">{{ manuscriptError }}</div>
-      <div
-        class="hint existing-file"
-        *ngIf="!uploadingManuscript && form.get('manuscriptUrl')?.value"
-      >
-        <ng-container *ngIf="manuscriptSignedUrl; else waitingPdf">
-          <span class="label">PDF:</span>
-          <a [href]="manuscriptSignedUrl" target="_blank" rel="noopener"
-            >Open (signed)</a
+        />
+      @if (uploadingManuscript) {
+        <div class="progress">
+          <div class="bar" [style.width.%]="uploadProgress"></div>
+        </div>
+      }
+      @if (manuscriptError) {
+        <div class="err">{{ manuscriptError }}</div>
+      }
+      @if (!uploadingManuscript && form.get('manuscriptUrl')?.value) {
+        <div
+          class="hint existing-file"
           >
-          <button
-            type="button"
-            class="link danger"
-            (click)="removeManuscript()"
-          >
-            Remove
-          </button>
-        </ng-container>
-        <ng-template #waitingPdf>
-          <span class="label">PDF:</span>
-          <span class="filename">{{
-            fileNameOf(form.get("manuscriptUrl")?.value)
-          }}</span>
-          <em> (generating secure link...)</em>
-        </ng-template>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="mw-image-file">Image (PNG/JPG, max 5MB)</label>
-      <input
-        id="mw-image-file"
-        type="file"
-        accept="image/*"
-        (change)="onImageFileSelected($event)"
-        [disabled]="uploadingImage"
-      />
-      <div class="progress" *ngIf="uploadingImage">
-        <div class="bar" [style.width.%]="imageUploadProgress"></div>
-      </div>
-      <div class="err" *ngIf="imageError">{{ imageError }}</div>
-      <div class="hint" *ngIf="!uploadingImage && form.get('imageUrl')?.value">
-        <ng-container *ngIf="imageSignedUrl; else waitingImg">
-          <div class="image-preview" *ngIf="imageSignedUrl">
-            <img [src]="imageSignedUrl" alt="Uploaded image preview" />
+          @if (manuscriptSignedUrl) {
+            <span class="label">PDF:</span>
+            <a [href]="manuscriptSignedUrl" target="_blank" rel="noopener"
+              >Open (signed)</a
+              >
+              <button
+                type="button"
+                class="link danger"
+                (click)="removeManuscript()"
+                >
+                Remove
+              </button>
+            } @else {
+              <span class="label">PDF:</span>
+              <span class="filename">{{
+                fileNameOf(form.get("manuscriptUrl")?.value)
+              }}</span>
+              <em> (generating secure link...)</em>
+            }
           </div>
-          <button type="button" class="link danger" (click)="removeImage()">
-            Remove
-          </button>
-        </ng-container>
-        <ng-template #waitingImg>
-          <span class="label">Image:</span>
-          <span class="filename">{{
-            fileNameOf(form.get("imageUrl")?.value)
-          }}</span>
-          <em> (generating secure image link...)</em>
-        </ng-template>
+        }
       </div>
-    </div>
-    <div class="field">
-      <label for="mw-youtube">YouTube URL</label>
-      <input
-        id="mw-youtube"
-        formControlName="youtubeUrl"
-        placeholder="https://youtube.com/..."
-      />
-    </div>
-    <div class="field">
-      <label for="mw-github">GitHub URL</label>
-      <input
-        id="mw-github"
-        formControlName="githubUrl"
-        placeholder="https://github.com/..."
-      />
-    </div>
-  </fieldset>
 
-  <button class="primary" type="submit" [disabled]="form.invalid || submitting">
-    <span *ngIf="!submitting">{{ submitLabel }}</span>
-    <span *ngIf="submitting" class="spinner"></span>
-  </button>
-</form>
+      <div class="field">
+        <label for="mw-image-file">Image (PNG/JPG, max 5MB)</label>
+        <input
+          id="mw-image-file"
+          type="file"
+          accept="image/*"
+          (change)="onImageFileSelected($event)"
+          [disabled]="uploadingImage"
+          />
+        @if (uploadingImage) {
+          <div class="progress">
+            <div class="bar" [style.width.%]="imageUploadProgress"></div>
+          </div>
+        }
+        @if (imageError) {
+          <div class="err">{{ imageError }}</div>
+        }
+        @if (!uploadingImage && form.get('imageUrl')?.value) {
+          <div class="hint">
+            @if (imageSignedUrl) {
+              @if (imageSignedUrl) {
+                <div class="image-preview">
+                  <img [src]="imageSignedUrl" alt="Uploaded image preview" />
+                </div>
+              }
+              <button type="button" class="link danger" (click)="removeImage()">
+                Remove
+              </button>
+            } @else {
+              <span class="label">Image:</span>
+              <span class="filename">{{
+                fileNameOf(form.get("imageUrl")?.value)
+              }}</span>
+              <em> (generating secure image link...)</em>
+            }
+          </div>
+        }
+      </div>
+      <div class="field">
+        <label for="mw-youtube">YouTube URL</label>
+        <input
+          id="mw-youtube"
+          formControlName="youtubeUrl"
+          placeholder="https://youtube.com/..."
+          />
+      </div>
+      <div class="field">
+        <label for="mw-github">GitHub URL</label>
+        <input
+          id="mw-github"
+          formControlName="githubUrl"
+          placeholder="https://github.com/..."
+          />
+      </div>
+    </fieldset>
+
+    <button class="primary" type="submit" [disabled]="form.invalid || submitting">
+      @if (!submitting) {
+        <span>{{ submitLabel }}</span>
+      }
+      @if (submitting) {
+        <span class="spinner"></span>
+      }
+    </button>
+  </form>

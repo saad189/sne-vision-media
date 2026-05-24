@@ -14,7 +14,7 @@
             required
             maxlength="120"
             placeholder="Media Production Masterclass"
-          />
+            />
         </div>
         <div class="field">
           <label>Event Type <span class="req">*</span></label>
@@ -23,106 +23,120 @@
             required
             [(ngModel)]="model.event_type_id"
             [disabled]="loadingTypes || !eventTypes.length"
-          >
+            >
             <option value="" disabled selected>
               {{
-                loadingTypes
-                  ? "Loading types..."
-                  : eventTypes.length
-                  ? "Select type"
-                  : "No types found"
+              loadingTypes
+              ? "Loading types..."
+              : eventTypes.length
+              ? "Select type"
+              : "No types found"
               }}
             </option>
-            <option *ngFor="let t of eventTypes" [value]="t.id">
-              {{ t.name }}
-            </option>
+            @for (t of eventTypes; track t) {
+              <option [value]="t.id">
+                {{ t.name }}
+              </option>
+            }
           </select>
-          <small class="hint" *ngIf="!loadingTypes && !eventTypes.length"
-            >No event types yet.</small
-          >
+          @if (!loadingTypes && !eventTypes.length) {
+            <small class="hint"
+              >No event types yet.</small
+              >
+            }
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label>Description</label>
-        <textarea
-          name="description"
-          rows="4"
-          [(ngModel)]="model.description"
-          placeholder="Short description"
-        ></textarea>
-      </div>
-      <div class="grid two">
         <div class="field">
-          <label>Location</label>
-          <input
-            name="location"
-            [(ngModel)]="model.location"
-            placeholder="NUST Islamabad / Online"
-          />
+          <label>Description</label>
+          <textarea
+            name="description"
+            rows="4"
+            [(ngModel)]="model.description"
+            placeholder="Short description"
+          ></textarea>
         </div>
-        <div class="field image-field">
-          <label>Event Image</label>
-          <div class="upload-box" [class.uploading]="uploadingImage">
+        <div class="grid two">
+          <div class="field">
+            <label>Location</label>
             <input
-              type="file"
-              accept="image/*"
-              (change)="onImageFileSelected($event)"
-              [disabled]="uploadingImage"
-            />
-            <div
-              class="placeholder"
-              *ngIf="!model.image_url && !uploadingImage"
-            >
-              <span>Select or drop an image (max 5MB)</span>
-            </div>
-            <div class="progress" *ngIf="uploadingImage">
-              <div class="bar" [style.width.%]="imageUploadProgress"></div>
-              <span class="pc">{{ imageUploadProgress }}%</span>
-            </div>
+              name="location"
+              [(ngModel)]="model.location"
+              placeholder="NUST Islamabad / Online"
+              />
           </div>
-          <div class="img-preview" *ngIf="model.image_url">
-            <div class="thumb" *ngIf="imageSignedUrl; else noSigned">
-              <img [src]="imageSignedUrl" alt="Event image preview" />
+          <div class="field image-field">
+            <label>Event Image</label>
+            <div class="upload-box" [class.uploading]="uploadingImage">
+              <input
+                type="file"
+                accept="image/*"
+                (change)="onImageFileSelected($event)"
+                [disabled]="uploadingImage"
+                />
+              @if (!model.image_url && !uploadingImage) {
+                <div
+                  class="placeholder"
+                  >
+                  <span>Select or drop an image (max 5MB)</span>
+                </div>
+              }
+              @if (uploadingImage) {
+                <div class="progress">
+                  <div class="bar" [style.width.%]="imageUploadProgress"></div>
+                  <span class="pc">{{ imageUploadProgress }}%</span>
+                </div>
+              }
             </div>
-            <ng-template #noSigned>
-              <code>{{ model.image_url }}</code>
-            </ng-template>
-            <button type="button" class="danger mini" (click)="removeImage()">
-              Remove
-            </button>
+            @if (model.image_url) {
+              <div class="img-preview">
+                @if (imageSignedUrl) {
+                  <div class="thumb">
+                    <img [src]="imageSignedUrl" alt="Event image preview" />
+                  </div>
+                } @else {
+                  <code>{{ model.image_url }}</code>
+                }
+                <button type="button" class="danger mini" (click)="removeImage()">
+                  Remove
+                </button>
+              </div>
+            }
+            <small class="hint">PNG/JPG up to 5MB. Auto-upload to storage.</small>
+            @if (imageError) {
+              <div class="err">{{ imageError }}</div>
+            }
           </div>
-          <small class="hint">PNG/JPG up to 5MB. Auto-upload to storage.</small>
-          <div class="err" *ngIf="imageError">{{ imageError }}</div>
         </div>
-      </div>
-      <div class="grid two">
-        <div class="field">
-          <label>Starts At (UTC)</label>
-          <input
-            type="datetime-local"
-            name="starts_at"
-            [(ngModel)]="model.starts_at"
-          />
+        <div class="grid two">
+          <div class="field">
+            <label>Starts At (UTC)</label>
+            <input
+              type="datetime-local"
+              name="starts_at"
+              [(ngModel)]="model.starts_at"
+              />
+          </div>
+          <div class="field">
+            <label>Ends At (UTC)</label>
+            <input
+              type="datetime-local"
+              name="ends_at"
+              [(ngModel)]="model.ends_at"
+              />
+          </div>
         </div>
-        <div class="field">
-          <label>Ends At (UTC)</label>
-          <input
-            type="datetime-local"
-            name="ends_at"
-            [(ngModel)]="model.ends_at"
-          />
+        <!-- preview moved into upload section -->
+        @if (error) {
+          <div class="err global">{{ error }}</div>
+        }
+        <div class="actions">
+          <button type="submit" [disabled]="submitting || !f.form.valid">
+            {{ submitting ? "Saving…" : "Create Event" }}
+          </button>
+          <button type="button" class="secondary" routerLink="/admin/events">
+            Cancel
+          </button>
         </div>
-      </div>
-      <!-- preview moved into upload section -->
-      <div *ngIf="error" class="err global">{{ error }}</div>
-      <div class="actions">
-        <button type="submit" [disabled]="submitting || !f.form.valid">
-          {{ submitting ? "Saving…" : "Create Event" }}
-        </button>
-        <button type="button" class="secondary" routerLink="/admin/events">
-          Cancel
-        </button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
