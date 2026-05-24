@@ -1,36 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { LoadingService } from '../services/loading.service';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MODULES } from '../constants';
 import { Module } from '../models';
-import { HeaderComponent } from "./common/header/header.component";
-import { FooterComponent } from "./common/footer/footer.component";
-
+import { HeaderComponent } from './common/header/header.component';
+import { FooterComponent } from './common/footer/footer.component';
+import { BackToTopComponent } from './common/back-to-top/back-to-top.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule,
     RouterModule,
     HeaderComponent,
-    FooterComponent
-  ],
+    FooterComponent,
+    BackToTopComponent
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
   isLoading = false;
   modules = MODULES;
   activeModule: any = null;
   activeSubmodule: any = null;
   sidenavOpen = false;
+  hideChrome = false; // hide header/footer on specific routes (e.g., admin login)
 
   constructor(private loadingService: LoadingService, private router: Router) {
-
     this.loadingService.isLoading$.subscribe(
       (loading) => (this.isLoading = loading)
     );
@@ -49,6 +48,7 @@ export class AppComponent implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.checkCurrentRoute(event.url);
+        this.evaluateChromeVisibility(event.url);
       });
   }
 
@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
     this.setActiveModuleByName(activeModule);
     this.setActiveSubmoduleByName(
       activeModule.subModules?.find((sub) => sub.path === subPath) ||
-      activeModule.subModules?.[0]
+        activeModule.subModules?.[0]
     );
   }
 
@@ -80,7 +80,6 @@ export class AppComponent implements OnInit {
   }
 
   navigateToModule(module: Module): void {
-
     if (module.subModules && module.subModules.length > 0) {
       this.activeModule = module;
       this.navigateToSubmodule(module.subModules[0]);
@@ -102,8 +101,18 @@ export class AppComponent implements OnInit {
     alert('Coming Soon!');
   }
 
-
   toggleSidenav(): void {
     this.sidenavOpen = !this.sidenavOpen;
+  }
+
+  /**
+   * Determines whether to hide global chrome (header/footer) for full-screen experiences.
+   * Currently hides on admin login route.
+   */
+  evaluateChromeVisibility(url: string): void {
+    // Normalize URL (strip query/hash)
+    const clean = url.split(/[?#]/)[0];
+    // Match /admin-panel/login or /admin-panel
+    this.hideChrome = /\/admin-panel(\/login)?$/.test(clean);
   }
 }

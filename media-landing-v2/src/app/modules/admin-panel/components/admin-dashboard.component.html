@@ -1,0 +1,68 @@
+<div class="dashboard-shell">
+  <header class="dash-header">
+    <h1>Admin Dashboard</h1>
+    <div class="actions">
+      <div
+        class="action-dropdown"
+        [class.open]="dropdownOpen"
+        (keydown.escape)="dropdownOpen = false"
+        >
+        <button class="secondary" (click)="toggleDropdown()">
+          ⚙️ Actions ▾
+        </button>
+        @if (dropdownOpen) {
+          <ul class="menu">
+            <li (click)="goAdd(); closeDropdown()">➕ Add Media Work</li>
+            <li (click)="goAddCategory(); closeDropdown()">➕ Add Category</li>
+            <li (click)="goAddEvent(); closeDropdown()">➕ Add Event</li>
+            <li (click)="goMediaWorks(); closeDropdown()">📄 View Media Works</li>
+            <li (click)="goCategories(); closeDropdown()">📁 View Categories</li>
+            <li (click)="goEvents(); closeDropdown()">📅 View Events</li>
+            <li (click)="goEcosystemSubmissions(); closeDropdown()">
+              🌱 View Ecosystem Submissions
+            </li>
+            <li class="sep"></li>
+            <li class="danger" (click)="logout(); closeDropdown()">⏻ Logout</li>
+          </ul>
+        }
+      </div>
+    </div>
+  </header>
+  <section class="grid">
+    <div class="card" (click)="goAdd()" tabindex="0">
+      <h2>Create New Media Work</h2>
+      <p>Add a new project or use case entry to showcase.</p>
+      <span class="cta">Start Now →</span>
+    </div>
+    <div class="card" (click)="goMediaWorks()" tabindex="0">
+      <h2>Media Works</h2>
+      <p>Browse, review and manage all existing media works.</p>
+      <span class="cta">View List →</span>
+    </div>
+    <div class="card" (click)="goAddCategory()" tabindex="0">
+      <h2>Add Category</h2>
+      <p>Create a new category to classify media works.</p>
+      <span class="cta">Add One →</span>
+    </div>
+    <div class="card" (click)="goCategories()" tabindex="0">
+      <h2>Categories</h2>
+      <p>View all categories currently available.</p>
+      <span class="cta">View List →</span>
+    </div>
+    <div class="card" (click)="goEcosystemSubmissions()" tabindex="0">
+      <h2>Ecosystem Submissions</h2>
+      <p>Review messages submitted via ecosystem form.</p>
+      <span class="cta">View List →</span>
+    </div>
+    <div class="card" (click)="goAddEvent()" tabindex="0">
+      <h2>Create New Event</h2>
+      <p>Add a seminar, workshop or meetup.</p>
+      <span class="cta">Create Event →</span>
+    </div>
+    <div class="card" (click)="goEvents()" tabindex="0">
+      <h2>Events</h2>
+      <p>Browse and manage scheduled events.</p>
+      <span class="cta">View Events →</span>
+    </div>
+  </section>
+</div>

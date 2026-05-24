@@ -1,8 +1,133 @@
+<section class="pre-footer">
+  <div class="pre-footer__inner">
+    <div class="pre-footer__col pre-footer__about">
+      <img
+        src="/assets/images/sne_logo.png"
+        alt="Vision Media"
+        class="pre-footer__logo"
+        />
+      <h4>Scientist and Engineer Vision Media</h4>
+      <p>
+        Scientist and Engineer Vision Media aims to collaborate with the best
+        engineers and scientists to fix problems of Pakistan.
+      </p>
+      <p class="muted">Phone Number: {{ phone }}</p>
+      <ul class="social-list">
+        <li>
+          <a
+            href="https://facebook.com"
+            aria-label="Facebook"
+            target="_blank"
+            rel="noopener"
+            ><img src="/assets/images/icons/facebook.png" alt="Facebook"
+          /></a>
+        </li>
+        <li>
+          <a
+            href="https://www.instagram.com/sne_vision_media"
+            aria-label="Instagram"
+            target="_blank"
+            rel="noopener"
+            ><img src="/assets/images/icons/instagram.png" alt="Instagram"
+          /></a>
+        </li>
+        <li>
+          <a
+            href="https://twitter.com"
+            aria-label="Twitter"
+            target="_blank"
+            rel="noopener"
+            ><img src="/assets/images/icons/twitter.png" alt="Twitter"
+          /></a>
+        </li>
+        <li>
+          <a
+            href="https://youtube.com"
+            aria-label="YouTube"
+            target="_blank"
+            rel="noopener"
+            ><img src="/assets/images/icons/youtube.png" alt="YouTube"
+          /></a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="pre-footer__col pre-footer__contact">
+      <h5>Contact Us</h5>
+      <ul class="contact-list">
+        <li>
+          <img
+            src="/assets/images/icons/map.png"
+            alt="Location"
+            class="icon location"
+            />
+          <span>Address: {{ address }}</span>
+        </li>
+        <li>
+          <img
+            src="/assets/images/icons/phone.png"
+            alt="Phone"
+            class="icon phone"
+            />
+          <span>Phone: {{ phone }}</span>
+        </li>
+        <li>
+          <img
+            src="/assets/images/icons/email.png"
+            alt="Email"
+            class="icon email"
+            />
+          <span
+            >Email:
+            <a href="mailto:{{ email }}">{{ email }}</a>
+          </span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="pre-footer__col pre-footer__support">
+      <h5>Support</h5>
+      <ul class="support-links">
+        <li><a routerLink="/faq">FAQ</a></li>
+        <li><a routerLink="/policy">Policy</a></li>
+        <!-- <li><a routerLink="/chat">Quick Chat</a></li> -->
+      </ul>
+    </div>
+
+    <div class="pre-footer__col pre-footer__newsletter">
+      <h5>Join our Newsletter</h5>
+      <form
+        (ngSubmit)="subscribe()"
+        #newsletterForm="ngForm"
+        novalidate
+        class="newsletter-form"
+        >
+        <div class="newsletter-form__group">
+          <input
+            type="email"
+            name="email"
+            ngModel
+            required
+            placeholder="your email address"
+            aria-label="Email address"
+            />
+          <button type="submit" [disabled]="newsletterForm.invalid">
+            Subscribe
+          </button>
+        </div>
+        @if (subscribed) {
+          <p class="success">Thank you for subscribing!</p>
+        }
+      </form>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="footer-content">
     <p>
-      2025 &copy; COPYRIGHT SCIENTISTS AND ENGINEERS VISION MEDIA. ALL RIGHTS
-      RESERVED
+      {{ year }} &copy; COPYRIGHT SCIENTISTS AND ENGINEERS VISION MEDIA. ALL
+      RIGHTS RESERVED
     </p>
   </div>
 </footer>

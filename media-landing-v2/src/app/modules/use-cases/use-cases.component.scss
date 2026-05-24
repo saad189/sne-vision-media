@@ -1,0 +1,129 @@
+/* Use-case cards */
+.use-case-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+  margin-top: 1rem;
+  /* max 3 cards per row (3 * 280px + 2 gaps) */
+  max-width: calc(3 * 280px + 2 * 1.75rem);
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+.use-case-card {
+  position: relative;
+  background: linear-gradient(180deg, #e8e8e8 0%, #636363 100%);
+  border-radius: 18px;
+  flex: 1 1 280px; /* let it shrink a bit on very narrow screens */
+  max-width: 280px;
+  width: 280px;
+  height: 280px;
+  padding: 1rem 0.85rem 1.1rem;
+  box-shadow: 0 8px 22px -8px rgba(0, 0, 0, 0.25),
+    0 3px 8px -3px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;
+  transition: 0.35s transform, 0.35s box-shadow;
+}
+.use-case-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 28% 18%,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0)
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.use-case-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.32),
+    0 6px 14px -6px rgba(0, 0, 0, 0.18);
+}
+.uc-bg-img {
+  height: 90px;
+  border-radius: 14px;
+  background: #2c2c2c url("/assets/images/sne_logo.png") center/60% no-repeat;
+  filter: brightness(0.6) contrast(1.05);
+  margin-bottom: 0.85rem;
+}
+.uc-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center title/text/image horizontally */
+  flex: 1;
+}
+.uc-title {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.05rem;
+  margin: 0 0 0.45rem;
+  color: #151515;
+  text-align: center;
+}
+.uc-summary {
+  font-size: 0.55rem;
+  line-height: 0.9rem;
+  font-weight: 500;
+  color: #2a2a2a;
+  margin: 0 0 0.75rem;
+  text-align: center;
+}
+.uc-meta {
+  display: flex;
+}
+.uc-footer {
+  display: flex;
+  align-items: center;
+  //  justify-content: center; /* center the CTA */
+  margin-left: 1rem;
+}
+.uc-status {
+  font-size: 0.5rem;
+  font-weight: 600;
+  background: #1b1b1b;
+  color: #fff;
+  padding: 0.35rem 0.55rem;
+  border-radius: 1000px;
+  letter-spacing: 0.4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.uc-cta {
+  width: 150px;
+  text-align: center;
+  font-size: 0.5rem;
+  font-weight: 600;
+  padding: 0.45rem 1.1rem; /* more width */
+  background: #ffffff;
+  border: 1px solid #c9c9c9;
+  border-radius: 1000px;
+  color: #111;
+  text-decoration: none;
+  line-height: 1;
+  display: inline-block;
+  transition: 0.25s background, 0.25s color, 0.25s border-color;
+}
+.uc-cta:hover {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+/* Image displayed below the CTA */
+.uc-image {
+  width: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 50%;
+  border-radius: 12px;
+  // margin-top: 0.9rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* Former grid layout media query removed since flex layout controls row count */

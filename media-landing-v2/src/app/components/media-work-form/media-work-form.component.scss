@@ -1,0 +1,155 @@
+// Matches visual system of login (glass + subtle focus accents)
+.media-work-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  max-width: 760px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.field label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: #f8fafc;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 140ms, background 140ms, box-shadow 140ms;
+  resize: vertical;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #38bdf8;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+.field.invalid input,
+.field.invalid textarea,
+.field.invalid select {
+  border-color: #f87171;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.25);
+}
+
+fieldset.links-group {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 1.1rem 1.2rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  display: grid;
+  gap: 1rem 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  position: relative;
+}
+fieldset.links-group legend {
+  padding: 0 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+fieldset .field {
+  margin: 0;
+}
+
+.existing-file .label,
+.hint .label {
+  font-weight: 600;
+  color: #94a3b8;
+  margin-right: 0.35rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.hint .filename {
+  color: #e2e8f0;
+  font-size: 0.7rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New",
+    monospace;
+}
+.image-preview {
+  margin: 0.35rem 0 0.6rem;
+}
+.image-preview img {
+  max-width: 140px;
+  max-height: 140px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 2px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.4);
+}
+
+.primary {
+  margin-top: 0.25rem;
+  align-self: flex-start;
+  padding: 0.85rem 1.25rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: #f8fafc;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  box-shadow: 0 4px 18px -4px rgba(14, 165, 233, 0.55),
+    0 2px 6px -2px rgba(14, 165, 233, 0.55);
+  transition: transform 160ms, box-shadow 160ms;
+}
+.primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+.primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+.primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.err {
+  color: #f87171;
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  fieldset.links-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

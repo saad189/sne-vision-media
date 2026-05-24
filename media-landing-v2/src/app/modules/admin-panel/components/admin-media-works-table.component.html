@@ -1,0 +1,54 @@
+<div class="dashboard-shell">
+  <div class="table-shell">
+    <header class="head">
+      <h1>Media Works</h1>
+      <button class="secondary" (click)="load()" [disabled]="loading">
+        Reload
+      </button>
+    </header>
+    @if (loading) {
+      <div>Loading...</div>
+    }
+    @if (error) {
+      <div class="err">{{ error }}</div>
+    }
+    @if (!loading && !error && rows.length) {
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Category</th>
+            <th>Created</th>
+            <th style="width: 140px">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of rows; track trackById(i, r); let i = $index) {
+            <tr>
+              <td>{{ r.name }}</td>
+              <td>{{ r.summary || "-" }}</td>
+              <td>{{ r.description || "-" }}</td>
+              <td>{{ r.type ? (r.type | snakeToWords) : "-" }}</td>
+              <td>{{ r.status ? (r.status | snakeToWords) : "-" }}</td>
+              <td>{{ r.categoryName || "—" }}</td>
+              <td>{{ r.created_at | date : "short" }}</td>
+              <td class="actions">
+                <button class="secondary" (click)="edit(r)">Edit</button>
+                <button class="danger" (click)="delete(r)">Del</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+    @if (!loading && !error && !rows.length) {
+      <div class="empty">
+        No media works yet.
+      </div>
+    }
+  </div>
+</div>

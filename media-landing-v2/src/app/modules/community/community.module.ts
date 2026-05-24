@@ -4,12 +4,7 @@ import { CommunityRoutingModule } from './community-routing.module';
 import { CommunityComponent } from './community.component';
 
 @NgModule({
-    declarations: [
-        CommunityComponent
-    ],
-    imports: [
-        CommonModule,
-        CommunityRoutingModule
-    ]
+    imports: [CommonModule, CommunityRoutingModule, CommunityComponent],
+    exports: [CommunityComponent],
 })
-export class CommunityModule { }
+export class CommunityModule {}

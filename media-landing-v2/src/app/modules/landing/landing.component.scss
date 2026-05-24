@@ -1,24 +1,61 @@
-.landing-container {
+/* Global section utilities */
+
+body,
+:host {
+  background: #e9e9e9;
+}
+/* Hero */
+.hero-wrapper {
+  background: #e9e9e9;
+  padding: 4.5rem 1rem 2.5rem;
+}
+.hero-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  text-align: center;
+}
+.hero-title {
+  font-size: clamp(1.9rem, 4vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.25rem;
+  color: #121212;
+}
+.hero-mission {
+  max-width: 840px;
+  margin: 0 auto 2.75rem;
+  font-size: 0.72rem;
+  line-height: 1.15rem;
+  font-weight: 500;
+  color: #2e2e2e;
+}
+
+/* Hero Carousel */
+.hero-carousel-wrapper {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 80vh;
-  padding: 2rem;
-  text-align: center;
+  gap: 2.5rem;
+}
 
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
+.hero-swiper {
+  width: 100%;
+  height: var(--hero-height);
+  position: relative;
+}
+
+@media (max-width: 860px) {
+  .hero-composite {
+    flex-wrap: wrap;
+    gap: 1.25rem;
   }
-
-  .content {
-    max-width: 800px;
-    margin: 0 auto;
-
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
+  .hero-composite .side-card {
+    order: 2;
+    width: 38%;
+    min-width: 140px;
+  }
+  .hero-composite .main-card {
+    order: 1;
+    width: 78%;
   }
 }

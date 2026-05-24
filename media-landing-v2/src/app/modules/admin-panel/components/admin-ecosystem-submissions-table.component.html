@@ -1,0 +1,53 @@
+<div class="dashboard-shell">
+  <div class="table-shell">
+    <header class="head">
+      <h1>Ecosystem Submissions</h1>
+      <div>
+        <button class="secondary" (click)="load()" [disabled]="loading">
+          Reload
+        </button>
+      </div>
+    </header>
+    @if (loading) {
+      <div>Loading...</div>
+    }
+    @if (error) {
+      <div class="err">{{ error }}</div>
+    }
+    @if (!loading && !error && rows.length) {
+      <table
+        class="data-table ecosystem-table"
+        >
+        <thead>
+          <tr>
+            <th style="width: 160px">Name</th>
+            <th style="width: 200px">Email</th>
+            <th style="width: 120px">Phone</th>
+            <th style="width: 140px">Designation</th>
+            <th>Message</th>
+            <th style="width: 140px">Submitted</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of rows; track trackById($index, r)) {
+            <tr [title]="r.message">
+              <td>{{ r.name }}</td>
+              <td>
+                <a [href]="'mailto:' + r.email">{{ r.email }}</a>
+              </td>
+              <td>{{ r.phone || "—" }}</td>
+              <td>{{ r.designation || "—" }}</td>
+              <td class="msg" [title]="r.message">{{ r.message }}</td>
+              <td>{{ r.created_at | date : "short" }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+    @if (!loading && !error && !rows.length) {
+      <div class="empty">
+        No ecosystem submissions yet.
+      </div>
+    }
+  </div>
+</div>

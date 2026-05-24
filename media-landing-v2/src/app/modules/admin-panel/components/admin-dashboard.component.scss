@@ -1,0 +1,176 @@
+@mixin card-surface {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+}
+
+.dashboard-shell {
+  min-height: calc(100vh - 0px);
+  padding: 2.5rem clamp(1rem, 4vw, 3rem) 3rem;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #0f172a 100%);
+  color: #f1f5f9;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif;
+}
+
+.dash-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2.25rem;
+}
+.dash-header h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 3.3vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.actions {
+  display: flex;
+  gap: 0.9rem;
+}
+
+.action-dropdown {
+  position: relative;
+}
+.action-dropdown .menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  min-width: 220px;
+  box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.55);
+  z-index: 30;
+}
+.action-dropdown .menu li {
+  padding: 0.55rem 0.95rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.action-dropdown .menu li:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+.action-dropdown .menu li.sep {
+  padding: 0;
+  margin: 0.35rem 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  cursor: default;
+}
+.action-dropdown .menu li.danger {
+  color: #f87171;
+}
+.action-dropdown .menu li.danger:hover {
+  background: rgba(248, 113, 113, 0.12);
+}
+
+button {
+  font: inherit;
+  line-height: 1.1;
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 0.75rem 1.15rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: background 160ms, transform 160ms, box-shadow 160ms;
+}
+button.secondary {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: #f8fafc;
+  box-shadow: 0 4px 14px -4px rgba(14, 165, 233, 0.55);
+}
+button.secondary:hover {
+  transform: translateY(-2px);
+}
+button.secondary:active {
+  transform: translateY(0);
+}
+button.danger {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #fff;
+  box-shadow: 0 4px 14px -4px rgba(239, 68, 68, 0.6);
+}
+button.danger:hover {
+  transform: translateY(-2px);
+}
+button.danger:active {
+  transform: translateY(0);
+}
+
+.grid {
+  display: grid;
+  gap: 1.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: stretch;
+}
+
+.card {
+  @include card-surface;
+  position: relative;
+  padding: 1.6rem 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  cursor: pointer;
+  min-height: 170px;
+  box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.45);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 200ms,
+    background 200ms;
+}
+.card h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.card p {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  line-height: 1.35;
+}
+.card .cta {
+  margin-top: auto;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  font-weight: 600;
+}
+.card:hover:not(.disabled) {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 28px -8px rgba(56, 189, 248, 0.55);
+  border-color: rgba(56, 189, 248, 0.6);
+}
+.card:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 3px;
+}
+.card.disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+.card.disabled:hover {
+  transform: none;
+}
+
+@media (max-width: 640px) {
+  .dashboard-shell {
+    padding: 2rem 1.1rem 2.5rem;
+  }
+  .grid {
+    gap: 1.1rem;
+  }
+}

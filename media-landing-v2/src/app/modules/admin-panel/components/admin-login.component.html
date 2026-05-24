@@ -1,0 +1,82 @@
+<div class="login-shell">
+  <div class="login-card" [class.loading]="loading || initializing">
+    <h1 class="title">Admin Panel</h1>
+    @if (!initializing) {
+      <p class="subtitle">Sign in to continue</p>
+    }
+    @if (initializing) {
+      <div class="init-spinner">
+        <div class="spinner"></div>
+        <p class="init-text">Preparing authentication…</p>
+      </div>
+    }
+    @if (!initializing) {
+      <form
+        [formGroup]="form"
+        (ngSubmit)="login()"
+        class="admin-login-form"
+        novalidate
+        >
+        <div
+          class="field"
+        [class.invalid]="
+          form.get('email')?.invalid && form.get('email')?.touched
+        "
+          >
+          <label for="email">Email</label>
+          <input
+            id="email"
+            formControlName="email"
+            type="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            />
+          @if (form.get('email')?.invalid && form.get('email')?.touched) {
+            <div
+              class="err"
+              >
+              Valid email required
+            </div>
+          }
+        </div>
+        <div
+          class="field"
+        [class.invalid]="
+          form.get('password')?.invalid && form.get('password')?.touched
+        "
+          >
+          <label for="password">Password</label>
+          <input
+            id="password"
+            formControlName="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="••••••••"
+            />
+          @if (form.get('password')?.invalid && form.get('password')?.touched) {
+            <div
+              class="err"
+              >
+              Password required
+            </div>
+          }
+        </div>
+        <button
+          class="primary"
+          type="submit"
+          [disabled]="form.invalid || loading"
+          >
+          @if (!loading) {
+            <span>Login</span>
+          }
+          @if (loading) {
+            <span class="spinner"></span>
+          }
+        </button>
+        @if (error) {
+          <div class="err global">{{ error }}</div>
+        }
+      </form>
+    }
+  </div>
+</div>

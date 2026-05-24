@@ -1,0 +1,43 @@
+/* Seminars tiles */
+.seminars-section {
+  background: #e9e9e9;
+}
+.seminar-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3.2rem;
+  justify-content: flex-start;
+}
+.seminar-tile {
+  text-align: center;
+  width: 160px;
+}
+.seminar-tile .tile-img {
+  width: 160px;
+  height: 160px;
+  background: #c6c6c6;
+  border-radius: 16px;
+  margin: 0 auto 0.65rem;
+  box-shadow: 0 8px 22px -10px rgba(0, 0, 0, 0.28),
+    0 4px 10px -4px rgba(0, 0, 0, 0.16);
+}
+.seminar-tile .tile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Contain entire image within the square */
+  border-radius: inherit;
+  display: block;
+  background: #fff; /* Prevent grey bleed-through for transparent images */
+}
+.tile-caption {
+  font-size: 0.5rem;
+  line-height: 0.75rem;
+  font-weight: 600;
+  color: #141414;
+}
+.tile-date {
+  display: block;
+  font-weight: 500;
+  color: #444;
+  margin-top: 0.2rem;
+}

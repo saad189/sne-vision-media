@@ -1,0 +1,64 @@
+<div class="dashboard-shell">
+  <div class="table-shell">
+    <div class="dashboard-shell">
+      <div class="table-shell">
+        <header class="head">
+          <h1>Events</h1>
+          <button class="secondary" (click)="load()" [disabled]="loading">
+            Reload
+          </button>
+        </header>
+        @if (loading) {
+          <div>Loading...</div>
+        }
+        @if (error) {
+          <div class="err">{{ error }}</div>
+        }
+        @if (!loading && !error && rows.length) {
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Starts</th>
+                <th>Ends</th>
+                <th>Img</th>
+                <th style="width: 110px">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of rows; track trackById($index, r)) {
+                <tr>
+                  <td>{{ r.name }}</td>
+                  <td>
+                    <span
+                      class="badge"
+                      [class.badge-default]="!r.event_type"
+                      [title]="r.event_type?.description || ''"
+                      >{{ r.event_type?.name || "—" }}</span
+                      >
+                    </td>
+                    <td>{{ r.location || "—" }}</td>
+                    <td>{{ r.starts_at | date : "short" }}</td>
+                    <td>{{ r.ends_at | date : "short" }}</td>
+                    <td class="img-indicator" [title]="r.image_url || 'No image'">
+                      <span class="dot" [class.has]="!!r.image_url"></span>
+                    </td>
+                    <td class="actions">
+                      <button class="danger" (click)="delete(r)">Del</button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+          @if (!loading && !error && !rows.length) {
+            <div class="empty">
+              No events yet.
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>

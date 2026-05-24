@@ -1,1 +1,69 @@
-<p>use-cases works!</p>
+<!-- Use Cases Section -->
+<section id="use-cases" class="section-pad">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">Use Cases</span>
+      <h2 class="section-title">Explore how we envision the Future</h2>
+      <p class="section-sub">
+        Learn how the Best Minds collaborate, research, simulate and develop
+        solutions to real-world tasks. Explore the solution and cost of
+        decisions.
+      </p>
+      <div class="tag-pills" role="tablist" aria-label="Use case categories">
+        @for (c of categories; track c) {
+          <button
+            class="pill"
+            [class.active]="c.name === selectedCategory"
+            (click)="selectCategory(c.name)"
+            role="tab"
+            [attr.aria-selected]="c.name === selectedCategory"
+            >
+            {{ c.name }}
+          </button>
+        }
+      </div>
+    </div>
+    <div class="use-case-grid">
+      @for (uc of filteredUseCases; track trackUseCase($index, uc)) {
+        <article
+          class="use-case-card"
+          >
+          <div class="uc-content">
+            <h3 class="uc-title">{{ uc.title }}</h3>
+            <p class="uc-summary">{{ uc.summary }}</p>
+            <!-- <a href="{{ uc.manuscriptSignedUrl }}" class="uc-cta"
+            >Research Manuscript</a
+            > -->
+            <div class="uc-meta">
+              <div class="uc-actions">
+                <button
+                  class="see-details-btn"
+                  [routerLink]="['/use-cases', uc.id]"
+                  >
+                  See details
+                </button>
+              </div>
+              <div class="uc-footer">
+                @if (uc.status) {
+                  <span class="uc-status">{{
+                    uc.status | snakeToWords
+                  }}</span>
+                }
+              </div>
+            </div>
+            <!-- Use-case image shown below the CTA -->
+            <img
+              class="uc-image"
+              [src]="uc.imageSignedUrl"
+              [alt]="uc.title"
+              loading="lazy"
+              />
+          </div>
+        </article>
+      }
+    </div>
+    <!-- <div class="more-row">
+    <button class="more-btn">Explore More Use Cases</button>
+  </div> -->
+</div>
+</section>

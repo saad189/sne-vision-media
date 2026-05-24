@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import {
+  HttpInterceptorFn,
   HttpRequest,
-  HttpHandler,
+  HttpHandlerFn,
   HttpEvent,
-  HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject, from } from 'rxjs';
@@ -13,96 +13,81 @@ import { UtilityService } from '../services/utility.service';
 import { AuthTokens } from '../models';
 import { environment } from '../environments/environment';
 
+let isRefreshing = false;
+const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  private isRefreshing = false;
-  private refreshTokenSubject: BehaviorSubject<string | null> =
-    new BehaviorSubject<string | null>(null);
+function addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
+  return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+}
 
-  constructor(private utilityService: UtilityService) { }
+function handleTokenRefresh(
+  request: HttpRequest<any>,
+  next: HttpHandlerFn,
+  utilityService: UtilityService
+): Observable<HttpEvent<any>> {
+  if (!isRefreshing) {
+    isRefreshing = true;
+    refreshTokenSubject.next(null);
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    const accessToken = localStorage.getItem(AUTH_TOKEN);
-
-    if (accessToken) {
-      const decodedToken = this.utilityService.decodeJwtToken(accessToken);
-
-      if (this.utilityService.isTimeNearExpiry(decodedToken.exp)) {
-        return this.handleTokenRefresh(request, next);
-      }
-
-      request = this.addToken(request, accessToken);
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+    if (!refreshToken) {
+      return throwError(() => new Error('No refresh token available'));
     }
 
-    return next.handle(request).pipe(
-      catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 401) {
-          return this.handleTokenRefresh(request, next);
-        }
-        return throwError(() => error);
+    const currentToken = localStorage.getItem(AUTH_TOKEN);
+    const decodedToken = utilityService.decodeJwtToken(currentToken!);
+    const email = decodedToken.email;
+
+    return from(
+      fetch(`${environment.apiUrl}/auth/refresh-token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, refreshToken }),
+      })
+        .then((response) => response.json())
+        .then((tokens: AuthTokens) => {
+          isRefreshing = false;
+          localStorage.setItem(AUTH_TOKEN, tokens.accessToken);
+          refreshTokenSubject.next(tokens.accessToken);
+          return tokens.accessToken;
+        })
+    ).pipe(
+      switchMap((token) => next(addToken(request, token))),
+      catchError((err) => {
+        isRefreshing = false;
+        localStorage.clear();
+        return throwError(() => err);
       })
     );
   }
 
-  private addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
-    return request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  }
+  return refreshTokenSubject.pipe(
+    filter((token) => token !== null),
+    take(1),
+    switchMap((token) => next(addToken(request, token!)))
+  );
+}
 
-  private handleTokenRefresh(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    if (!this.isRefreshing) {
-      this.isRefreshing = true;
-      this.refreshTokenSubject.next(null);
+export const authInterceptor: HttpInterceptorFn = (request, next) => {
+  const utilityService = inject(UtilityService);
+  const accessToken = localStorage.getItem(AUTH_TOKEN);
 
-      const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-      if (!refreshToken) {
-        return throwError(() => new Error('No refresh token available'));
-      }
+  if (accessToken) {
+    const decodedToken = utilityService.decodeJwtToken(accessToken);
 
-      const currentToken = localStorage.getItem(AUTH_TOKEN);
-      const decodedToken = this.utilityService.decodeJwtToken(currentToken!);
-      const email = decodedToken.email;
-
-      return from(
-        fetch(`${environment.apiUrl}/auth/refresh-token`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, refreshToken }),
-        })
-          .then((response) => response.json())
-          .then((tokens: AuthTokens) => {
-            this.isRefreshing = false;
-            localStorage.setItem(AUTH_TOKEN, tokens.accessToken);
-            this.refreshTokenSubject.next(tokens.accessToken);
-            return tokens.accessToken;
-          })
-      ).pipe(
-        switchMap((token) => {
-          return next.handle(this.addToken(request, token));
-        }),
-        catchError((err) => {
-          console.log('Error happened');
-          this.isRefreshing = false;
-          localStorage.clear();
-          return throwError(() => err);
-        })
-      );
+    if (utilityService.isTimeNearExpiry(decodedToken.exp)) {
+      return handleTokenRefresh(request, next, utilityService);
     }
 
-    return this.refreshTokenSubject.pipe(
-      filter((token) => token !== null),
-      take(1),
-      switchMap((token) => next.handle(this.addToken(request, token!)))
-    );
+    request = addToken(request, accessToken);
   }
-}
+
+  return next(request).pipe(
+    catchError((error) => {
+      if (error instanceof HttpErrorResponse && error.status === 401) {
+        return handleTokenRefresh(request, next, utilityService);
+      }
+      return throwError(() => error);
+    })
+  );
+};

@@ -1,0 +1,35 @@
+@if (!loading && media) {
+  <div class="add-shell">
+    <div class="add-card">
+      <header class="head">
+        <h1>Edit Media Work</h1>
+        <p>Edit details for the selected project or use case.</p>
+      </header>
+      <app-media-work-form
+        class="media-form"
+        [value]="media"
+        [submitLabel]="'Update'"
+        [submitting]="submitting"
+        (save)="update($event)"
+      ></app-media-work-form>
+      @if (error) {
+        <div class="err global">{{ error }}</div>
+      }
+    </div>
+  </div>
+} @else {
+  @if (loading && !error) {
+    <div class="add-shell loading-shell">
+      <div class="add-card skeleton">
+        <p class="loading">Loading...</p>
+      </div>
+    </div>
+  }
+  @if (!loading && error) {
+    <div class="add-shell">
+      <div class="add-card">
+        <div class="err global">{{ error }}</div>
+      </div>
+    </div>
+  }
+}
