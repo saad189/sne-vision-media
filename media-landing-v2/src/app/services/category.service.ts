@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { from, map } from 'rxjs';
+import { Observable, from, map, shareReplay } from 'rxjs';
 import { SupabaseService } from './supabase.service';
 import { Category } from '../models';
 
@@ -20,8 +20,15 @@ export class CategoryService {
     };
   }
 
+  // Shared so Use Cases + Projects on the landing page make one request, not two.
+  private cache$?: Observable<Category[]>;
+
+  invalidateCache() {
+    this.cache$ = undefined;
+  }
+
   list() {
-    return from(
+    return (this.cache$ ??= from(
       this.supabase.client
         .from(TABLE)
         .select('*')
@@ -36,8 +43,9 @@ export class CategoryService {
           categories.unshift(allCategory);
         }
         return categories;
-      })
-    );
+      }),
+      shareReplay(1)
+    ));
   }
 
   getById(id: string) {
@@ -64,6 +72,7 @@ export class CategoryService {
     ).pipe(
       map((r) => {
         if (r.error) throw r.error;
+        this.invalidateCache();
         return this.mapRow(r.data);
       })
     );
@@ -85,6 +94,7 @@ export class CategoryService {
     ).pipe(
       map((r) => {
         if (r.error) throw r.error;
+        this.invalidateCache();
         return this.mapRow(r.data);
       })
     );
@@ -95,6 +105,7 @@ export class CategoryService {
     return from(this.supabase.client.from(TABLE).delete().eq('id', id)).pipe(
       map((r) => {
         if (r.error) throw r.error;
+        this.invalidateCache();
         return true;
       })
     );

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Event } from '../../models/event.interface';
-import { EventService } from '../../services/event.service';
 import { HeroSlideItem } from '../../models';
 import { HeroListService } from '../../services/hero-slide.service';
 import { HeroCarouselComponent } from '../../components/hero-carousel/hero-carousel.component';
@@ -25,39 +23,16 @@ import { EcosystemComponent } from '../ecosystem/ecosystem.component';
 })
 export class LandingComponent implements OnInit {
   heroSlides: HeroSlideItem[] = [];
-  heroLoading = false;
+  heroLoading = true;
   heroError?: string;
 
-  events: Event[] = [];
-  eventsLoading = false;
-  eventsError?: string;
-
-  constructor(
-    private eventService: EventService,
-    private heroList: HeroListService
-  ) {}
+  constructor(private heroList: HeroListService) {}
 
   ngOnInit(): void {
-    this.loadEvents();
     this.loadHeroSlides();
   }
 
-  private loadEvents() {
-    this.eventsLoading = true;
-    this.eventService.list().subscribe({
-      next: (list: Event[]) => {
-        this.events = list.slice(0, 3); // show first few on landing
-        this.eventsLoading = false;
-      },
-      error: (err: any) => {
-        this.eventsError = err?.message || 'Failed to load events';
-        this.eventsLoading = false;
-      },
-    });
-  }
-
   private loadHeroSlides() {
-    this.heroLoading = true;
     this.heroList.listWithSigned().subscribe({
       next: (slides: HeroSlideItem[]) => {
         this.heroSlides = slides;
