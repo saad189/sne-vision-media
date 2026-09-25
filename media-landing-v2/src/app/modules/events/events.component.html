@@ -10,7 +10,16 @@
         challenges.
       </p>
     </div>
-    <div class="seminar-tiles" role="list">
+    <div class="seminar-tiles" role="list" [attr.aria-busy]="loading">
+      @if (loading) {
+        @for (i of [1, 2, 3, 4]; track i) {
+          <div class="seminar-tile motion-safe:animate-pulse" aria-hidden="true">
+            <div class="tile-img"></div>
+            <div class="mx-auto h-2 w-3/4 rounded bg-black/10"></div>
+            <div class="mx-auto mt-1.5 h-2 w-1/2 rounded bg-black/10"></div>
+          </div>
+        }
+      }
       @for (ev of events; track ev) {
         <div class="seminar-tile" role="listitem">
           @if (ev.image_signed_url) {

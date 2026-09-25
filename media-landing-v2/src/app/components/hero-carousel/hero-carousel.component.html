@@ -11,6 +11,15 @@
       class="slides-track"
       [style.transform]="'translateX(-' + currentSlide * 100 + '%)'"
       >
+      @if (loading && !slides.length) {
+        <div class="hero-slide motion-safe:animate-pulse" aria-hidden="true">
+          <div class="slide-content flex w-full flex-col items-center gap-5">
+            <div class="h-12 w-2/3 max-w-xl rounded-lg bg-white/15"></div>
+            <div class="h-4 w-1/2 max-w-md rounded bg-white/10"></div>
+            <div class="h-10 w-40 rounded-full bg-white/15"></div>
+          </div>
+        </div>
+      }
       @for (s of slides; track s; let i = $index) {
         <div
           class="hero-slide"
@@ -30,34 +39,36 @@
         </div>
       }
     </div>
-    <button
-      type="button"
-      class="nav-btn prev"
-      (click)="prevSlide()"
-      aria-label="Previous slide"
-      >
-      ‹
-    </button>
-    <button
-      type="button"
-      class="nav-btn next"
-      (click)="nextSlide()"
-      aria-label="Next slide"
-      >
-      ›
-    </button>
-    <div class="dots" role="tablist" aria-label="Carousel pagination">
-      @for (s of slides; track s; let i = $index) {
-        <button
-          type="button"
-          class="dot"
-          [class.active]="i === currentSlide"
-          (click)="goToSlide(i)"
-          [attr.aria-label]="'Go to slide ' + (i + 1)"
-          [attr.aria-selected]="i === currentSlide"
-          role="tab"
-        ></button>
-      }
-    </div>
+    @if (slides.length) {
+      <button
+        type="button"
+        class="nav-btn prev"
+        (click)="prevSlide()"
+        aria-label="Previous slide"
+        >
+        ‹
+      </button>
+      <button
+        type="button"
+        class="nav-btn next"
+        (click)="nextSlide()"
+        aria-label="Next slide"
+        >
+        ›
+      </button>
+      <div class="dots" role="tablist" aria-label="Carousel pagination">
+        @for (s of slides; track s; let i = $index) {
+          <button
+            type="button"
+            class="dot"
+            [class.active]="i === currentSlide"
+            (click)="goToSlide(i)"
+            [attr.aria-label]="'Go to slide ' + (i + 1)"
+            [attr.aria-selected]="i === currentSlide"
+            role="tab"
+          ></button>
+        }
+      </div>
+    }
   </div>
 </section>

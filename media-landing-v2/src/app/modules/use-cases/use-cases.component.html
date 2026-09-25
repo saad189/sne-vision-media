@@ -23,7 +23,19 @@
         }
       </div>
     </div>
-    <div class="use-case-grid">
+    <div class="use-case-grid" [attr.aria-busy]="loadingUseCases">
+      @if (loadingUseCases) {
+        @for (i of [1, 2, 3]; track i) {
+          <div class="use-case-card motion-safe:animate-pulse" aria-hidden="true">
+            <div class="uc-content w-full gap-2">
+              <div class="h-3 w-3/4 rounded bg-black/10"></div>
+              <div class="h-2 w-full rounded bg-black/10"></div>
+              <div class="h-2 w-5/6 rounded bg-black/10"></div>
+              <div class="mt-auto h-28 w-full rounded-xl bg-white/25"></div>
+            </div>
+          </div>
+        }
+      }
       @for (uc of filteredUseCases; track trackUseCase($index, uc)) {
         <article
           class="use-case-card"

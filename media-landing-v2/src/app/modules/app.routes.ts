@@ -1,13 +1,11 @@
 import { Routes } from '@angular/router';
+import { LandingComponent } from './landing/landing.component';
 // import { AuthGuard } from '../guards';
 
 export const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () =>
-      import('./landing/landing.module').then((m) => m.LandingModule),
-    pathMatch: 'full',
-  },
+  // Eager: the home page is the entry point, so lazy-loading it only left the
+  // outlet blank (header + footer alone) while its chunk downloaded.
+  { path: '', component: LandingComponent, pathMatch: 'full' },
   {
     path: 'analytics',
     loadChildren: () =>
