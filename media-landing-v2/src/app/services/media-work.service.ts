@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
+import {
+  IMAGES_BUCKET,
+  MANUSCRIPTS_BUCKET,
+  SIGNED_URL_TTL_SECONDS,
+} from '../constants/storage.constants';
 import { forkJoin, from, map, of, shareReplay, switchMap, tap } from 'rxjs';
 import { MediaWork, MediaWorkType } from '../models';
 
 const TABLE = 'media_works';
-// Buckets used for storage (kept in sync with MediaWorkFormComponent)
-// Private bucket for manuscripts (still require signed URLs)
-const MANUSCRIPTS_BUCKET = 'VisionMediaPrivateBucket';
-// PUBLIC bucket for images so they no longer need signed URLs.
-// Create this bucket in Supabase (or make existing bucket public) and set it here.
-// If you keep using the same bucket name for both, ensure it is public and update MANUSCRIPTS_BUCKET usage accordingly.
-const IMAGES_BUCKET = 'VisionMediaBucket';
+// Manuscripts are private (signed URLs); images are public.
 
 @Injectable({ providedIn: 'root' })
 export class MediaWorkService {
@@ -130,7 +129,7 @@ export class MediaWorkService {
    */
   private addSignedUrls(mws: MediaWork[]) {
     if (!mws?.length) return of(mws);
-    const ttlSeconds = 60 * 10;
+    const ttlSeconds = SIGNED_URL_TTL_SECONDS;
     const sanitize = (p: string) => {
       if (!p) return p;
       // Remove any accidental leading slashes or bucket prefixes

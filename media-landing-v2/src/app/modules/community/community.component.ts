@@ -23,7 +23,8 @@ export class CommunityComponent implements OnInit {
 
   private fetchTestimonials() {
     this.loading = true;
-    this.topMinds.listWithSigned().subscribe({
+    // Plain list: cards show no photo, so signing profile images is wasted requests.
+    this.topMinds.list().subscribe({
       next: (items: TopMind[]) => {
         this.testimonials = (items || [])
           .filter((tm) => !!tm.quote) // only those with quotes

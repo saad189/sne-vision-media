@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, from, map, of, shareReplay, switchMap } from 'rxjs';
 import { SupabaseService } from './supabase.service';
+import {
+  IMAGES_BUCKET,
+  SIGNED_URL_TTL_SECONDS,
+} from '../constants/storage.constants';
 import { TopMind, TopMindInput } from '../models';
 
 const TABLE = 'top_minds';
-const IMAGES_BUCKET = 'VisionMediaBucket';
 
 @Injectable({ providedIn: 'root' })
 export class TopMindsService {
@@ -42,7 +45,7 @@ export class TopMindsService {
 
   private addSigned(list: TopMind[]) {
     if (!list.length) return of(list);
-    const ttl = 60 * 10;
+    const ttl = SIGNED_URL_TTL_SECONDS;
     const tasks = list.map((tm) => {
       const path = this.sanitizePath(tm.profile_image_url);
       if (!path) return of({ ...tm, profile_image_signed_url: null });

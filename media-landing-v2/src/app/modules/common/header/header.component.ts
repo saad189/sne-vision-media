@@ -2,14 +2,12 @@
 
 import {
   Component,
+  ElementRef,
   HostListener,
   Input,
-  OnDestroy,
-  OnInit,
+  ViewChild,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SupabaseService } from '../../../services/supabase.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -17,52 +15,27 @@ import { Subscription } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent {
   /**
    * 'simple' for basic quote header, 'transparent' for main header
    */
   @Input() variant: 'simple' | 'transparent' = 'simple';
-  isScrolled = false;
-  userName: string | undefined = undefined;
+  menuOpen = false;
 
-  private subscription = new Subscription();
+  readonly links: { label: string; path: string; fragment?: string }[] = [
+    { label: 'Use Cases', path: '/', fragment: 'use-cases' },
+    { label: 'Projects', path: '/', fragment: 'projects' },
+    { label: 'Community', path: '/', fragment: 'community' },
+    { label: 'Events', path: '/', fragment: 'events' },
+    { label: 'About Us', path: '/about' },
+  ];
 
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.isScrolled = window.pageYOffset > 50;
-  }
+  @ViewChild('menuBtn') menuBtn?: ElementRef<HTMLButtonElement>;
 
-  constructor(private supabase: SupabaseService) {}
-
-  ngOnInit(): void {
-    // Wait for auth readiness then get current session user
-    const sub = this.supabase.authReady$.subscribe((ready: boolean) => {
-      if (ready) {
-        this.loadUserFromSession();
-      }
-    });
-    this.subscription.add(sub);
-
-    // Also subscribe to session changes
-    const sub2 = this.supabase.session$.subscribe(() => {
-      this.loadUserFromSession();
-    });
-    this.subscription.add(sub2);
-  }
-
-  private loadUserFromSession() {
-    const session = this.supabase.currentSession;
-    // Supabase user metadata may contain name fields; fallback to email
-    const user = session?.user;
-    if (!user) {
-      this.userName = undefined;
-      return;
-    }
-
-    this.userName = user.email;
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (!this.menuOpen) return;
+    this.menuOpen = false;
+    this.menuBtn?.nativeElement.focus();
   }
 }

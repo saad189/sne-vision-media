@@ -29,6 +29,19 @@
   display: block;
   background: #fff; /* Prevent grey bleed-through for transparent images */
 }
+.seminar-tile .tile-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #d4d4d4, #b9b9b9);
+  color: #2d2d2d;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
 .tile-caption {
   font-size: 0.5rem;
   line-height: 0.75rem;

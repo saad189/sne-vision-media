@@ -8,64 +8,93 @@
         We have the Teams of Scientists & Engineers conducting Research &
         Development on improving Infrastructure, Systems, Platforms, etc.
       </p>
-      <div class="tag-pills" role="tablist" aria-label="Project categories">
-        @for (c of projectCategories; track c) {
-          <button
-            class="pill"
-            [class.active]="c.name === selectedProjectCategory"
-            (click)="selectProjectCategory(c.name)"
-            role="tab"
-            [attr.aria-selected]="c.name === selectedProjectCategory"
-            >
-            {{ c.name }}
-          </button>
-        }
-      </div>
-    </div>
-    <div class="project-grid">
-      @for (p of filteredProjects; track trackProject($index, p)) {
-        <article
-          class="project-card"
-          >
-          <div class="proj-thumb">
-            @if (p.imageSignedUrl) {
-              <img
-                [src]="p.imageSignedUrl"
-                alt="{{ p.title }} image"
-                />
-            }
-          </div>
-          <div class="proj-body">
-            <h3 class="proj-title">{{ p.title }}</h3>
-            <p class="proj-description">{{ p.summary }}</p>
-            <div class="proj-meta">
-              <div class="badge-row">
-                @if (p.youtubeUrl) {
-                  <span class="media-badge youtube">
-                    YouTube
-                  </span>
-                }
-                @if (p.githubUrl) {
-                  <span class="media-badge github">
-                    GitHub
-                  </span>
-                }
-              </div>
-              @if (p.status) {
-                <span class="proj-status">{{
-                  p.status | snakeToWords
-                }}</span>
-              }
-            </div>
-            <div class="proj-actions">
-              <button class="see-details-btn" [routerLink]="['/projects', p.id]">
-                See details
-              </button>
-            </div>
-          </div>
-        </article>
+      @if (projects.length) {
+        <div class="tag-pills" role="tablist" aria-label="Project categories">
+          @for (c of projectCategories; track c) {
+            <button
+              class="pill"
+              [class.active]="c.name === selectedProjectCategory"
+              (click)="selectProjectCategory(c.name)"
+              role="tab"
+              [attr.aria-selected]="c.name === selectedProjectCategory"
+              >
+              {{ c.name }}
+            </button>
+          }
+        </div>
       }
     </div>
+    @if (projectsError) {
+      <p class="section-state section-state--error" role="alert">
+        {{ projectsError }}. Please refresh to try again.
+      </p>
+    } @else if (!loadingProjects && !filteredProjects.length) {
+      <p class="section-state">
+        {{
+          projects.length
+            ? 'No projects in this category yet.'
+            : 'No projects published yet. Check back soon.'
+        }}
+      </p>
+    } @else {
+      <div class="project-grid" [attr.aria-busy]="loadingProjects">
+        @if (loadingProjects) {
+          @for (i of [1, 2, 3]; track i) {
+            <div class="project-card motion-safe:animate-pulse" aria-hidden="true">
+              <div class="proj-thumb bg-black/15"></div>
+              <div class="proj-body gap-2">
+                <div class="h-3 w-2/3 rounded bg-black/10"></div>
+                <div class="h-2 w-full rounded bg-black/10"></div>
+                <div class="h-2 w-5/6 rounded bg-black/10"></div>
+                <div class="mt-3 h-7 w-28 rounded-full bg-black/10"></div>
+              </div>
+            </div>
+          }
+        }
+        @for (p of filteredProjects; track trackProject($index, p)) {
+          <article
+            class="project-card"
+            >
+            <div class="proj-thumb">
+              @if (p.imageSignedUrl) {
+                <img
+                  [src]="p.imageSignedUrl"
+                  alt="{{ p.title }} image"
+                  />
+              }
+            </div>
+            <div class="proj-body">
+              <h3 class="proj-title">{{ p.title }}</h3>
+              <p class="proj-description">{{ p.summary }}</p>
+              <div class="proj-meta">
+                <div class="badge-row">
+                  @if (p.youtubeUrl) {
+                    <span class="media-badge youtube">
+                      YouTube
+                    </span>
+                  }
+                  @if (p.githubUrl) {
+                    <span class="media-badge github">
+                      GitHub
+                    </span>
+                  }
+                </div>
+                @if (p.status) {
+                  <span class="proj-status">{{
+                    p.status | snakeToWords
+                  }}</span>
+                }
+              </div>
+              <div class="proj-actions">
+                <button class="see-details-btn" [routerLink]="['/projects', p.id]">
+                  See details
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
     <!-- <div class="more-row">
     <button class="more-btn">Explore More Projects</button>
   </div> -->

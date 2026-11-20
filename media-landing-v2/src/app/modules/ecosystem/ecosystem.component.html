@@ -22,10 +22,14 @@
               type="text"
               formControlName="name"
               placeholder="Name"
-              [class.invalid]="
-                formSubmitted && ecosystemForm.get('name')?.invalid
-              "
+              maxlength="120"
+              aria-describedby="eco-name-err"
+              [class.invalid]="errorFor('name')"
+              [attr.aria-invalid]="!!errorFor('name')"
             />
+            @if (errorFor('name'); as err) {
+              <p id="eco-name-err" class="field-error">{{ err }}</p>
+            }
           </div>
           <div class="field">
             <label for="eco-email" class="sr-only">Email</label>
@@ -34,10 +38,14 @@
               type="email"
               formControlName="email"
               placeholder="Email"
-              [class.invalid]="
-                formSubmitted && ecosystemForm.get('email')?.invalid
-              "
+              maxlength="254"
+              aria-describedby="eco-email-err"
+              [class.invalid]="errorFor('email')"
+              [attr.aria-invalid]="!!errorFor('email')"
             />
+            @if (errorFor('email'); as err) {
+              <p id="eco-email-err" class="field-error">{{ err }}</p>
+            }
           </div>
           <div class="field">
             <label for="eco-phone" class="sr-only">Phone</label>
@@ -46,7 +54,14 @@
               type="text"
               formControlName="phone"
               placeholder="Phone"
+              maxlength="40"
+              aria-describedby="eco-phone-err"
+              [class.invalid]="errorFor('phone')"
+              [attr.aria-invalid]="!!errorFor('phone')"
             />
+            @if (errorFor('phone'); as err) {
+              <p id="eco-phone-err" class="field-error">{{ err }}</p>
+            }
           </div>
           <div class="field">
             <label for="eco-designation" class="sr-only">Designation</label>
@@ -55,7 +70,14 @@
               type="text"
               formControlName="designation"
               placeholder="Designation"
+              maxlength="120"
+              aria-describedby="eco-designation-err"
+              [class.invalid]="errorFor('designation')"
+              [attr.aria-invalid]="!!errorFor('designation')"
             />
+            @if (errorFor('designation'); as err) {
+              <p id="eco-designation-err" class="field-error">{{ err }}</p>
+            }
           </div>
           <div class="field textarea-field">
             <label for="eco-message" class="sr-only">Message</label>
@@ -64,19 +86,25 @@
               rows="3"
               formControlName="message"
               placeholder="Would You Like to Solve a Problem Or Support a Solution, Send Us a Message"
-              [class.invalid]="
-                formSubmitted && ecosystemForm.get('message')?.invalid
-              "
+              maxlength="5000"
+              aria-describedby="eco-message-err"
+              [class.invalid]="errorFor('message')"
+              [attr.aria-invalid]="!!errorFor('message')"
             ></textarea>
+            @if (errorFor('message'); as err) {
+              <p id="eco-message-err" class="field-error">{{ err }}</p>
+            }
           </div>
         </div>
         <div class="submit-row">
           <button
             type="submit"
             class="submit-btn"
+            [disabled]="submitting"
+            [attr.aria-busy]="submitting"
             [attr.aria-disabled]="ecosystemForm.invalid && formSubmitted"
           >
-            Send Message
+            {{ submitting ? 'Sending…' : 'Send Message' }}
           </button>
         </div>
       </form>

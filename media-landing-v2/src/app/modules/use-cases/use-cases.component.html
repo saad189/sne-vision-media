@@ -9,59 +9,87 @@
         solutions to real-world tasks. Explore the solution and cost of
         decisions.
       </p>
-      <div class="tag-pills" role="tablist" aria-label="Use case categories">
-        @for (c of categories; track c) {
-          <button
-            class="pill"
-            [class.active]="c.name === selectedCategory"
-            (click)="selectCategory(c.name)"
-            role="tab"
-            [attr.aria-selected]="c.name === selectedCategory"
-            >
-            {{ c.name }}
-          </button>
-        }
-      </div>
-    </div>
-    <div class="use-case-grid">
-      @for (uc of filteredUseCases; track trackUseCase($index, uc)) {
-        <article
-          class="use-case-card"
-          >
-          <div class="uc-content">
-            <h3 class="uc-title">{{ uc.title }}</h3>
-            <p class="uc-summary">{{ uc.summary }}</p>
-            <!-- <a href="{{ uc.manuscriptSignedUrl }}" class="uc-cta"
-            >Research Manuscript</a
-            > -->
-            <div class="uc-meta">
-              <div class="uc-actions">
-                <button
-                  class="see-details-btn"
-                  [routerLink]="['/use-cases', uc.id]"
-                  >
-                  See details
-                </button>
-              </div>
-              <div class="uc-footer">
-                @if (uc.status) {
-                  <span class="uc-status">{{
-                    uc.status | snakeToWords
-                  }}</span>
-                }
-              </div>
-            </div>
-            <!-- Use-case image shown below the CTA -->
-            <img
-              class="uc-image"
-              [src]="uc.imageSignedUrl"
-              [alt]="uc.title"
-              loading="lazy"
-              />
-          </div>
-        </article>
+      @if (allUseCases.length) {
+        <div class="tag-pills" role="tablist" aria-label="Use case categories">
+          @for (c of categories; track c) {
+            <button
+              class="pill"
+              [class.active]="c.name === selectedCategory"
+              (click)="selectCategory(c.name)"
+              role="tab"
+              [attr.aria-selected]="c.name === selectedCategory"
+              >
+              {{ c.name }}
+            </button>
+          }
+        </div>
       }
     </div>
+    @if (useCasesError) {
+      <p class="section-state section-state--error" role="alert">
+        {{ useCasesError }}. Please refresh to try again.
+      </p>
+    } @else if (!loadingUseCases && !filteredUseCases.length) {
+      <p class="section-state">
+        {{
+          allUseCases.length
+            ? 'No use cases in this category yet.'
+            : 'No use cases published yet. Check back soon.'
+        }}
+      </p>
+    } @else {
+      <div class="use-case-grid" [attr.aria-busy]="loadingUseCases">
+        @if (loadingUseCases) {
+          @for (i of [1, 2, 3]; track i) {
+            <div class="use-case-card motion-safe:animate-pulse" aria-hidden="true">
+              <div class="uc-content w-full gap-2">
+                <div class="h-3 w-3/4 rounded bg-black/10"></div>
+                <div class="h-2 w-full rounded bg-black/10"></div>
+                <div class="h-2 w-5/6 rounded bg-black/10"></div>
+                <div class="mt-auto h-28 w-full rounded-xl bg-white/25"></div>
+              </div>
+            </div>
+          }
+        }
+        @for (uc of filteredUseCases; track trackUseCase($index, uc)) {
+          <article
+            class="use-case-card"
+            >
+            <div class="uc-content">
+              <h3 class="uc-title">{{ uc.title }}</h3>
+              <p class="uc-summary">{{ uc.summary }}</p>
+              <!-- <a href="{{ uc.manuscriptSignedUrl }}" class="uc-cta"
+              >Research Manuscript</a
+              > -->
+              <div class="uc-meta">
+                <div class="uc-actions">
+                  <button
+                    class="see-details-btn"
+                    [routerLink]="['/use-cases', uc.id]"
+                    >
+                    See details
+                  </button>
+                </div>
+                <div class="uc-footer">
+                  @if (uc.status) {
+                    <span class="uc-status">{{
+                      uc.status | snakeToWords
+                    }}</span>
+                  }
+                </div>
+              </div>
+              <!-- Use-case image shown below the CTA -->
+              <img
+                class="uc-image"
+                [src]="uc.imageSignedUrl"
+                [alt]="uc.title"
+                loading="lazy"
+                />
+            </div>
+          </article>
+        }
+      </div>
+    }
     <!-- <div class="more-row">
     <button class="more-btn">Explore More Use Cases</button>
   </div> -->

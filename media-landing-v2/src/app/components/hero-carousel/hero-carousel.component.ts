@@ -21,6 +21,7 @@ export class HeroCarouselComponent
   implements OnInit, OnDestroy, AfterViewInit, OnChanges
 {
   @Input() slides: HeroSlideItem[] = [];
+  @Input() loading = false;
   @Input() autoPlayDelay = 6000;
   @Input() pauseOnHover = true;
   @Input() enableKeyboard = true;
@@ -59,6 +60,8 @@ export class HeroCarouselComponent
   };
 
   goToSlide(index: number) {
+    // Autoplay/keys fire before slides load; `% 0` is NaN and would stick forever.
+    if (!this.slides.length) return;
     this.currentSlide = (index + this.slides.length) % this.slides.length;
     this.restartAutoplay();
   }

@@ -34,10 +34,6 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  onImgError(evt: any) {
-    const el = evt?.target as HTMLImageElement | null;
-    if (el) {
-      el.style.display = 'none';
-    }
-  }
+  /** Image URLs that failed to load; those tiles fall back to the name placeholder. */
+  failedImages = new Set<string | null | undefined>();
 }
