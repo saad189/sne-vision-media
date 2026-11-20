@@ -1,9 +1,18 @@
 import { Component, inject } from '@angular/core';
-import { EventService, EventTypeService } from '../../../services';
+import {
+  EventService,
+  EventTypeService,
+  SupabaseService,
+} from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 import { Router, RouterLink } from '@angular/router';
 import { EventInput, EventType } from '../../../models/event.interface';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  IMAGES_BUCKET,
+  MAX_IMAGE_BYTES,
+  SIGNED_URL_TTL_SECONDS,
+} from '../../../constants/storage.constants';
 
 @Component({
     selector: 'app-admin-add-event',
@@ -18,6 +27,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 export class AdminAddEventComponent {
   private eventsService = inject(EventService);
   private eventTypeService = inject(EventTypeService);
+  private supabase = inject(SupabaseService);
   private router = inject(Router);
   private toast = inject(ToastrNotificationService);
 
@@ -42,8 +52,6 @@ export class AdminAddEventComponent {
   imageUploadProgress = 0;
   imageError: string | null = null;
   imageSignedUrl: string | null = null; // optional preview if we decide to sign after upload
-  private IMAGES_BUCKET = 'VisionMediaBucket';
-  private SIGNED_URL_TTL_SECONDS = 60 * 10;
 
   ngOnInit() {
     this.loadEventTypes();
@@ -96,7 +104,7 @@ export class AdminAddEventComponent {
       input.value = '';
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
+    if (file.size > MAX_IMAGE_BYTES) {
       this.imageError = 'Image exceeds 5MB limit';
       input.value = '';
       return;
@@ -104,8 +112,8 @@ export class AdminAddEventComponent {
     this.uploadingImage = true;
     this.imageUploadProgress = 10;
     const path = this.buildImagePath(file.name);
-    this.eventsService['supabase'].client.storage
-      .from(this.IMAGES_BUCKET)
+    this.supabase.client.storage
+      .from(IMAGES_BUCKET)
       .upload(path, file, { upsert: true, contentType: file.type })
       .then(async ({ error }) => {
         if (error) throw error;
@@ -132,8 +140,8 @@ export class AdminAddEventComponent {
   removeImage() {
     const current = this.model.image_url;
     if (!current) return;
-    this.eventsService['supabase'].client.storage
-      .from(this.IMAGES_BUCKET)
+    this.supabase.client.storage
+      .from(IMAGES_BUCKET)
       .remove([current])
       .then(({ error }: any) => {
         if (error) throw error;
@@ -157,11 +165,9 @@ export class AdminAddEventComponent {
 
   private async refreshImageSignedUrl(path: string) {
     try {
-      const { data, error } = await this.eventsService[
-        'supabase'
-      ].client.storage
-        .from(this.IMAGES_BUCKET)
-        .createSignedUrl(path, this.SIGNED_URL_TTL_SECONDS);
+      const { data, error } = await this.supabase.client.storage
+        .from(IMAGES_BUCKET)
+        .createSignedUrl(path, SIGNED_URL_TTL_SECONDS);
       if (error) throw error;
       this.imageSignedUrl = data?.signedUrl || null;
     } catch (e) {

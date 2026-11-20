@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -9,6 +15,13 @@ import {
 } from '../../models';
 import { CategoryService, SupabaseService } from '../../services';
 import { ToastrNotificationService } from '../../services/toastr.service';
+import {
+  IMAGES_BUCKET,
+  MANUSCRIPTS_BUCKET,
+  MAX_IMAGE_BYTES,
+  MAX_MANUSCRIPT_BYTES,
+  SIGNED_URL_TTL_SECONDS,
+} from '../../constants/storage.constants';
 
 @Component({
   selector: 'app-media-work-form',
@@ -17,7 +30,7 @@ import { ToastrNotificationService } from '../../services/toastr.service';
   templateUrl: './media-work-form.component.html',
   styleUrls: ['./media-work-form.component.scss'],
 })
-export class MediaWorkFormComponent {
+export class MediaWorkFormComponent implements OnDestroy {
   private fb = new FormBuilder();
 
   categories: Category[] = [];
@@ -81,13 +94,11 @@ export class MediaWorkFormComponent {
   imageUploadProgress = 0;
   imageError: string | null = null;
 
-  // Supabase Storage bucket for manuscripts (PDF uploads)
-  private readonly MANUSCRIPTS_BUCKET = 'VisionMediaBucket';
   manuscriptSignedUrl: string | null = null;
-  private SIGNED_URL_TTL_SECONDS = 60 * 10; // 10 minutes
-  // Reuse same bucket for images (adjust if separate bucket exists)
-  private readonly IMAGES_BUCKET = this.MANUSCRIPTS_BUCKET;
   imageSignedUrl: string | null = null;
+  private manuscriptRefreshTimer?: ReturnType<typeof setTimeout>;
+  private imageRefreshTimer?: ReturnType<typeof setTimeout>;
+  private destroyed = false;
 
   constructor(
     private categoryService: CategoryService,
@@ -95,6 +106,12 @@ export class MediaWorkFormComponent {
     private toast: ToastrNotificationService
   ) {
     this.loadCategories();
+  }
+
+  ngOnDestroy() {
+    this.destroyed = true;
+    clearTimeout(this.manuscriptRefreshTimer);
+    clearTimeout(this.imageRefreshTimer);
   }
 
   fileNameOf(path: string | null | undefined) {
@@ -140,8 +157,7 @@ export class MediaWorkFormComponent {
       input.value = '';
       return;
     }
-    if (file.size > 15 * 1024 * 1024) {
-      // 15MB limit
+    if (file.size > MAX_MANUSCRIPT_BYTES) {
       this.manuscriptError = 'File exceeds 15MB limit';
       input.value = '';
       return;
@@ -151,7 +167,7 @@ export class MediaWorkFormComponent {
     try {
       const path = this.buildManuscriptPath(file.name);
       const { error: upErr } = await this.supabase.client.storage
-        .from(this.MANUSCRIPTS_BUCKET)
+        .from(MANUSCRIPTS_BUCKET)
         .upload(path, file, { upsert: true, contentType: 'application/pdf' });
       if (upErr) throw upErr;
       this.uploadProgress = 85;
@@ -180,7 +196,7 @@ export class MediaWorkFormComponent {
     if (!path) return;
     try {
       const { error } = await this.supabase.client.storage
-        .from(this.MANUSCRIPTS_BUCKET)
+        .from(MANUSCRIPTS_BUCKET)
         .remove([path]);
       if (error) throw error;
       this.form.patchValue({ manuscriptUrl: '' });
@@ -204,7 +220,7 @@ export class MediaWorkFormComponent {
       input.value = '';
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
+    if (file.size > MAX_IMAGE_BYTES) {
       this.imageError = 'Image exceeds 5MB limit';
       input.value = '';
       return;
@@ -214,7 +230,7 @@ export class MediaWorkFormComponent {
     try {
       const path = this.buildImagePath(file.name);
       const { error: upErr } = await this.supabase.client.storage
-        .from(this.IMAGES_BUCKET)
+        .from(IMAGES_BUCKET)
         .upload(path, file, { upsert: true, contentType: file.type });
       if (upErr) throw upErr;
       this.imageUploadProgress = 85;
@@ -237,7 +253,7 @@ export class MediaWorkFormComponent {
     if (!path) return;
     try {
       const { error } = await this.supabase.client.storage
-        .from(this.IMAGES_BUCKET)
+        .from(IMAGES_BUCKET)
         .remove([path]);
       if (error) throw error;
       this.form.patchValue({ imageUrl: '' });
@@ -275,14 +291,15 @@ export class MediaWorkFormComponent {
   private async refreshSignedUrl(path: string) {
     try {
       const { data, error } = await this.supabase.client.storage
-        .from(this.MANUSCRIPTS_BUCKET)
-        .createSignedUrl(path, this.SIGNED_URL_TTL_SECONDS);
+        .from(MANUSCRIPTS_BUCKET)
+        .createSignedUrl(path, SIGNED_URL_TTL_SECONDS);
       if (error) throw error;
       this.manuscriptSignedUrl = data?.signedUrl || null;
-      if (this.manuscriptSignedUrl) {
-        setTimeout(
+      clearTimeout(this.manuscriptRefreshTimer);
+      if (this.manuscriptSignedUrl && !this.destroyed) {
+        this.manuscriptRefreshTimer = setTimeout(
           () => this.refreshSignedUrl(path),
-          (this.SIGNED_URL_TTL_SECONDS - 30) * 1000
+          (SIGNED_URL_TTL_SECONDS - 30) * 1000
         );
       }
     } catch (e) {
@@ -294,14 +311,15 @@ export class MediaWorkFormComponent {
   private async refreshImageSignedUrl(path: string) {
     try {
       const { data, error } = await this.supabase.client.storage
-        .from(this.IMAGES_BUCKET)
-        .createSignedUrl(path, this.SIGNED_URL_TTL_SECONDS);
+        .from(IMAGES_BUCKET)
+        .createSignedUrl(path, SIGNED_URL_TTL_SECONDS);
       if (error) throw error;
       this.imageSignedUrl = data?.signedUrl || null;
-      if (this.imageSignedUrl) {
-        setTimeout(
+      clearTimeout(this.imageRefreshTimer);
+      if (this.imageSignedUrl && !this.destroyed) {
+        this.imageRefreshTimer = setTimeout(
           () => this.refreshImageSignedUrl(path),
-          (this.SIGNED_URL_TTL_SECONDS - 30) * 1000
+          (SIGNED_URL_TTL_SECONDS - 30) * 1000
         );
       }
     } catch (e) {
