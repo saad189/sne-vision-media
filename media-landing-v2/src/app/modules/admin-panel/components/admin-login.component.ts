@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../../services';
-import { combineLatest } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, take } from 'rxjs';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 
 @Component({
@@ -28,29 +28,23 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
   loading = false;
   initializing = true; // wait for authReady
   error: string | null = null;
-  private redirected = false;
   private authSub?: { unsubscribe: () => void };
 
   ngOnInit() {
-    // Wait until Supabase auth initialization completes.
-    // Previous implementation redirected on *any* session emission (including refresh on tab focus)
-    // which caused unexpected navigations. Gate and unsubscribe after first redirect.
+    // Look at the initial auth state once. Later emissions (token refresh, tab
+    // focus, the login below) are ignored so they can't trigger extra redirects.
     this.authSub = combineLatest([
       this.supabase.authReady$,
       this.supabase.session$,
-    ]).subscribe(([ready, session]) => {
-      if (!ready) return;
-      if (session) {
-        if (!this.redirected && this.router.url.startsWith('/admin/login')) {
-          this.redirected = true;
-          this.router.navigate(['/admin', 'dashboard']);
-          // Prevent further redirects on token refresh / tab focus
-          this.authSub?.unsubscribe();
-        }
-      } else {
-        this.initializing = false; // show form
-      }
-    });
+    ])
+      .pipe(
+        filter(([ready]) => ready),
+        take(1)
+      )
+      .subscribe(([, session]) => {
+        if (session) this.enterIfAdmin(false);
+        else this.initializing = false; // show form
+      });
   }
 
   ngOnDestroy() {
@@ -67,18 +61,29 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
     this.error = null;
     this.supabase
       .signInWithPassword(email!, password!)
-      .subscribe(({ data, error }) => {
-        this.loading = false;
+      .subscribe(({ error }) => {
         if (error) {
-          this.error = error.message;
-          this.toast.showError(
-            'Login Failed',
-            this.error || 'Invalid credentials'
-          );
+          // Generic on purpose: don't reveal whether the account exists.
+          this.loading = false;
+          this.error = 'Invalid email or password';
+          this.toast.showError('Login Failed', this.error);
           return;
         }
-        this.toast.showSuccess('Welcome', 'Login successful');
-        this.router.navigate(['/admin', 'dashboard']);
+        this.enterIfAdmin(true);
       });
+  }
+
+  /** Signed in: go to the dashboard if admin, otherwise sign out with a message. */
+  private async enterIfAdmin(welcome: boolean) {
+    if (await this.supabase.isAdmin()) {
+      if (welcome) this.toast.showSuccess('Welcome', 'Login successful');
+      this.router.navigate(['/admin', 'dashboard']);
+      return;
+    }
+    await firstValueFrom(this.supabase.signOut()).catch(() => false);
+    this.loading = false;
+    this.initializing = false;
+    this.error = 'This account does not have admin access';
+    this.toast.showError('Access denied', this.error);
   }
 }

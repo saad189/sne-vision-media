@@ -84,23 +84,6 @@ export class SupabaseService {
         return;
       }
       console.warn('[SupabaseService] initSession error', e);
-      // Attempt fallback: read raw localStorage token (best-effort, internal structure may change)
-      try {
-        const key = Object.keys(localStorage).find(
-          (k) => k.includes('auth-token') && k.includes('sb-')
-        );
-        if (key) {
-          const raw = localStorage.getItem(key!);
-          if (raw) {
-            const parsed = JSON.parse(raw);
-            if (parsed?.currentSession) {
-              this._session$.next(parsed.currentSession as Session);
-            }
-          }
-        }
-      } catch {
-        /* ignore */
-      }
     } finally {
       this._authReady$.next(true);
     }
@@ -128,14 +111,32 @@ export class SupabaseService {
     return from(this._client.auth.signInWithPassword({ email, password }));
   }
 
-  signUpWithPassword(
-    email: string,
-    password: string,
-    metadata?: Record<string, any>
-  ) {
-    return from(
-      this._client.auth.signUp({ email, password, options: { data: metadata } })
-    );
+  // Cached per access token so guards don't hit the RPC on every navigation;
+  // a token refresh (hourly) or a different user triggers a fresh check.
+  private adminCheck?: { token: string; result: Promise<boolean> };
+
+  /**
+   * True only if the signed-in user is in public.admins (via rpc('is_admin')).
+   * Fails closed: no session or any error resolves false (errors aren't cached).
+   */
+  async isAdmin(): Promise<boolean> {
+    const { data } = await this._client.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) return false;
+    if (this.adminCheck?.token !== token) {
+      const result = Promise.resolve(this._client.rpc('is_admin'))
+        .then(({ data, error }) => {
+          if (error) throw error;
+          return data === true;
+        })
+        .catch((e) => {
+          console.warn('[SupabaseService] is_admin check failed', e);
+          if (this.adminCheck?.token === token) this.adminCheck = undefined;
+          return false;
+        });
+      this.adminCheck = { token, result };
+    }
+    return this.adminCheck.result;
   }
 
   signOut() {
