@@ -67,10 +67,10 @@
                 <td>
                   <strong>{{ r.name }}</strong>
                 </td>
-                <td>
+                <td data-label="Slug">
                   <span class="a-code">{{ r.slug || "—" }}</span>
                 </td>
-                <td>
+                <td data-label="Description">
                   <p class="a-clamp" [title]="r.description || ''">
                     {{ r.description || "—" }}
                   </p>

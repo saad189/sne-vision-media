@@ -73,6 +73,7 @@
     line-height: 1.2;
 
     img {
+      flex: none;
       width: 34px;
       height: 34px;
       object-fit: contain;
@@ -382,6 +383,8 @@
       padding-left: 1rem;
     }
     td {
+      // Long unbroken strings (emails, pasted text) must wrap, not widen the table.
+      overflow-wrap: anywhere;
       padding: 0.8rem 0.75rem;
       border-bottom: 1px solid var(--a-border);
       vertical-align: middle;
@@ -407,11 +410,15 @@
   .a-nowrap {
     white-space: nowrap;
   }
+  // Room for a typical email address before it has to wrap.
+  .a-contact {
+    min-width: 11.5rem;
+  }
   .a-cell-main {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    min-width: 200px;
+    min-width: 150px;
 
     strong {
       display: block;
@@ -503,6 +510,61 @@
 
     @media (prefers-reduced-motion: reduce) {
       animation: none;
+    }
+  }
+
+  // Phones: each row becomes a stacked card, labelled from `data-label`,
+  // so nothing needs sideways scrolling.
+  @media (max-width: 640px) {
+    .a-table {
+      thead {
+        display: none;
+      }
+      &,
+      tbody,
+      tr,
+      td {
+        display: block;
+      }
+      tr {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--a-border);
+      }
+      tbody tr:last-child {
+        border-bottom: 0;
+      }
+      td,
+      td:first-child {
+        padding: 0.2rem 0;
+        border: 0;
+      }
+      td[data-label] {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+
+        &::before {
+          content: attr(data-label);
+          flex: none;
+          width: 5.5rem;
+          color: var(--a-muted);
+          font-size: 0.75rem;
+          font-weight: 600;
+        }
+      }
+      td.a-hide-md {
+        display: none;
+      }
+      td.a-col-actions {
+        padding-top: 0.5rem;
+        text-align: left;
+      }
+    }
+    .a-cell-main,
+    .a-clamp,
+    .a-contact {
+      min-width: 0;
+      max-width: none;
     }
   }
 

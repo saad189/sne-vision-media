@@ -67,13 +67,16 @@
                     </div>
                   </div>
                 </td>
-                <td>
-                  <a [href]="'mailto:' + r.email">{{ r.email }}</a>
-                  @if (r.phone) {
-                    <small class="a-hint"><br />{{ r.phone }}</small>
-                  }
+                <td data-label="Contact">
+                  <div class="a-contact">
+                    <a [href]="'mailto:' + r.email">{{ r.email }}</a>
+                    @if (r.phone) {
+                      <small class="a-hint"><br />{{ r.phone }}</small>
+                    }
+                  </div>
                 </td>
-                <td>
+                <td data-label="Message">
+                  <div>
                   <p class="a-clamp" [class.open]="expanded.has(r.id)">
                     {{ r.message }}
                   </p>
@@ -87,9 +90,15 @@
                       {{ expanded.has(r.id) ? "Show less" : "Show more" }}
                     </button>
                   }
+                  </div>
                 </td>
-                <td class="a-nowrap">
-                  {{ r.created_at | date : "d MMM y, HH:mm" }}
+                <td class="a-nowrap" data-label="Received">
+                  <div>
+                    {{ r.created_at | date : "d MMM y" }}
+                    <small class="a-hint"
+                      ><br />{{ r.created_at | date : "HH:mm" }}</small
+                    >
+                  </div>
                 </td>
               </tr>
             }

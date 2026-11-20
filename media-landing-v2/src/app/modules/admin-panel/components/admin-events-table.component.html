@@ -79,22 +79,25 @@
                     </div>
                   </div>
                 </td>
-                <td>
+                <td data-label="Type">
                   <span class="a-badge">{{ r.event_type?.name || "—" }}</span>
                 </td>
-                <td class="a-nowrap">
-                  @if (r.starts_at) {
-                    {{ r.starts_at | date : "d MMM y, HH:mm" }}
-                    @if (r.ends_at) {
-                      <small class="a-hint"
-                        ><br />to {{ r.ends_at | date : "d MMM y, HH:mm" }}</small
-                      >
+                <td class="a-nowrap" data-label="When">
+                  <div>
+                    @if (r.starts_at) {
+                      {{ r.starts_at | date : "d MMM y, HH:mm" }}
+                      @if (r.ends_at) {
+                        <small class="a-hint"
+                          ><br />to
+                          {{ r.ends_at | date : "d MMM y, HH:mm" }}</small
+                        >
+                      }
+                    } @else {
+                      —
                     }
-                  } @else {
-                    —
-                  }
+                  </div>
                 </td>
-                <td>
+                <td data-label="Status">
                   <span class="a-badge" [class.is-success]="isUpcoming(r)">{{
                     isUpcoming(r) ? "Upcoming" : "Past"
                   }}</span>

@@ -86,12 +86,12 @@
                     {{ r.summary || "—" }}
                   </p>
                 </td>
-                <td>
+                <td data-label="Type">
                   <span class="a-badge">{{
                     r.type === "use-cases" ? "Use case" : "Project"
                   }}</span>
                 </td>
-                <td>
+                <td data-label="Status">
                   <span
                     class="a-badge"
                     [class.is-success]="r.status === 'complete'"
@@ -99,7 +99,7 @@
                     >{{ r.status || "not_started" | snakeToWords }}</span
                   >
                 </td>
-                <td>{{ r.categoryName || "—" }}</td>
+                <td data-label="Category">{{ r.categoryName || "—" }}</td>
                 <td class="a-nowrap a-hide-md">
                   {{ r.created_at | date : "d MMM y" }}
                 </td>
