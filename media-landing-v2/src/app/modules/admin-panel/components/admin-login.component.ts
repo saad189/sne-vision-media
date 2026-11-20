@@ -1,6 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { SupabaseService } from '../../../services';
 import { combineLatest, filter, firstValueFrom, take } from 'rxjs';
 import { ToastrNotificationService } from '../../../services/toastr.service';
@@ -8,8 +13,10 @@ import { ToastrNotificationService } from '../../../services/toastr.service';
 @Component({
     selector: 'app-admin-login',
     templateUrl: './admin-login.component.html',
-    styleUrls: ['./admin-login.component.scss'],
-    imports: [ReactiveFormsModule],
+    // Shares the admin stylesheet; the login page sits outside the admin layout.
+    styleUrl: '../admin.scss',
+    encapsulation: ViewEncapsulation.None,
+    imports: [ReactiveFormsModule, RouterLink],
 })
 export class AdminLoginComponent implements OnInit, OnDestroy {
   form;

@@ -1,72 +1,58 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { EventService } from '../../../services/event.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { EventService, SupabaseService } from '../../../services';
 import { Event } from '../../../models/event.interface';
-import { EventTypeService } from '../../../services/event-type.service';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 
 @Component({
-  standalone: true,
   selector: 'app-admin-events-table',
   templateUrl: './admin-events-table.component.html',
-  styleUrls: ['./admin-events-table.component.scss'],
-  imports: [CommonModule],
+  imports: [FormsModule, RouterLink, DatePipe],
 })
-export class AdminEventsTableComponent {
+export class AdminEventsTableComponent implements OnInit {
   private eventsService = inject(EventService);
-  private eventTypeService = inject(EventTypeService);
+  private supabase = inject(SupabaseService);
   private toast = inject(ToastrNotificationService);
 
   rows: Event[] = [];
   loading = false;
   error: string | null = null;
-
-  typeMap = new Map<string, string>();
+  query = '';
 
   ngOnInit() {
-    // Preload types so we can display names even if join missing
-    this.eventTypeService.list().subscribe({
-      next: (types: any[]) => {
-        types.forEach((t) => this.typeMap.set(t.id, t.name));
-        this.load();
-      },
-      error: () => this.load(), // still load events
-    });
+    this.load();
   }
 
-  trackById(_index: number, item: Event) {
-    return item.id;
+  get filtered(): Event[] {
+    const q = this.query.trim().toLowerCase();
+    if (!q) return this.rows;
+    return this.rows.filter((r) =>
+      [r.name, r.location, r.event_type?.name].some((v) =>
+        v?.toLowerCase().includes(q)
+      )
+    );
+  }
+
+  imageUrl(row: Event): string | null {
+    return this.supabase.imageUrl(row.image_url);
+  }
+
+  isUpcoming(row: Event): boolean {
+    return !!row.starts_at && new Date(row.starts_at).getTime() > Date.now();
   }
 
   load() {
     this.loading = true;
-    this.eventsService.list().subscribe({
+    this.error = null;
+    this.eventsService.list(true).subscribe({
       next: (list: Event[]) => {
-        // If some rows lack embedded event_type, try to patch it from typeMap
-        this.rows = list.map((e: Event) => {
-          if (
-            !e.event_type &&
-            e.event_type_id &&
-            this.typeMap.has(e.event_type_id)
-          ) {
-            return {
-              ...e,
-              event_type: {
-                id: e.event_type_id,
-                name: this.typeMap.get(e.event_type_id)!,
-                slug: '',
-                description: null,
-                created_at: '',
-                updated_at: '',
-              } as any,
-            };
-          }
-          return e;
-        });
+        this.rows = list;
         this.loading = false;
       },
       error: (e: any) => {
-        this.error = e.message || 'Failed to load';
+        this.error = e.message || 'Could not load events.';
         this.loading = false;
       },
     });
@@ -80,7 +66,7 @@ export class AdminEventsTableComponent {
         this.rows = this.rows.filter((r) => r.id !== row.id);
       },
       error: (e: any) => {
-        this.toast.showError('Delete Failed', e.message || 'Error');
+        this.toast.showError('Delete failed', e.message || 'Error');
       },
     });
   }

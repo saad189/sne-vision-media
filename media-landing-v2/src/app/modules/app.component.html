@@ -1,4 +1,8 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
-<app-back-to-top></app-back-to-top>
+@if (!isAdmin()) {
+  <app-header />
+}
+<router-outlet />
+@if (!isAdmin()) {
+  <app-footer />
+  <app-back-to-top />
+}
