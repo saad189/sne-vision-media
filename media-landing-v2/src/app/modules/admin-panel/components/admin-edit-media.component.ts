@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MediaWorkService } from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 import { MediaWork } from '../../../models';
@@ -10,8 +10,7 @@ import { MediaWorkFormComponent } from '../../../components/media-work-form/medi
   standalone: true,
   selector: 'app-admin-edit-media',
   templateUrl: './admin-edit-media.component.html',
-  styleUrls: ['./admin-edit-media.component.scss'],
-  imports: [MediaWorkFormComponent],
+  imports: [MediaWorkFormComponent, RouterLink],
 })
 export class AdminEditMediaComponent {
   private route = inject(ActivatedRoute);

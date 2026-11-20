@@ -1,0 +1,33 @@
+<div class="admin">
+  <aside class="a-side">
+    <a class="a-brand" routerLink="/admin/dashboard">
+      <img src="/assets/images/sne_logo.png" alt="" />
+      <span>Vision Media<small>Admin</small></span>
+    </a>
+
+    <nav class="a-nav" aria-label="Admin sections">
+      @for (n of nav; track n.path) {
+        <a
+          [routerLink]="['/admin', n.path]"
+          [class.active]="isActive(n)"
+          [attr.aria-current]="isActive(n) ? 'page' : null"
+          >{{ n.label }}</a
+        >
+      }
+    </nav>
+
+    <div class="a-side-foot">
+      @if (email) {
+        <span class="a-user" [title]="email">{{ email }}</span>
+      }
+      <a class="a-side-link" routerLink="/">View site</a>
+      <button type="button" class="a-side-link" (click)="logout()">
+        Log out
+      </button>
+    </div>
+  </aside>
+
+  <main class="a-main">
+    <router-outlet />
+  </main>
+</div>

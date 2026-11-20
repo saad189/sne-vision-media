@@ -1,18 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { Category } from '../../../models';
 import { CategoryService } from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
-import { Router } from '@angular/router';
 
 @Component({
-  standalone: true,
   selector: 'app-admin-categories-table',
   templateUrl: './admin-categories-table.component.html',
-  styleUrls: ['./admin-categories-table.component.scss'],
-  imports: [CommonModule],
+  imports: [FormsModule, RouterLink, DatePipe],
 })
-export class AdminCategoriesTableComponent {
+export class AdminCategoriesTableComponent implements OnInit {
   private categoriesSvc = inject(CategoryService);
   private toast = inject(ToastrNotificationService);
   private router = inject(Router);
@@ -20,24 +19,31 @@ export class AdminCategoriesTableComponent {
   rows: Category[] = [];
   loading = false;
   error: string | null = null;
+  query = '';
 
   ngOnInit() {
     this.load();
   }
 
-  trackById(_idx: number, item: Category) {
-    return item.id;
+  get filtered(): Category[] {
+    const q = this.query.trim().toLowerCase();
+    if (!q) return this.rows;
+    return this.rows.filter((r) =>
+      [r.name, r.slug, r.description].some((v) => v?.toLowerCase().includes(q))
+    );
   }
 
   load() {
     this.loading = true;
+    this.error = null;
+    this.categoriesSvc.invalidateCache(); // the service caches the list; Refresh must refetch
     this.categoriesSvc.list().subscribe({
       next: (list) => {
         this.rows = list;
         this.loading = false;
       },
       error: (e) => {
-        this.error = e.message || 'Failed to load';
+        this.error = e.message || 'Could not load categories.';
         this.loading = false;
       },
     });
@@ -50,7 +56,7 @@ export class AdminCategoriesTableComponent {
   delete(row: Category) {
     if (
       !confirm(
-        `Delete category "${row.name}"? Media works referencing it will have a null category.`
+        `Delete category "${row.name}"? Media works using it will be left without a category.`
       )
     )
       return;
@@ -59,7 +65,7 @@ export class AdminCategoriesTableComponent {
         this.toast.showSuccess('Deleted', row.name);
         this.rows = this.rows.filter((r) => r.id !== row.id);
       },
-      error: (e) => this.toast.showError('Delete Failed', e.message || 'Error'),
+      error: (e) => this.toast.showError('Delete failed', e.message || 'Error'),
     });
   }
 }

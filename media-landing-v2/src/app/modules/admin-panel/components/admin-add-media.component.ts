@@ -1,14 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { MediaWorkService } from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MediaWorkFormComponent } from '../../../components/media-work-form/media-work-form.component';
 
 @Component({
     selector: 'app-admin-add-media',
     templateUrl: './admin-add-media.component.html',
-    styleUrls: ['./admin-add-media.component.scss'],
-    imports: [MediaWorkFormComponent],
+    imports: [MediaWorkFormComponent, RouterLink],
 })
 export class AdminAddMediaComponent {
   private mediaService = inject(MediaWorkService);
@@ -25,7 +24,7 @@ export class AdminAddMediaComponent {
       next: (created) => {
         this.submitting = false;
         this.toast.showSuccess('Created', `Media Work '${created.name}' saved`);
-        this.router.navigate(['/admin/dashboard']);
+        this.router.navigate(['/admin/media-works']);
       },
       error: (e) => {
         this.submitting = false;

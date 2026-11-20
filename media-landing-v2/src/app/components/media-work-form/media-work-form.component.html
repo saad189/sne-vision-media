@@ -1,206 +1,155 @@
-<form
-  [formGroup]="form"
-  (ngSubmit)="onSubmit()"
-  class="media-work-form"
-  novalidate
-  >
-  <div
-    class="field"
-    [class.invalid]="form.get('name')?.invalid && form.get('name')?.touched"
-    >
-    <label for="mw-name">Name *</label>
-    <input id="mw-name" formControlName="name" placeholder="Display name" />
-    @if (form.get('name')?.invalid && form.get('name')?.touched) {
-      <div
-        class="err"
-        >
-        Required
-      </div>
-    }
-  </div>
-
-  <div class="field">
-    <label for="mw-title">Title</label>
-    <input id="mw-title" formControlName="title" placeholder="Optional title" />
-  </div>
-
-  <div class="field">
-    <label for="mw-summary">Summary</label>
-    <textarea
-      id="mw-summary"
-      formControlName="summary"
-      rows="3"
-      maxlength="280"
-      placeholder="Concise summary (<= 280 chars)"
-    ></textarea>
-    @if (form.get('summary')?.value; as s) {
-      <div class="hint">
-        {{ s.length || 0 }} / 280
-      </div>
-    }
-  </div>
-
-  <div class="field">
-    <label for="mw-description">Description</label>
-    <textarea
-      id="mw-description"
-      formControlName="description"
-      rows="4"
-      placeholder="Short description"
-    ></textarea>
-  </div>
-
-  <div
-    class="field"
-    [class.invalid]="form.get('type')?.invalid && form.get('type')?.touched"
-    >
-    <label for="mw-type">Type *</label>
-    <select id="mw-type" formControlName="type">
-      <option value="projects">Project</option>
-      <option value="use-cases">Use Case</option>
-    </select>
-    @if (form.get('type')?.invalid && form.get('type')?.touched) {
-      <div
-        class="err"
-        >
-        Required
-      </div>
-    }
-  </div>
-
-  <div class="field">
-    <label for="mw-category">Category</label>
-    <select id="mw-category" formControlName="categoryId">
-      <option value="">-- None --</option>
-      @for (c of categories; track c) {
-        <option [value]="c.id">{{ c.name }}</option>
-      }
-    </select>
-    @if (loadingCategories) {
-      <div class="hint">Loading categories...</div>
-    }
-    @if (categoryError) {
-      <div class="err">{{ categoryError }}</div>
-    }
-  </div>
-
-  <div class="field">
-    <label for="mw-status">Status</label>
-    <select id="mw-status" formControlName="status">
-      <option value="not_started">Not Started</option>
-      <option value="in_progress">In Progress</option>
-      <option value="complete">Complete</option>
-    </select>
-  </div>
-
-  <fieldset class="links-group">
-    <legend>Links & Uploads</legend>
-    <div class="field">
-      <label for="mw-manuscript-file">Manuscript (PDF)</label>
-      <input
-        id="mw-manuscript-file"
-        type="file"
-        accept="application/pdf"
-        (change)="onManuscriptFileSelected($event)"
-        [disabled]="uploadingManuscript"
-        />
-      @if (uploadingManuscript) {
-        <div class="progress">
-          <div class="bar" [style.width.%]="uploadProgress"></div>
-        </div>
-      }
-      @if (manuscriptError) {
-        <div class="err">{{ manuscriptError }}</div>
-      }
-      @if (!uploadingManuscript && form.get('manuscriptUrl')?.value) {
-        <div
-          class="hint existing-file"
-          >
-          @if (manuscriptSignedUrl) {
-            <span class="label">PDF:</span>
-            <a [href]="manuscriptSignedUrl" target="_blank" rel="noopener"
-              >Open (signed)</a
-              >
-              <button
-                type="button"
-                class="link danger"
-                (click)="removeManuscript()"
-                >
-                Remove
-              </button>
-            } @else {
-              <span class="label">PDF:</span>
-              <span class="filename">{{
-                fileNameOf(form.get("manuscriptUrl")?.value)
-              }}</span>
-              <em> (generating secure link...)</em>
-            }
-          </div>
-        }
-      </div>
-
-      <div class="field">
-        <label for="mw-image-file">Image (PNG/JPG, max 5MB)</label>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="a-form" novalidate>
+  <div class="a-card a-form-section">
+    <h2>Details</h2>
+    <div class="a-grid-2">
+      <div class="a-field" [class.invalid]="invalid('name')">
+        <label for="mw-name">Name <span class="a-req">*</span></label>
         <input
-          id="mw-image-file"
-          type="file"
-          accept="image/*"
-          (change)="onImageFileSelected($event)"
-          [disabled]="uploadingImage"
-          />
-        @if (uploadingImage) {
-          <div class="progress">
-            <div class="bar" [style.width.%]="imageUploadProgress"></div>
-          </div>
-        }
-        @if (imageError) {
-          <div class="err">{{ imageError }}</div>
-        }
-        @if (!uploadingImage && form.get('imageUrl')?.value) {
-          <div class="hint">
-            @if (imageSignedUrl) {
-              @if (imageSignedUrl) {
-                <div class="image-preview">
-                  <img [src]="imageSignedUrl" alt="Uploaded image preview" />
-                </div>
-              }
-              <button type="button" class="link danger" (click)="removeImage()">
-                Remove
-              </button>
-            } @else {
-              <span class="label">Image:</span>
-              <span class="filename">{{
-                fileNameOf(form.get("imageUrl")?.value)
-              }}</span>
-              <em> (generating secure image link...)</em>
-            }
-          </div>
+          id="mw-name"
+          formControlName="name"
+          placeholder="Short internal name"
+        />
+        @if (invalid('name')) {
+          <p class="a-err">Name is required.</p>
         }
       </div>
-      <div class="field">
+      <div class="a-field">
+        <label for="mw-title">Title</label>
+        <input
+          id="mw-title"
+          formControlName="title"
+          placeholder="Headline shown on the site"
+        />
+      </div>
+    </div>
+    <div class="a-grid-3">
+      <div class="a-field">
+        <label for="mw-type">Type <span class="a-req">*</span></label>
+        <select id="mw-type" formControlName="type">
+          <option value="projects">Project</option>
+          <option value="use-cases">Use case</option>
+        </select>
+      </div>
+      <div class="a-field">
+        <label for="mw-status">Status</label>
+        <select id="mw-status" formControlName="status">
+          <option value="not_started">Not started</option>
+          <option value="in_progress">In progress</option>
+          <option value="complete">Complete</option>
+        </select>
+      </div>
+      <div class="a-field">
+        <label for="mw-category">Category</label>
+        <select id="mw-category" formControlName="categoryId">
+          <option value="">
+            {{ loadingCategories ? "Loading…" : "None" }}
+          </option>
+          @for (c of categories; track c.id) {
+            <option [value]="c.id">{{ c.name }}</option>
+          }
+        </select>
+        @if (categoryError) {
+          <p class="a-err">{{ categoryError }}</p>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="a-card a-form-section">
+    <h2>Content</h2>
+    <div class="a-field" [class.invalid]="invalid('summary')">
+      <label for="mw-summary">Summary</label>
+      <textarea
+        id="mw-summary"
+        formControlName="summary"
+        rows="3"
+        maxlength="280"
+        placeholder="One or two sentences shown on the card"
+      ></textarea>
+      <p class="a-hint">{{ form.value.summary?.length || 0 }} / 280</p>
+    </div>
+    <div class="a-field">
+      <label for="mw-description">Description</label>
+      <textarea
+        id="mw-description"
+        formControlName="description"
+        rows="9"
+        placeholder="Full text shown on the detail page"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="a-card a-form-section">
+    <h2>Media</h2>
+    <div class="a-grid-2">
+      <app-file-upload
+        label="Cover image"
+        hint="PNG, JPG or WebP, up to 5 MB"
+        kind="image"
+        accept="image/*"
+        folder="images"
+        [bucket]="imagesBucket"
+        [maxBytes]="maxImageBytes"
+        [path]="form.value.imageUrl || ''"
+        (pathChange)="setPath('imageUrl', $event)"
+        (busyChange)="imageBusy = $event"
+      />
+      <app-file-upload
+        label="Manuscript"
+        hint="PDF, up to 15 MB"
+        kind="file"
+        accept="application/pdf"
+        folder="manuscripts"
+        [bucket]="manuscriptsBucket"
+        [maxBytes]="maxManuscriptBytes"
+        [path]="form.value.manuscriptUrl || ''"
+        (pathChange)="setPath('manuscriptUrl', $event)"
+        (busyChange)="manuscriptBusy = $event"
+      />
+    </div>
+  </div>
+
+  <div class="a-card a-form-section">
+    <h2>Links</h2>
+    <div class="a-grid-2">
+      <div class="a-field" [class.invalid]="invalid('youtubeUrl')">
         <label for="mw-youtube">YouTube URL</label>
         <input
           id="mw-youtube"
+          type="url"
           formControlName="youtubeUrl"
-          placeholder="https://youtube.com/..."
-          />
+          placeholder="https://youtube.com/…"
+        />
+        @if (invalid('youtubeUrl')) {
+          <p class="a-err">Enter a full link starting with https://</p>
+        }
       </div>
-      <div class="field">
+      <div class="a-field" [class.invalid]="invalid('githubUrl')">
         <label for="mw-github">GitHub URL</label>
         <input
           id="mw-github"
+          type="url"
           formControlName="githubUrl"
-          placeholder="https://github.com/..."
-          />
+          placeholder="https://github.com/…"
+        />
+        @if (invalid('githubUrl')) {
+          <p class="a-err">Enter a full link starting with https://</p>
+        }
       </div>
-    </fieldset>
+    </div>
+  </div>
 
-    <button class="primary" type="submit" [disabled]="form.invalid || submitting">
-      @if (!submitting) {
-        <span>{{ submitLabel }}</span>
-      }
-      @if (submitting) {
-        <span class="spinner"></span>
-      }
+  <div class="a-form-actions">
+    @if (imageBusy || manuscriptBusy) {
+      <span class="a-hint" role="status">Waiting for the upload to finish…</span>
+    }
+    <a class="a-btn ghost" routerLink="/admin/media-works">Cancel</a>
+    <button
+      class="a-btn primary"
+      type="submit"
+      [disabled]="submitting || imageBusy || manuscriptBusy"
+    >
+      {{ submitting ? "Saving…" : submitLabel }}
     </button>
-  </form>
+  </div>
+</form>

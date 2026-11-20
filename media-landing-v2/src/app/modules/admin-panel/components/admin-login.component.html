@@ -1,28 +1,21 @@
-<div class="login-shell">
-  <div class="login-card" [class.loading]="loading || initializing">
-    <h1 class="title">Admin Panel</h1>
-    @if (!initializing) {
-      <p class="subtitle">Sign in to continue</p>
-    }
+<div class="admin a-login">
+  <div class="a-card a-login-card">
+    <img src="/assets/images/sne_logo.png" alt="Vision Media" />
+    <div>
+      <h1>Admin sign in</h1>
+      <p>Vision Media content management</p>
+    </div>
+
     @if (initializing) {
-      <div class="init-spinner">
-        <div class="spinner"></div>
-        <p class="init-text">Preparing authentication…</p>
-      </div>
-    }
-    @if (!initializing) {
-      <form
-        [formGroup]="form"
-        (ngSubmit)="login()"
-        class="admin-login-form"
-        novalidate
-        >
+      <p role="status">Checking your session…</p>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="login()" novalidate>
         <div
-          class="field"
-        [class.invalid]="
-          form.get('email')?.invalid && form.get('email')?.touched
-        "
-          >
+          class="a-field"
+          [class.invalid]="
+            form.get('email')?.invalid && form.get('email')?.touched
+          "
+        >
           <label for="email">Email</label>
           <input
             id="email"
@@ -30,53 +23,36 @@
             type="email"
             autocomplete="email"
             placeholder="you@example.com"
-            />
+          />
           @if (form.get('email')?.invalid && form.get('email')?.touched) {
-            <div
-              class="err"
-              >
-              Valid email required
-            </div>
+            <p class="a-err">Enter a valid email address.</p>
           }
         </div>
         <div
-          class="field"
-        [class.invalid]="
-          form.get('password')?.invalid && form.get('password')?.touched
-        "
-          >
+          class="a-field"
+          [class.invalid]="
+            form.get('password')?.invalid && form.get('password')?.touched
+          "
+        >
           <label for="password">Password</label>
           <input
             id="password"
             formControlName="password"
             type="password"
             autocomplete="current-password"
-            placeholder="••••••••"
-            />
+          />
           @if (form.get('password')?.invalid && form.get('password')?.touched) {
-            <div
-              class="err"
-              >
-              Password required
-            </div>
+            <p class="a-err">Enter your password.</p>
           }
         </div>
-        <button
-          class="primary"
-          type="submit"
-          [disabled]="form.invalid || loading"
-          >
-          @if (!loading) {
-            <span>Login</span>
-          }
-          @if (loading) {
-            <span class="spinner"></span>
-          }
-        </button>
         @if (error) {
-          <div class="err global">{{ error }}</div>
+          <div class="a-alert" role="alert">{{ error }}</div>
         }
+        <button class="a-btn primary" type="submit" [disabled]="loading">
+          {{ loading ? "Signing in…" : "Sign in" }}
+        </button>
       </form>
+      <a class="a-back" routerLink="/">← Back to site</a>
     }
   </div>
 </div>

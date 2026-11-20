@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 import { Category } from '../../../models';
@@ -10,8 +10,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   standalone: true,
   selector: 'app-admin-edit-category',
   templateUrl: './admin-edit-category.component.html',
-  styleUrls: ['./admin-edit-category.component.scss'],
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
 })
 export class AdminEditCategoryComponent {
   private route = inject(ActivatedRoute);

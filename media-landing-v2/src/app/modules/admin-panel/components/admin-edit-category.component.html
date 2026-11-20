@@ -1,71 +1,58 @@
-<div class="dashboard-shell">
-  @if (!loading && category) {
-    <div class="add-shell">
-      <div class="add-card">
-        <header class="head">
-          <h1>Edit Category</h1>
-          <p>Update the details for '{{ category.name }}'.</p>
-        </header>
-        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-          <div
-            class="field"
+<section class="a-page a-narrow">
+  <header class="a-page-head">
+    <div>
+      <a class="a-back" routerLink="/admin/categories">← Categories</a>
+      <h1>Edit category</h1>
+      @if (category) {
+        <p>{{ category.name }}</p>
+      }
+    </div>
+  </header>
+
+  @if (loading) {
+    <div class="a-card a-skel-list" aria-busy="true" aria-label="Loading">
+      @for (i of [1, 2]; track i) {
+        <div class="a-skel"></div>
+      }
+    </div>
+  } @else if (category) {
+    <form class="a-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="a-card a-form-section">
+        <div
+          class="a-field"
           [class.invalid]="
             form.get('name')?.invalid && form.get('name')?.touched
           "
-            >
-            <label for="cat-name">Name *</label>
-            <input
-              id="cat-name"
-              formControlName="name"
-              placeholder="Category name"
-              />
-            @if (form.get('name')?.invalid && form.get('name')?.touched) {
-              <div
-                class="err"
-                >
-                Required (max 120 chars)
-              </div>
-            }
-          </div>
-          <div class="field">
-            <label for="cat-desc">Description</label>
-            <textarea
-              id="cat-desc"
-              rows="3"
-              formControlName="description"
-              placeholder="Short description (optional)"
-            ></textarea>
-          </div>
-          <button
-            class="primary"
-            type="submit"
-            [disabled]="submitting || form.invalid"
-            >
-            @if (!submitting) {
-              <span>Update</span>
-            }
-            @if (submitting) {
-              <span class="spinner"></span>
-            }
-          </button>
-          @if (error) {
-            <div class="err global">{{ error }}</div>
+        >
+          <label for="cat-name">Name <span class="a-req">*</span></label>
+          <input id="cat-name" formControlName="name" maxlength="120" />
+          @if (form.get('name')?.invalid && form.get('name')?.touched) {
+            <p class="a-err">Name is required (up to 120 characters).</p>
           }
-        </form>
-      </div>
-    </div>
-  } @else {
-    @if (loading && !error) {
-      <div class="add-shell">
-        <div class="add-card"><div class="loading">Loading...</div></div>
-      </div>
-    }
-    @if (!loading && error) {
-      <div class="add-shell">
-        <div class="add-card">
-          <div class="err global">{{ error }}</div>
+        </div>
+        <div class="a-field">
+          <label for="cat-desc">Description</label>
+          <textarea
+            id="cat-desc"
+            rows="3"
+            maxlength="500"
+            formControlName="description"
+            placeholder="Optional"
+          ></textarea>
         </div>
       </div>
-    }
+
+      @if (error) {
+        <div class="a-alert" role="alert">{{ error }}</div>
+      }
+      <div class="a-form-actions">
+        <a class="a-btn ghost" routerLink="/admin/categories">Cancel</a>
+        <button class="a-btn primary" type="submit" [disabled]="submitting">
+          {{ submitting ? "Saving…" : "Save changes" }}
+        </button>
+      </div>
+    </form>
+  } @else if (error) {
+    <div class="a-alert" role="alert">{{ error }}</div>
   }
-</div>
+</section>

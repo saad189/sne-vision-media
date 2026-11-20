@@ -7,6 +7,7 @@ import {
   AuthChangeEvent,
 } from '@supabase/supabase-js';
 import { environment } from '../environments/environment';
+import { IMAGES_BUCKET } from '../constants/storage.constants';
 import { BehaviorSubject, from, map, Observable } from 'rxjs';
 
 export interface SupabaseUserProfile {
@@ -141,6 +142,15 @@ export class SupabaseService {
 
   signOut() {
     return from(this._client.auth.signOut()).pipe(map(() => true));
+  }
+
+  /** Public URL of a path in the images bucket; absolute URLs pass through. */
+  imageUrl(path?: string | null): string | null {
+    if (!path) return null;
+    if (/^https?:\/\//i.test(path)) return path;
+    return this._client.storage
+      .from(IMAGES_BUCKET)
+      .getPublicUrl(path.replace(/^\/+/, '')).data.publicUrl;
   }
 
   /**
