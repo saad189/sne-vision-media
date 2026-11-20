@@ -11,33 +11,41 @@
         Technology.
       </p>
     </div>
-    <div class="testimonial-row" role="list" [attr.aria-busy]="loading">
-      @if (loading) {
-        @for (i of [1, 2, 3, 4, 5]; track i) {
-          <div class="testimonial-card motion-safe:animate-pulse" aria-hidden="true">
-            <div class="flex flex-col gap-2">
-              <div class="h-2 w-full rounded bg-black/10"></div>
-              <div class="h-2 w-full rounded bg-black/10"></div>
-              <div class="h-2 w-2/3 rounded bg-black/10"></div>
-            </div>
-            <div class="h-2 w-1/2 rounded bg-black/15"></div>
-          </div>
-        }
-      }
-      @for (t of testimonials; track trackTestimonial($index, t)) {
-        <article
-          class="testimonial-card"
-          role="listitem"
-          >
-          <p class="t-quote">{{ t.quote }}</p>
-          <div class="t-author">{{ t.author }}</div>
-          @if (t.date) {
-            <div class="t-date">
-              {{ t.date | date : "MMM, yyyy" }}
+    @if (error) {
+      <p class="section-state section-state--error" role="alert">
+        Couldn't load community voices. Please refresh to try again.
+      </p>
+    } @else if (!loading && !testimonials.length) {
+      <p class="section-state">No testimonials yet. Check back soon.</p>
+    } @else {
+      <div class="testimonial-row" role="list" [attr.aria-busy]="loading">
+        @if (loading) {
+          @for (i of [1, 2, 3, 4, 5]; track i) {
+            <div class="testimonial-card motion-safe:animate-pulse" aria-hidden="true">
+              <div class="flex flex-col gap-2">
+                <div class="h-2 w-full rounded bg-black/10"></div>
+                <div class="h-2 w-full rounded bg-black/10"></div>
+                <div class="h-2 w-2/3 rounded bg-black/10"></div>
+              </div>
+              <div class="h-2 w-1/2 rounded bg-black/15"></div>
             </div>
           }
-        </article>
-      }
-    </div>
+        }
+        @for (t of testimonials; track trackTestimonial($index, t)) {
+          <article
+            class="testimonial-card"
+            role="listitem"
+            >
+            <p class="t-quote">{{ t.quote }}</p>
+            <div class="t-author">{{ t.author }}</div>
+            @if (t.date) {
+              <div class="t-date">
+                {{ t.date | date : "MMM, yyyy" }}
+              </div>
+            }
+          </article>
+        }
+      </div>
+    }
   </div>
 </section>

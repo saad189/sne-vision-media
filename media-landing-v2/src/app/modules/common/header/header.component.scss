@@ -2,7 +2,7 @@
  * All styles handled via Tailwind utility classes.
  * Host styles below ensure proper stacking and display.
  */
+// `contents` so the sticky <nav> sticks against the page, not this 116px host box.
 :host {
-  display: block;
-  z-index: 50;
+  display: contents;
 }

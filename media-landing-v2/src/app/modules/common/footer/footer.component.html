@@ -84,42 +84,6 @@
         </li>
       </ul>
     </div>
-
-    <div class="pre-footer__col pre-footer__support">
-      <h5>Support</h5>
-      <ul class="support-links">
-        <li><a routerLink="/faq">FAQ</a></li>
-        <li><a routerLink="/policy">Policy</a></li>
-        <!-- <li><a routerLink="/chat">Quick Chat</a></li> -->
-      </ul>
-    </div>
-
-    <div class="pre-footer__col pre-footer__newsletter">
-      <h5>Join our Newsletter</h5>
-      <form
-        (ngSubmit)="subscribe()"
-        #newsletterForm="ngForm"
-        novalidate
-        class="newsletter-form"
-        >
-        <div class="newsletter-form__group">
-          <input
-            type="email"
-            name="email"
-            ngModel
-            required
-            placeholder="your email address"
-            aria-label="Email address"
-            />
-          <button type="submit" [disabled]="newsletterForm.invalid">
-            Subscribe
-          </button>
-        </div>
-        @if (subscribed) {
-          <p class="success">Thank you for subscribing!</p>
-        }
-      </form>
-    </div>
   </div>
 </section>
 

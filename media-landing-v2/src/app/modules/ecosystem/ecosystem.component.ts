@@ -20,12 +20,34 @@ export class EcosystemComponent {
     private toastr: ToastrNotificationService
   ) {
     this.ecosystemForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: [''],
-      designation: [''],
-      message: ['', [Validators.required, Validators.minLength(10)]],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(120)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
+      phone: ['', [Validators.maxLength(40)]],
+      designation: ['', [Validators.maxLength(120)]],
+      message: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(5000)]],
     });
+  }
+
+  private static readonly labels: Record<string, string> = {
+    name: 'Name',
+    email: 'Email',
+    phone: 'Phone',
+    designation: 'Designation',
+    message: 'Message',
+  };
+
+  /** Human-readable error for a field, shown only after a submit attempt. */
+  errorFor(field: string): string | null {
+    const errors = this.ecosystemForm.get(field)?.errors;
+    if (!this.formSubmitted || !errors) return null;
+    const label = EcosystemComponent.labels[field] ?? field;
+    if (errors['required']) return `${label} is required.`;
+    if (errors['email']) return 'Enter a valid email address.';
+    if (errors['minlength'])
+      return `${label} must be at least ${errors['minlength'].requiredLength} characters.`;
+    if (errors['maxlength'])
+      return `${label} must be at most ${errors['maxlength'].requiredLength} characters.`;
+    return `${label} is invalid.`;
   }
 
   submitEcosystem() {
