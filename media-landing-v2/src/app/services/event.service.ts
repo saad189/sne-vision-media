@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, from, map, of, shareReplay, switchMap } from 'rxjs';
 import { SupabaseService } from './supabase.service';
+import { IMAGES_BUCKET } from '../constants/storage.constants';
 import { Event, EventInput, EventType } from '../models/event.interface';
 
 const TABLE = 'events';
-const IMAGES_BUCKET = 'VisionMediaBucket';
 
 @Injectable({ providedIn: 'root' })
 export class EventService {

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, from, map, of, shareReplay, switchMap } from 'rxjs';
 import { SupabaseService } from './supabase.service';
+import { IMAGES_BUCKET } from '../constants/storage.constants';
 import { HeroSlideInput, HeroSlideItem } from '../models';
 
 const TABLE = 'hero_slide';
 // Reuse existing bucket (you may wish to dedicate a bucket later)
-const IMAGES_BUCKET = 'VisionMediaBucket';
 
 @Injectable({ providedIn: 'root' })
 export class HeroListService {
