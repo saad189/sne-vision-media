@@ -59,7 +59,8 @@ create policy "Admin update event_type" on public.event_type
 create policy "Admin delete event_type" on public.event_type
   for delete to authenticated using ((select public.is_admin()));
 
--- events
+-- events (the live database had a hand-made insert policy under this name)
+drop policy if exists "Enable insert for authenticated users only" on public.events;
 drop policy if exists "Auth insert events" on public.events;
 drop policy if exists "Auth update events" on public.events;
 drop policy if exists "Auth delete events" on public.events;

@@ -6,8 +6,7 @@
 --   1. 20261120_01_create_admins_and_is_admin.sql        (this file)
 --   2. Insert the first admin row (statement below).
 --   3. 20261120_02_admin_only_write_policies.sql
---   4. 20261120_03_PROPOSED_media_works_categories_storage_policies.sql
---      ONLY after comparing it with the live policies (see its header).
+--   4. 20261120_03_media_works_categories_storage_policies.sql
 --   5. Deploy the Angular build whose admin guard calls rpc('is_admin').
 --
 -- WARNING: insert the admin row (step 2) BEFORE running step 3. Step 3 replaces

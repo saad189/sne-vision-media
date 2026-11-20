@@ -1,46 +1,15 @@
--- ============================================================================
--- PROPOSED - REVIEW BEFORE RUNNING. NOT A DROP-IN MIGRATION.
+-- Migration: admin-only writes on media_works, categories and both storage buckets
+-- Depends on: 20261120_01 + at least one row in public.admins.
+-- Safe to re-run. Applied to the live project as written.
 --
--- media_works, categories and the storage buckets VisionMediaBucket and
--- VisionMediaPrivateBucket were created by hand in the dashboard. Their live
--- policies are not in this repo, and this file was written WITHOUT SIGHT of
--- them. Compare with the live policies before running anything here:
+-- media_works, categories and the buckets were created by hand in the dashboard,
+-- so this file first drops the hand-made policies by their live names.
 --
---   select schemaname, tablename, policyname, cmd, roles, qual, with_check
---   from pg_policies
---   where (schemaname = 'public' and tablename in ('media_works', 'categories'))
---      or (schemaname = 'storage' and tablename = 'objects')
---   order by schemaname, tablename, policyname;
---
--- RLS policies are permissive and OR-ed together: any existing policy that
--- lets every authenticated user write will STILL let them write after this
--- file runs. Drop those by name (drop policy "<name>" on <table>;) as part of
--- applying this. Run only after 20261120_01 + an admin row exist.
---
--- What it proposes: public read where the public site needs it, admin-only
--- insert/update/delete everywhere. Column names (inferred from
--- media-work.service.ts / category.service.ts) are not referenced, so the
--- policies do not depend on them.
---
--- DECISION FOR THE USER - private manuscripts are effectively public:
---   The public site (MediaWorkService.addSignedUrls) calls createSignedUrl on
---   VisionMediaPrivateBucket as an ANONYMOUS visitor. Creating a signed URL
---   requires SELECT on storage.objects for that role, so the bucket needs an
---   anon SELECT policy for manuscript links to keep working. With it, anyone
---   holding the anon key can sign/download any manuscript, i.e. the bucket is
---   private in name only. Section 3b below KEEPS that behaviour so nothing
---   breaks. If manuscripts should really be private, delete policy
---   "svm_private_anon_read" and serve manuscripts some other way (e.g. an Edge
---   Function that signs URLs for allowed works only).
---
--- Also noticed (code owned by another change, not fixed here):
---   media-work-form.component.ts uploads manuscripts AND images to
---   VisionMediaBucket (the PUBLIC bucket), while MediaWorkService signs
---   manuscript links against VisionMediaPrivateBucket. New manuscripts may be
---   landing in the public bucket and their links failing to sign.
---
--- Safe to re-run (every policy is dropped before it is created).
--- ============================================================================
+-- Manuscripts (VisionMediaPrivateBucket): anonymous visitors may read, because the
+-- public site signs manuscript URLs as an anonymous visitor
+-- (MediaWorkService.addSignedUrls). Decided by the owner: visitors can open
+-- manuscripts. To make them private, drop policy "svm_private_anon_read" and
+-- serve manuscripts another way.
 
 begin;
 
@@ -48,6 +17,15 @@ begin;
 -- 1. media_works: public read, admin writes
 -- ---------------------------------------------------------------------------
 alter table public.media_works enable row level security;
+
+-- hand-made policies (any authenticated user / row owner could write)
+drop policy if exists "Authenticated delete media works" on public.media_works;
+drop policy if exists "Authenticated insert media works" on public.media_works;
+drop policy if exists "Authenticated update media works" on public.media_works;
+drop policy if exists "Delete own media works" on public.media_works;
+drop policy if exists "Insert own media works" on public.media_works;
+drop policy if exists "Update own media works" on public.media_works;
+drop policy if exists "Public read media works" on public.media_works;
 
 drop policy if exists "Public read media_works" on public.media_works;
 drop policy if exists "Admin insert media_works" on public.media_works;
@@ -67,6 +45,10 @@ create policy "Admin delete media_works" on public.media_works
 -- ---------------------------------------------------------------------------
 alter table public.categories enable row level security;
 
+-- hand-made policies
+drop policy if exists "Allow modify categories" on public.categories;
+drop policy if exists "Allow read categories" on public.categories;
+
 drop policy if exists "Public read categories" on public.categories;
 drop policy if exists "Admin insert categories" on public.categories;
 drop policy if exists "Admin update categories" on public.categories;
@@ -82,16 +64,29 @@ create policy "Admin delete categories" on public.categories
 
 -- ---------------------------------------------------------------------------
 -- 3a. storage: VisionMediaBucket (public images)
---     Public URLs need no policy, but hero-slide.service.ts / top-minds.service.ts
---     call createSignedUrl on this bucket as anon, which needs SELECT.
+--     Public URLs need no policy. hero-slide.service.ts / top-minds.service.ts
+--     call createSignedUrl as anon on paths under images/, which needs SELECT there.
+--     Admins get SELECT on the whole bucket for upload previews.
 -- ---------------------------------------------------------------------------
+-- hand-made policies
+drop policy if exists "VisionMediaBucket Auth Delete" on storage.objects;
+drop policy if exists "VisionMediaBucket Auth Insert" on storage.objects;
+drop policy if exists "VisionMediaBucket Auth Select" on storage.objects;
+drop policy if exists "VisionMediaBucket Auth Update" on storage.objects;
+drop policy if exists "Give anon users access to JPG images in folder 12jhfwm_0" on storage.objects;
+
 drop policy if exists "svm_public_read" on storage.objects;
+drop policy if exists "svm_public_read_images" on storage.objects;
+drop policy if exists "svm_public_admin_read" on storage.objects;
 drop policy if exists "svm_public_admin_insert" on storage.objects;
 drop policy if exists "svm_public_admin_update" on storage.objects;
 drop policy if exists "svm_public_admin_delete" on storage.objects;
-create policy "svm_public_read" on storage.objects
+create policy "svm_public_read_images" on storage.objects
   for select to anon, authenticated
-  using (bucket_id = 'VisionMediaBucket');
+  using (bucket_id = 'VisionMediaBucket' and lower((storage.foldername(name))[1]) = 'images');
+create policy "svm_public_admin_read" on storage.objects
+  for select to authenticated
+  using (bucket_id = 'VisionMediaBucket' and (select public.is_admin()));
 create policy "svm_public_admin_insert" on storage.objects
   for insert to authenticated
   with check (bucket_id = 'VisionMediaBucket' and (select public.is_admin()));
@@ -104,22 +99,17 @@ create policy "svm_public_admin_delete" on storage.objects
   using (bucket_id = 'VisionMediaBucket' and (select public.is_admin()));
 
 -- ---------------------------------------------------------------------------
--- 3b. storage: VisionMediaPrivateBucket (manuscripts) - see DECISION in header
+-- 3b. storage: VisionMediaPrivateBucket (manuscripts)
+--     The bucket had no policies at all before this file.
 -- ---------------------------------------------------------------------------
 drop policy if exists "svm_private_anon_read" on storage.objects;
 drop policy if exists "svm_private_admin_read" on storage.objects;
 drop policy if exists "svm_private_admin_insert" on storage.objects;
 drop policy if exists "svm_private_admin_update" on storage.objects;
 drop policy if exists "svm_private_admin_delete" on storage.objects;
--- Keeps today's behaviour (anonymous visitors can sign manuscript URLs).
--- Delete this one policy to make the bucket genuinely private.
 create policy "svm_private_anon_read" on storage.objects
   for select to anon, authenticated
   using (bucket_id = 'VisionMediaPrivateBucket');
--- Redundant while svm_private_anon_read exists; keeps admin read access if it is removed.
-create policy "svm_private_admin_read" on storage.objects
-  for select to authenticated
-  using (bucket_id = 'VisionMediaPrivateBucket' and (select public.is_admin()));
 create policy "svm_private_admin_insert" on storage.objects
   for insert to authenticated
   with check (bucket_id = 'VisionMediaPrivateBucket' and (select public.is_admin()));
@@ -130,5 +120,10 @@ create policy "svm_private_admin_update" on storage.objects
 create policy "svm_private_admin_delete" on storage.objects
   for delete to authenticated
   using (bucket_id = 'VisionMediaPrivateBucket' and (select public.is_admin()));
+
+-- ---------------------------------------------------------------------------
+-- 4. Supabase security advisor: pin the trigger function's search_path
+-- ---------------------------------------------------------------------------
+alter function public.set_updated_at() set search_path = '';
 
 commit;
