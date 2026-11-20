@@ -27,7 +27,23 @@ a {
 .section-pad {
   padding: 5rem 0 4rem;
   /* Ensure anchored scroll positions account for sticky header */
-  scroll-margin-top: 140px;
+  scroll-margin-top: 96px;
+}
+
+/* Loading / error / empty placeholders for data-driven sections */
+.section-state {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #4d4d4d;
+  padding: 1.5rem 1rem;
+  border: 1px dashed #c4c4c4;
+  border-radius: 12px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.section-state--error {
+  color: #b3261e;
+  border-color: #e3a19c;
 }
 .section-inner {
   max-width: 1220px;
