@@ -3,14 +3,13 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CategoryService } from '../../../services';
 import { ToastrNotificationService } from '../../../services/toastr.service';
 
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-admin-add-category',
   templateUrl: './admin-add-category.component.html',
-  styleUrls: ['./admin-add-category.component.scss'],
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
 })
 export class AdminAddCategoryComponent {
   private fb = inject(FormBuilder);
@@ -40,7 +39,7 @@ export class AdminAddCategoryComponent {
         next: (cat) => {
           this.submitting = false;
           this.toast.showSuccess('Category Created', cat.name);
-          this.router.navigate(['/admin/dashboard']);
+          this.router.navigate(['/admin/categories']);
         },
         error: (e) => {
           this.submitting = false;

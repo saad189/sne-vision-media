@@ -1,17 +1,18 @@
-<div class="add-shell">
-  <div class="add-card">
-    <header class="head">
-      <h1>Create Media Work</h1>
-      <p>Add a new project or use case entry below.</p>
-    </header>
-    <app-media-work-form
-      class="media-form"
-      [submitLabel]="'Create'"
-      [submitting]="submitting"
-      (save)="create($event)"
-    ></app-media-work-form>
-    @if (error) {
-      <div class="err global">{{ error }}</div>
-    }
-  </div>
-</div>
+<section class="a-page a-narrow">
+  <header class="a-page-head">
+    <div>
+      <a class="a-back" routerLink="/admin/media-works">← Media works</a>
+      <h1>New media work</h1>
+      <p>Add a project or use case to the public site.</p>
+    </div>
+  </header>
+
+  @if (error) {
+    <div class="a-alert" role="alert">{{ error }}</div>
+  }
+  <app-media-work-form
+    submitLabel="Create media work"
+    [submitting]="submitting"
+    (save)="create($event)"
+  />
+</section>

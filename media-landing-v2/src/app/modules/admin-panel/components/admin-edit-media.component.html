@@ -1,35 +1,29 @@
-@if (!loading && media) {
-  <div class="add-shell">
-    <div class="add-card">
-      <header class="head">
-        <h1>Edit Media Work</h1>
-        <p>Edit details for the selected project or use case.</p>
-      </header>
-      <app-media-work-form
-        class="media-form"
-        [value]="media"
-        [submitLabel]="'Update'"
-        [submitting]="submitting"
-        (save)="update($event)"
-      ></app-media-work-form>
-      @if (error) {
-        <div class="err global">{{ error }}</div>
+<section class="a-page a-narrow">
+  <header class="a-page-head">
+    <div>
+      <a class="a-back" routerLink="/admin/media-works">← Media works</a>
+      <h1>Edit media work</h1>
+      @if (media) {
+        <p>{{ media.name }}</p>
       }
     </div>
-  </div>
-} @else {
-  @if (loading && !error) {
-    <div class="add-shell loading-shell">
-      <div class="add-card skeleton">
-        <p class="loading">Loading...</p>
-      </div>
-    </div>
+  </header>
+
+  @if (error) {
+    <div class="a-alert" role="alert">{{ error }}</div>
   }
-  @if (!loading && error) {
-    <div class="add-shell">
-      <div class="add-card">
-        <div class="err global">{{ error }}</div>
-      </div>
+  @if (loading) {
+    <div class="a-card a-skel-list" aria-busy="true" aria-label="Loading">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="a-skel"></div>
+      }
     </div>
+  } @else if (media) {
+    <app-media-work-form
+      submitLabel="Save changes"
+      [value]="media"
+      [submitting]="submitting"
+      (save)="update($event)"
+    />
   }
-}
+</section>

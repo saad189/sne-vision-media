@@ -1,46 +1,104 @@
-<div class="table-shell">
-  <header class="head">
-    <h1>Categories</h1>
-    <button class="secondary" (click)="load()" [disabled]="loading">
-      Reload
-    </button>
-  </header>
-  @if (loading) {
-    <div>Loading...</div>
-  }
-  @if (error) {
-    <div class="err">{{ error }}</div>
-  }
-  @if (!loading && !error && rows.length) {
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Slug</th>
-          <th>Description</th>
-          <th>Created</th>
-          <th style="width: 140px">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (r of rows; track trackById($index, r)) {
-          <tr>
-            <td>{{ r.name }}</td>
-            <td>{{ r.slug }}</td>
-            <td>{{ r.description || "—" }}</td>
-            <td>{{ r.created_at | date : "short" }}</td>
-            <td class="actions">
-              <button class="secondary" (click)="edit(r)">Edit</button>
-              <button class="danger" (click)="delete(r)">Del</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
-  @if (!loading && !error && !rows.length) {
-    <div class="empty">
-      No categories yet.
+<section class="a-page">
+  <header class="a-page-head">
+    <div>
+      <h1>Categories</h1>
+      <p>Used to group and filter media works.</p>
     </div>
-  }
-</div>
+    <a class="a-btn primary" routerLink="/admin/add-category">Add category</a>
+  </header>
+
+  <div class="a-card">
+    <div class="a-toolbar">
+      <input
+        type="search"
+        class="a-search"
+        placeholder="Search categories"
+        aria-label="Search categories"
+        [(ngModel)]="query"
+      />
+      <span class="a-count">{{ filtered.length }} of {{ rows.length }}</span>
+      <button
+        type="button"
+        class="a-btn ghost"
+        (click)="load()"
+        [disabled]="loading"
+      >
+        Refresh
+      </button>
+    </div>
+
+    @if (error) {
+      <div class="a-alert" role="alert">
+        <span>{{ error }}</span>
+        <button type="button" class="a-btn ghost sm" (click)="load()">
+          Try again
+        </button>
+      </div>
+    } @else if (loading) {
+      <div class="a-skel-list" aria-busy="true" aria-label="Loading categories">
+        @for (i of [1, 2, 3, 4]; track i) {
+          <div class="a-skel"></div>
+        }
+      </div>
+    } @else if (!rows.length) {
+      <div class="a-empty">
+        <p>No categories yet.</p>
+        <a class="a-btn primary" routerLink="/admin/add-category"
+          >Add the first one</a
+        >
+      </div>
+    } @else if (!filtered.length) {
+      <div class="a-empty"><p>Nothing matches “{{ query }}”.</p></div>
+    } @else {
+      <div class="a-table-wrap">
+        <table class="a-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Slug</th>
+              <th>Description</th>
+              <th class="a-hide-md">Created</th>
+              <th><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (r of filtered; track r.id) {
+              <tr>
+                <td>
+                  <strong>{{ r.name }}</strong>
+                </td>
+                <td>
+                  <span class="a-code">{{ r.slug || "—" }}</span>
+                </td>
+                <td>
+                  <p class="a-clamp" [title]="r.description || ''">
+                    {{ r.description || "—" }}
+                  </p>
+                </td>
+                <td class="a-nowrap a-hide-md">
+                  {{ r.created_at | date : "d MMM y" }}
+                </td>
+                <td class="a-col-actions">
+                  <button
+                    type="button"
+                    class="a-btn ghost sm"
+                    (click)="edit(r)"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    class="a-btn danger sm"
+                    (click)="delete(r)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</section>

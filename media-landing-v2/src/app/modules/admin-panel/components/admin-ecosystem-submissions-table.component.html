@@ -1,53 +1,101 @@
-<div class="dashboard-shell">
-  <div class="table-shell">
-    <header class="head">
-      <h1>Ecosystem Submissions</h1>
-      <div>
-        <button class="secondary" (click)="load()" [disabled]="loading">
-          Reload
+<section class="a-page">
+  <header class="a-page-head">
+    <div>
+      <h1>Submissions</h1>
+      <p>Messages sent through the “Join our Ecosystem” form.</p>
+    </div>
+  </header>
+
+  <div class="a-card">
+    <div class="a-toolbar">
+      <input
+        type="search"
+        class="a-search"
+        placeholder="Search name, email or message"
+        aria-label="Search submissions"
+        [(ngModel)]="query"
+      />
+      <span class="a-count">{{ filtered.length }} of {{ rows.length }}</span>
+      <button
+        type="button"
+        class="a-btn ghost"
+        (click)="load()"
+        [disabled]="loading"
+      >
+        Refresh
+      </button>
+    </div>
+
+    @if (error) {
+      <div class="a-alert" role="alert">
+        <span>{{ error }}</span>
+        <button type="button" class="a-btn ghost sm" (click)="load()">
+          Try again
         </button>
       </div>
-    </header>
-    @if (loading) {
-      <div>Loading...</div>
-    }
-    @if (error) {
-      <div class="err">{{ error }}</div>
-    }
-    @if (!loading && !error && rows.length) {
-      <table
-        class="data-table ecosystem-table"
-        >
-        <thead>
-          <tr>
-            <th style="width: 160px">Name</th>
-            <th style="width: 200px">Email</th>
-            <th style="width: 120px">Phone</th>
-            <th style="width: 140px">Designation</th>
-            <th>Message</th>
-            <th style="width: 140px">Submitted</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (r of rows; track trackById($index, r)) {
-            <tr [title]="r.message">
-              <td>{{ r.name }}</td>
-              <td>
-                <a [href]="'mailto:' + r.email">{{ r.email }}</a>
-              </td>
-              <td>{{ r.phone || "—" }}</td>
-              <td>{{ r.designation || "—" }}</td>
-              <td class="msg" [title]="r.message">{{ r.message }}</td>
-              <td>{{ r.created_at | date : "short" }}</td>
+    } @else if (loading) {
+      <div class="a-skel-list" aria-busy="true" aria-label="Loading submissions">
+        @for (i of [1, 2, 3, 4]; track i) {
+          <div class="a-skel"></div>
+        }
+      </div>
+    } @else if (!rows.length) {
+      <div class="a-empty"><p>No submissions yet.</p></div>
+    } @else if (!filtered.length) {
+      <div class="a-empty"><p>Nothing matches “{{ query }}”.</p></div>
+    } @else {
+      <div class="a-table-wrap">
+        <table class="a-table">
+          <thead>
+            <tr>
+              <th>From</th>
+              <th>Contact</th>
+              <th>Message</th>
+              <th>Received</th>
             </tr>
-          }
-        </tbody>
-      </table>
-    }
-    @if (!loading && !error && !rows.length) {
-      <div class="empty">
-        No ecosystem submissions yet.
+          </thead>
+          <tbody>
+            @for (r of filtered; track r.id) {
+              <tr>
+                <td>
+                  <div class="a-cell-main">
+                    <div>
+                      <strong>{{ r.name }}</strong>
+                      @if (r.designation) {
+                        <small>{{ r.designation }}</small>
+                      }
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <a [href]="'mailto:' + r.email">{{ r.email }}</a>
+                  @if (r.phone) {
+                    <small class="a-hint"><br />{{ r.phone }}</small>
+                  }
+                </td>
+                <td>
+                  <p class="a-clamp" [class.open]="expanded.has(r.id)">
+                    {{ r.message }}
+                  </p>
+                  @if (r.message.length > 120) {
+                    <button
+                      type="button"
+                      class="a-more"
+                      [attr.aria-expanded]="expanded.has(r.id)"
+                      (click)="toggle(r.id)"
+                    >
+                      {{ expanded.has(r.id) ? "Show less" : "Show more" }}
+                    </button>
+                  }
+                </td>
+                <td class="a-nowrap">
+                  {{ r.created_at | date : "d MMM y, HH:mm" }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
     }
   </div>
-</div>
+</section>

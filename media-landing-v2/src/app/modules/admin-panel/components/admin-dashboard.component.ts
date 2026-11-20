@@ -1,51 +1,87 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { SupabaseService, MediaWorkService } from '../../../services';
-import { MediaWork } from '../../../models';
+import { Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
+import {
+  CategoryService,
+  EcosystemService,
+  EventService,
+  MediaWorkService,
+} from '../../../services';
+import { EcosystemSubmission, MediaWork } from '../../../models';
+import { Event } from '../../../models/event.interface';
+
+interface Stat {
+  label: string;
+  link: string;
+  /** null until loaded */
+  value: number | null;
+  sub: string;
+}
 
 @Component({
-    selector: 'app-admin-dashboard',
-    templateUrl: './admin-dashboard.component.html',
-    styleUrls: ['./admin-dashboard.component.scss'],
+  selector: 'app-admin-dashboard',
+  imports: [RouterLink],
+  templateUrl: './admin-dashboard.component.html',
 })
-export class AdminDashboardComponent {
-  private router = inject(Router);
-  private supabase = inject(SupabaseService);
+export class AdminDashboardComponent implements OnInit {
   private media = inject(MediaWorkService);
+  private events = inject(EventService);
+  private categories = inject(CategoryService);
+  private submissions = inject(EcosystemService);
 
-  dropdownOpen = false;
+  stats: Stat[] = [];
 
-  toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen;
-  }
-  closeDropdown() {
-    this.dropdownOpen = false;
+  ngOnInit() {
+    this.addStat<MediaWork>(
+      'Media works',
+      '/admin/media-works',
+      this.media.list(),
+      (rows) => {
+        const useCases = rows.filter((r) => r.type === 'use-cases').length;
+        return `${rows.length - useCases} projects · ${useCases} use cases`;
+      }
+    );
+    this.addStat<Event>('Events', '/admin/events', this.events.list(), (rows) => {
+      const now = Date.now();
+      const upcoming = rows.filter(
+        (e) => e.starts_at && new Date(e.starts_at).getTime() > now
+      ).length;
+      return `${upcoming} upcoming`;
+    });
+    this.addStat(
+      'Categories',
+      '/admin/categories',
+      this.categories.list(),
+      () => ''
+    );
+    this.addStat<EcosystemSubmission>(
+      'Submissions',
+      '/admin/ecosystem-submissions',
+      this.submissions.list(),
+      (rows) =>
+        rows.length
+          ? `Latest on ${new Date(rows[0].created_at).toLocaleDateString(
+              'en-GB',
+              { day: 'numeric', month: 'short', year: 'numeric' }
+            )}`
+          : 'None yet'
+    );
   }
 
-  goAdd() {
-    this.router.navigate(['/admin/add-media']);
-  }
-  goAddCategory() {
-    this.router.navigate(['/admin/add-category']);
-  }
-  goMediaWorks() {
-    this.router.navigate(['/admin/media-works']);
-  }
-  goCategories() {
-    this.router.navigate(['/admin/categories']);
-  }
-  goEcosystemSubmissions() {
-    this.router.navigate(['/admin/ecosystem-submissions']);
-  }
-  goAddEvent() {
-    this.router.navigate(['/admin/add-event']);
-  }
-  goEvents() {
-    this.router.navigate(['/admin/events']);
-  }
-  logout() {
-    this.supabase
-      .signOut()
-      .subscribe(() => this.router.navigate(['/admin/login']));
+  private addStat<T>(
+    label: string,
+    link: string,
+    source: Observable<T[]>,
+    describe: (rows: T[]) => string
+  ) {
+    const stat: Stat = { label, link, value: null, sub: '' };
+    this.stats.push(stat);
+    source.subscribe({
+      next: (rows) => {
+        stat.value = rows.length;
+        stat.sub = describe(rows);
+      },
+      error: () => (stat.sub = 'Could not load'),
+    });
   }
 }
