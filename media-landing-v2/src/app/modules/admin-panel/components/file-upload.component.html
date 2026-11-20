@@ -1,0 +1,73 @@
+<div class="a-field a-upload-field">
+  <span class="a-label" [id]="inputId + '-label'">{{ label }}</span>
+
+  @if (uploading()) {
+    <div class="a-upload is-busy" role="status" aria-live="polite">
+      <div class="a-upload-row">
+        <span class="a-upload-name">{{ fileName() }}</span>
+        <button type="button" class="a-btn ghost sm" (click)="cancel()">
+          Cancel
+        </button>
+      </div>
+      <progress class="a-progress" max="100" [value]="percent()">
+        {{ percent() }}%
+      </progress>
+      <span class="a-hint">
+        {{ percent() }}% · {{ formatBytes(loaded()) }} of
+        {{ formatBytes(total()) }}
+      </span>
+    </div>
+  } @else if (path) {
+    <div class="a-upload is-done">
+      @if (previewUrl(); as src) {
+        <img class="a-upload-preview" [src]="src" [alt]="label + ' preview'" />
+      } @else {
+        <span class="a-file-icon" aria-hidden="true">FILE</span>
+      }
+      <div class="a-upload-meta">
+        <span class="a-upload-name" [title]="displayName()">{{
+          displayName()
+        }}</span>
+        <span class="a-hint a-ok">Uploaded</span>
+      </div>
+      <div class="a-upload-actions">
+        @if (fileUrl(); as href) {
+          <a class="a-btn ghost sm" [href]="href" target="_blank" rel="noopener"
+            >Open</a
+          >
+        }
+        <label class="a-btn ghost sm" [for]="inputId">Replace</label>
+        <button type="button" class="a-btn ghost sm" (click)="remove()">
+          Remove
+        </button>
+      </div>
+    </div>
+  } @else {
+    <label
+      class="a-upload is-empty"
+      [for]="inputId"
+      [class.is-drag]="dragging()"
+      (dragover)="onDragOver($event)"
+      (dragleave)="dragging.set(false)"
+      (drop)="onDrop($event)"
+    >
+      <span><strong>Choose a file</strong> or drag it here</span>
+      @if (hint) {
+        <span class="a-hint">{{ hint }}</span>
+      }
+    </label>
+  }
+
+  <input
+    class="sr-only"
+    type="file"
+    [id]="inputId"
+    [accept]="accept"
+    [disabled]="uploading()"
+    [attr.aria-labelledby]="inputId + '-label'"
+    (change)="onInput($event)"
+  />
+  @if (error(); as message) {
+    <p class="a-err" role="alert">{{ message }}</p>
+  }
+</div>
